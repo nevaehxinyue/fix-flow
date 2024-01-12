@@ -21,7 +21,6 @@ const NewIssuePage = () => {
 
   // The 'errors' object is populated by 'react-hook-form' when validation errors occur
   // based on the schema validation with Zod
-
   const {
     register,
     control,
@@ -31,6 +30,17 @@ const NewIssuePage = () => {
     resolver: zodResolver(createIssueSchema),
   });
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      setSubmitting(true);
+      await axios.post("/api/issues", data);
+      router.push("/issues");
+    } catch (error) {
+      setSubmitting(false);
+      setError("An unexpected error occurred.");
+    }
+  })
+
   return (
     <div className="max-w-xl space-y-3">
       {error && (
@@ -39,16 +49,7 @@ const NewIssuePage = () => {
         </Callout.Root>
       )}
       <form
-        onSubmit={handleSubmit(async (data) => {
-          try {
-            setSubmitting(true);
-            await axios.post("/api/issues", data);
-            router.push("/issues");
-          } catch (error) {
-            setSubmitting(false);
-            setError("An unexpected error occurred.");
-          }
-        })}
+        onSubmit={onSubmit}
         className="space-y-3 "
       >
         <TextField.Root>
