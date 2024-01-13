@@ -1,6 +1,8 @@
-import React from 'react'
+import ReactMarkdown from "react-markdown"
 import prisma  from "@/prisma/client"
 import { notFound } from 'next/navigation'
+import { Card, Flex, Heading } from '@radix-ui/themes'
+import IssueStatusBadge from '@/app/components/IssueStatusBadge'
 
 const IssueDetailPage = async ({ params }: {params: { id: string}}) => {
     const issue = await prisma.issue.findUnique( {
@@ -12,10 +14,14 @@ const IssueDetailPage = async ({ params }: {params: { id: string}}) => {
 
   return (
     <div>
-      <p>{issue?.title}</p>
-      <p>{issue?.description}</p>
-      <p>{issue?.status}</p>
+      <Heading>{issue?.title}</Heading>
+      <Flex gap="3" my="3">
+      <IssueStatusBadge status={issue.status}/>
       <p>{issue?.createdAt.toDateString()}</p>
+      </Flex>
+      <Card className="prose"><ReactMarkdown>{issue?.description}</ReactMarkdown></Card>
+      
+      
     </div>
   )
 }
