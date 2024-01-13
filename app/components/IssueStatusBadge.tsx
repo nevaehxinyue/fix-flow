@@ -1,9 +1,9 @@
 import { Status } from "@prisma/client"
 import { Badge } from "@radix-ui/themes"
 
-const statusMap: Record<Status, { label: string, color: 'red' | 'blue' | 'green'}> = {
+const statusMap: Record<Status, { label: string, color: 'red' | 'bronze' | 'green'}> = {
     OPEN: { label: 'Open', color: 'red'},
-    IN_PROGRESS: { label: 'In Progress', color: 'blue'},
+    IN_PROGRESS: { label: 'In Progress', color: 'bronze'},
     CLOSED: { label: 'Closed', color: 'green'}
 }
 
