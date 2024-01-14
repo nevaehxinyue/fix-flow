@@ -5,8 +5,6 @@ import { IssueStatusBadge, Link } from "@/app/components";
 
 const IssuePage = async () => {
   const issues = await prisma.issue.findMany();
-
-
   return (
     <div>
       <IssuesToolBar />
