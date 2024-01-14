@@ -1,4 +1,5 @@
 "use client";
+import dynamic from "next/dynamic";
 import { Button, Callout, TextField, TextFieldInput } from "@radix-ui/themes";
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
@@ -39,7 +40,11 @@ const NewIssuePage = () => {
       setSubmitting(false);
       setError("An unexpected error occurred.");
     }
-  })
+  });
+
+  const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+    ssr: false,
+  });
 
   return (
     <div className="max-w-xl space-y-3">
@@ -48,10 +53,7 @@ const NewIssuePage = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        onSubmit={onSubmit}
-        className="space-y-3 "
-      >
+      <form onSubmit={onSubmit} className="space-y-3 ">
         <TextField.Root>
           <TextFieldInput placeholder="Title" {...register("title")} />
         </TextField.Root>

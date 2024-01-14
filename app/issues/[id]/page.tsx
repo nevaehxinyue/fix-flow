@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import { Card, Flex, Heading } from '@radix-ui/themes'
 import IssueStatusBadge from '@/app/components/IssueStatusBadge'
 
+
 const IssueDetailPage = async ({ params }: {params: { id: string}}) => {
     const issue = await prisma.issue.findUnique( {
         where: {id: parseInt(params.id)}
@@ -11,7 +12,6 @@ const IssueDetailPage = async ({ params }: {params: { id: string}}) => {
 
     if (!issue) 
         notFound();
-
   return (
     <div>
       <Heading>{issue?.title}</Heading>
