@@ -8,7 +8,7 @@ const EditIssuePage = async ({ params }: { params: {id: string}}) => {
     })
 
     if (!issue)
-        notFound();
+        notFound(); 
 
   return (
     <div>

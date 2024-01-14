@@ -1,23 +1,33 @@
-'use client';
-import { ErrorMessage, Spinner } from '@/app/components';
-import { createIssueSchema } from '@/app/validationSchemas';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Callout, TextField, TextFieldInput, Button } from '@radix-ui/themes';
-import axios from 'axios';
-import dynamic from 'next/dynamic';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react'
-import { useForm, Controller } from 'react-hook-form';
-import { z } from 'zod';
+"use client";
+import { ErrorMessage, IssueStatusBadge, Spinner } from "@/app/components";
+import { IssueSchema } from "@/app/validationSchemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  Callout,
+  TextField,
+  TextFieldInput,
+  Button,
+  RadioGroup,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
+import axios from "axios";
+import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
 import "easymde/dist/easymde.min.css";
-import { Issue } from '@prisma/client';
+import { Issue } from "@prisma/client";
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {ssr: false})
+const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+  ssr: false,
+});
 
-type IssueFormData = z.infer<typeof createIssueSchema>;
+type IssueFormData = z.infer<typeof IssueSchema>;
 
-const IssueForm = ({ issue } : { issue?: Issue}) => {
-    const [error, setError] = useState("");
+const IssueForm = ({ issue }: { issue?: Issue }) => {
+  const [error, setError] = useState("");
   const [isSubmitting, setSubmitting] = useState(false);
   const router = useRouter();
 
@@ -29,19 +39,22 @@ const IssueForm = ({ issue } : { issue?: Issue}) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(createIssueSchema),
+    resolver: zodResolver(IssueSchema),
   });
 
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);
-      await axios.post("/api/issues", data);
-      router.push("/issues");
+      if (issue) 
+        await axios.patch('/api/issues/' + issue.id, data);
+      else 
+        await axios.post('/api/issues', data);
+    router.push("/issues"); 
     } catch (error) {
       setSubmitting(false);
       setError("An unexpected error occurred.");
     }
-  })
+  });
 
   return (
     <div className="max-w-xl space-y-3">
@@ -52,9 +65,47 @@ const IssueForm = ({ issue } : { issue?: Issue}) => {
       )}
       <form onSubmit={onSubmit} className="space-y-3 ">
         <TextField.Root>
-          <TextFieldInput defaultValue={issue?.title} placeholder="Title" {...register("title")} />
+          <TextFieldInput
+            defaultValue={issue?.title}
+            placeholder="Title"
+            {...register("title")}
+          />
         </TextField.Root>
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
+
+        <Controller
+          name="status"
+          defaultValue={issue?.status || "OPEN"}
+          control={control}
+          render={({ field }) => (
+            <RadioGroup.Root
+              {...field}
+              value={field.value}
+              onValueChange={(value) => {
+                field.onChange(value);
+              }}
+            >
+              <Flex gap="2" direction="row">
+                <Text as="label" size="2" className="flex gap-2">
+                  <RadioGroup.Item value="OPEN" />
+                  <IssueStatusBadge status="OPEN" />
+                </Text>
+
+                <Text as="label" size="2" className="flex gap-2">
+                  <RadioGroup.Item value="IN_PROGRESS" />
+                  <IssueStatusBadge status="IN_PROGRESS" />
+                </Text>
+
+                <Text as="label" size="2" className="flex gap-2">
+                  <RadioGroup.Item value="CLOSED" />
+                  <IssueStatusBadge status="CLOSED" />
+                </Text>
+              </Flex>
+            </RadioGroup.Root>
+          )}
+        />
+        <ErrorMessage>{errors.status?.message}</ErrorMessage>
+
         <Controller
           name="description"
           control={control}
@@ -65,11 +116,12 @@ const IssueForm = ({ issue } : { issue?: Issue}) => {
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button disabled={isSubmitting}>
-          Submit New Issue{isSubmitting && <Spinner />}
+          {issue ? "Update Issue" : "Submit New Issue"}
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default IssueForm
+export default IssueForm;
