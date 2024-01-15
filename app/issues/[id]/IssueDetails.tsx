@@ -11,7 +11,9 @@ const IssueDetails = ({ issue }: {issue: Issue}) => {
         <IssueStatusBadge status={issue.status} />
         <p>{issue?.createdAt.toDateString()}</p>
       </Flex>
-      <Card className="prose">
+      {/* 'max-w-full' to allow the card strech to take all the available space
+      while keeping the number of charaters of each line to 65 charaters */}
+      <Card className="prose max-w-full" mt="4">
         <ReactMarkdown>{issue?.description}</ReactMarkdown>
       </Card>
     </>
