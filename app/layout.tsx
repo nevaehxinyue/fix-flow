@@ -7,6 +7,7 @@ import "./globals.css";
 import React from "react";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.variable}>
+        <QueryClientProvider>
         <AuthProvider>
         <Theme accentColor="bronze">
           <NavBar />
@@ -35,6 +37,7 @@ export default function RootLayout({
           {/* <ThemePanel /> */}
         </Theme>
         </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
