@@ -1,6 +1,6 @@
 "use client";
 import { ErrorMessage, IssueStatusBadge, Spinner } from "@/app/components";
-import { IssueSchema } from "@/app/validationSchemas";
+import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Callout,
@@ -20,7 +20,7 @@ import "easymde/dist/easymde.min.css";
 import { Issue } from "@prisma/client";
 import SimpleMDE from "react-simplemde-editor";
 
-type IssueFormData = z.infer<typeof IssueSchema>;
+type IssueFormData = z.infer<typeof issueSchema>;
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [error, setError] = useState("");
@@ -35,7 +35,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     handleSubmit,
     formState: { errors },
   } = useForm<IssueFormData>({
-    resolver: zodResolver(IssueSchema),
+    resolver: zodResolver(issueSchema),
   });
 
   const onSubmit = handleSubmit(async (data) => {
