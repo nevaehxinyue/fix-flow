@@ -4,11 +4,12 @@ import IssuesToolBar from "./IssuesToolBar";
 import { IssueStatusBadge, Link } from "@/app/components";
 import { Issue, Status } from "@prisma/client";
 import NextLink from "next/link";
+import { ArrowUpIcon } from "@radix-ui/react-icons";
 
 const IssuePage = async ({
   searchParams,
 }: {
-  searchParams: { status: Status };
+  searchParams: { status: Status; orderBy: keyof Issue };
 }) => {
   //Set up sortable columns
   const columns: { label: string; value: keyof Issue; className?: string }[] = [
@@ -17,16 +18,24 @@ const IssuePage = async ({
     { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
   ];
 
-  //Validate the query parameter for status, if unvalid, return all issues
+  //Validate the query parameter for status and orderBy, if unvalid, return all issues
   const statuses = Object.values(Status);
   const status = statuses.includes(searchParams.status)
     ? searchParams.status
+    : undefined;
+
+  const orderBy = columns
+    .map((column) => column.value)
+    .includes(searchParams.orderBy)
+    ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
   const issues = await prisma.issue.findMany({
     where: {
       status,
     },
+    //specify how the returned records should be sorted.
+    orderBy,
   });
 
   return (
@@ -38,11 +47,14 @@ const IssuePage = async ({
             {columns.map((column) => (
               <Table.ColumnHeaderCell key={column.value}>
                 <NextLink
-                  href={{ 
-                    query: { ...searchParams, sortBy: column.value } 
+                  href={{
+                    query: { ...searchParams, orderBy: column.value },
                   }}
                 >
                   {column.label}
+                  {column.value === searchParams.orderBy && (
+                    <ArrowUpIcon className="inline" />
+                  )}
                 </NextLink>
               </Table.ColumnHeaderCell>
             ))}
