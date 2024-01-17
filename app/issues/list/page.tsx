@@ -2,22 +2,50 @@ import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
 import IssuesToolBar from "./IssuesToolBar";
 import { IssueStatusBadge, Link } from "@/app/components";
+import { Issue, Status } from "@prisma/client";
+import NextLink from "next/link";
 
-const IssuePage = async () => {
-  const issues = await prisma.issue.findMany();
+const IssuePage = async ({
+  searchParams,
+}: {
+  searchParams: { status: Status };
+}) => {
+  //Set up sortable columns
+  const columns: { label: string; value: keyof Issue; className?: string }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status", className: "hidden md:table-cell" },
+    { label: "Created", value: "createdAt", className: "hidden md:table-cell" },
+  ];
+
+  //Validate the query parameter for status, if unvalid, return all issues
+  const statuses = Object.values(Status);
+  const status = statuses.includes(searchParams.status)
+    ? searchParams.status
+    : undefined;
+
+  const issues = await prisma.issue.findMany({
+    where: {
+      status,
+    },
+  });
+
   return (
     <div>
       <IssuesToolBar />
       <Table.Root variant="surface">
         <Table.Header>
           <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map((column) => (
+              <Table.ColumnHeaderCell key={column.value}>
+                <NextLink
+                  href={{ 
+                    query: { ...searchParams, sortBy: column.value } 
+                  }}
+                >
+                  {column.label}
+                </NextLink>
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -43,7 +71,7 @@ const IssuePage = async () => {
   );
 };
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 // export const revalidate = 0;
 
 export default IssuePage;
