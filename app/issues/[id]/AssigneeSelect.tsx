@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/app/components";
 import toast, { Toaster } from "react-hot-toast";
-import { useId, useState } from "react";
+
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
@@ -24,28 +24,30 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
 
   if (isLoading) return <Skeleton height="2rem" />;
 
+  const assignIssue = (userId: string) => {
+    const userToAssign = users?.find(user => user.id === userId);
+    axios
+      .patch("/api/issues/" + issue.id, {
+        assignedToUserId: userId === "unassigned" ? null : userId,
+      })
+      .then(() => {
+        if (userId === "unassigned") {
+          toast.success("Successfully unassigned!");
+        } else {
+          toast.success(`Successfully assigned to ${userToAssign?.name}!`);
+        }
+      })
+      .catch(() => {
+        toast.error("Change could not be saved.");
+      })
+      
+  }
+
   return (
     <>
       <Select.Root
         defaultValue={issue.assignedToUserId || ""}
-        onValueChange={(userId) => {
-          const userToAssign = users?.find(user => user.id === userId);
-          axios
-            .patch("/api/issues/" + issue.id, {
-              assignedToUserId: userId === "unassigned" ? null : userId,
-            })
-            .then(() => {
-              if (userId === "unassigned") {
-                toast.success("Successfully unassigned!");
-              } else {
-                toast.success(`Successfully assigned to ${userToAssign?.name}!`);
-              }
-            })
-            .catch(() => {
-              toast.error("Change could not be saved.");
-            })
-            
-        }}
+        onValueChange={assignIssue}
       >
         <Select.Trigger placeholder="Assign to" />
         <Select.Content>
