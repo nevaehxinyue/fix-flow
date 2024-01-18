@@ -3,6 +3,10 @@ import IssueChart from "./IssueChart";
 import IssuesSummary from "./IssuesSummary";
 import LatestIssues from "./LatestIssues";
 import prisma from "@/prisma/client";
+import { title } from "process";
+import { Metadata } from "next";
+
+
 export default async function Home() {
   const openIssueCount = await prisma.issue.count({
     where: { status: "OPEN" },
@@ -31,4 +35,9 @@ export default async function Home() {
       <LatestIssues />
     </Grid>
   );
+}
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker - Dashboard',
+  description: 'View a summary of project issues'
 }

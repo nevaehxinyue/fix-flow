@@ -4,6 +4,8 @@ import { Issue, Status } from "@prisma/client";
 import Pagination from "@/app/components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
+import { title } from "process";
+import { Metadata } from "next";
 
 const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   //Validate the query parameter for status and orderBy, if unvalid, return all issues
@@ -55,3 +57,8 @@ export const dynamic = "force-dynamic";
 // export const revalidate = 0;
 
 export default IssuePage;
+
+export const metadata: Metadata = {
+  title: 'Issue Tracker -  List ',
+  description: 'A List of all issues'
+}
