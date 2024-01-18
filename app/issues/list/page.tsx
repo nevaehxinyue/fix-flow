@@ -5,12 +5,18 @@ import { IssueStatusBadge, Link } from "@/app/components";
 import { Issue, Status } from "@prisma/client";
 import NextLink from "next/link";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
+import { pages } from "next/dist/build/templates/app-page";
+import Pagination from "@/app/components/Pagination";
 
-const IssuePage = async ({
-  searchParams,
-}: {
-  searchParams: { status: Status; orderBy: keyof Issue };
-}) => {
+interface Props {
+  searchParams: {
+    status: Status;
+    orderBy: keyof Issue;
+    page: string;
+  };
+}
+
+const IssuePage = async ({ searchParams }: Props) => {
   //Set up sortable columns
   const columns: { label: string; value: keyof Issue; className?: string }[] = [
     { label: "Issue", value: "title" },
@@ -30,13 +36,25 @@ const IssuePage = async ({
     ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
     where: {
       status,
     },
     //specify how the returned records should be sorted.
     orderBy,
+    //ensure with the query will get issues of the given page.
+    skip: (page - 1) * pageSize,
+    take: pageSize
   });
+
+  const issueCount = await prisma.issue.count({
+    where: {
+      status
+    }
+  })
 
   return (
     <div>
@@ -45,7 +63,10 @@ const IssuePage = async ({
         <Table.Header>
           <Table.Row>
             {columns.map((column) => (
-              <Table.ColumnHeaderCell key={column.value} className={column.className}>
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={column.className}
+              >
                 <NextLink
                   href={{
                     query: { ...searchParams, orderBy: column.value },
@@ -79,6 +100,8 @@ const IssuePage = async ({
           ))}
         </Table.Body>
       </Table.Root>
+
+      <Pagination itemCount={issueCount} currentPage={page} pageSize={pageSize} />
     </div>
   );
 };
