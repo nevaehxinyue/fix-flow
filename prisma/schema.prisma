@@ -19,6 +19,8 @@ model Issue {
   updatedAt        DateTime @updatedAt
   assignedToUserId String?  @db.VarChar(255)
   assingedToUser   User?    @relation(fields: [assignedToUserId], references: [id])
+  // Project          Project? @relation(fields: [projectId], references: [id])
+  // projectId        Int?
 }
 
 enum Status {
@@ -26,6 +28,14 @@ enum Status {
   IN_PROGRESS
   CLOSED
 }
+
+// model Project {
+//   id          Int     @id @default(autoincrement())
+//   title       String  @db.VarChar(255)
+//   description String  @db.Text
+//   users       User[]   //Many to many relationship to User
+//   issues      Issue[]
+// }
 
 model Account {
   id                String  @id @default(cuid())
@@ -62,7 +72,8 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  assignedIssue Issue[]
+  // projects  Project[] 
+  Issue         Issue[]
 }
 
 model VerificationToken {
