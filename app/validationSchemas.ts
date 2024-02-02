@@ -12,3 +12,12 @@ export const patchIssueSchema = z.object({
   status: z.enum(['OPEN', 'IN_PROGRESS', 'CLOSED']).optional(),
   assignedToUserId: z.string().min(1, 'AssignedToUserId is required.').max(255).optional().nullable(),
 })
+
+export const credentialSchema = z.object ({
+  email: z.string().email({message: "Invalid email address."}),
+  password: z.string().min(6, 'Minimun 6 characters are required.')
+})
+
+export const emailSchema = z.object ({
+  email: z.string().email({message: "Invalid email address."}),
+})

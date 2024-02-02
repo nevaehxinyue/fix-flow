@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import { AiFillBug } from "react-icons/ai";
+import { SiGhost } from "react-icons/si";
 import classNames from "classnames";
 import {
   Avatar,
@@ -19,10 +19,10 @@ const NavBar = () => {
   return (
     <nav className="border-b mb-5 px-5 py-4 ">
       <Container>
-        <Flex justify="between">
+        <Flex justify="between" align="center">
           <Flex gap="3" align="center">
             <Link href="/">
-              <AiFillBug />
+            <SiGhost />
             </Link>
             <NavLinks />
           </Flex>
@@ -67,7 +67,7 @@ const AuthStatus = () => {
 
   if (status === "unauthenticated")
     return (
-      <Link href="/api/auth/signin" className="nav-link">
+      <Link href="/auth/signin" className="nav-link">
         Log in
       </Link>
     );
@@ -78,7 +78,7 @@ const AuthStatus = () => {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger>
             <Avatar
-              src={session.user!.image!}
+              src={session.user!.image ? session.user!.image : '/user_avatar.svg'}
               fallback="?"
               size="2"
               radius="full"
