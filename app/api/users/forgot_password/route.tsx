@@ -18,7 +18,7 @@ export async function POST (request: NextRequest) {
     //Send forgotPassword email to user
     sendEmails({emailAddress: body.email, emailType: "forgotPassword", userId: user.id});
 
-    return NextResponse.json(user, {status: 201})
+    return NextResponse.json({success: true}, {status: 201})
 
 
 

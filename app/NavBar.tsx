@@ -7,16 +7,28 @@ import classNames from "classnames";
 import {
   Avatar,
   Box,
+  Button,
   Container,
   DropdownMenu,
   Flex,
   Text,
 } from "@radix-ui/themes";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "@/app/components";
+import axios from "axios";
 
 const NavBar = () => {
+  // const {data: session} = useSession();
+  // if(!session?.user.name){
+  //   const generatedUsername = session?.user.email?.split("@")[0];
+  //   console.log(generatedUsername)
+  //   try {
+  //      axios.patch('/api/user/' + session?.user.id, {name: generatedUsername })
+  //   }catch(error){
+  //     console.log('Username cannot be generated')
 
+  //   }
+  // }
   return (
     <nav className="border-b mb-5 px-5 py-4 ">
       <Container>
@@ -91,7 +103,8 @@ const AuthStatus = () => {
               <Text size="2">{session.user!.email}</Text>
             </DropdownMenu.Label>
             <DropdownMenu.Item>
-              <Link href="/api/auth/signout">Log out</Link>
+              <button onClick={() => signOut({callbackUrl: "/"})}>Log out</button>
+              {/* <Link href="/api/auth/signout">Log out</Link> */}
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>

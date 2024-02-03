@@ -1,10 +1,11 @@
-import { Flex, Grid } from "@radix-ui/themes";
+import { Button, Flex, Grid } from "@radix-ui/themes";
 import IssueChart from "./IssueChart";
 import IssuesSummary from "./IssuesSummary";
 import LatestIssues from "./LatestIssues";
 import prisma from "@/prisma/client";
 import { title } from "process";
 import { Metadata } from "next";
+import ChangeUserNameMessage from "./ChangeUserNameMessage";
 
 
 export default async function Home() {
@@ -20,6 +21,10 @@ export default async function Home() {
 
   return (
     <Grid columns={{ initial: "1", md: "2" }} gap="5">
+      <div className="col-span-2">
+      <ChangeUserNameMessage />
+      </div>
+      
       <Flex direction="column" gap="5">
         <IssuesSummary
           open={openIssueCount}

@@ -14,6 +14,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import toast , { Toaster }from "react-hot-toast";
 import { z } from "zod";
 type ForgotFormData = z.infer<typeof emailSchema>
 const ForgotPasswordForm = () => {
@@ -28,7 +29,14 @@ const ForgotPasswordForm = () => {
     
       const onSubmit = async (data: ForgotFormData) => {
         try{
-          await axios.post('/api/users/forgot_password', data)
+          const response = await axios.post('/api/users/forgot_password', data)
+       
+          if(response.data.success) {
+            toast.success("Sent request successfully. Please check your email.")
+          }else {
+            // If the response does not have success true, handle accordingly
+            setError("Request send failed. Please try again.");
+          }
 
         }catch(error: any){
           setError(error.message)
@@ -37,7 +45,7 @@ const ForgotPasswordForm = () => {
       }
 
   return (
-    <>
+    
       <Flex direction="column">
         <form className="space-y-3 mb-3" onSubmit={handleSubmit(onSubmit)}>
 
@@ -66,6 +74,7 @@ const ForgotPasswordForm = () => {
           >
            Send a request
           </Button>
+          <Toaster />
         </form>
       {error && (
         <Callout.Root color="red">
@@ -73,7 +82,7 @@ const ForgotPasswordForm = () => {
         </Callout.Root>
       )}
       </Flex>
-    </>
+  
   );
 };
 

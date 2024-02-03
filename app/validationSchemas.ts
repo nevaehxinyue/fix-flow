@@ -36,4 +36,9 @@ export const passwordSchema = z.object ({
   verifyToken: z.string()
 })
 
+export const userProfileUpdateSchema = z.object({
+  name: z.string().min(1, 'Username is required.').max(255).optional(),
+  password: z.string().min(6, 'Minimun 6 characters are required.').optional(),
+})
+
 

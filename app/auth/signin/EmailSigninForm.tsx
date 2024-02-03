@@ -24,8 +24,8 @@ const EmailSigninForm= () => {
     await signIn('email', { email: data.email, callbackUrl: '/'})
   }
   return (
-    <form className="space-y-5 mb-3" onSubmit={handleSubmit(onSubmit)}>
-    <div className="space-y-2 mt-3">
+    <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
+    <div className="space-y-2 mt-1">
       <label>Email</label>
       <TextField.Root>
         <TextField.Slot>

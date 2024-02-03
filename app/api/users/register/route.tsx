@@ -37,5 +37,5 @@ export async function POST (request: NextRequest) {
     sendEmails({emailAddress: email, emailType: "emailValidation", userId: newUser.id})
 
 
-    return NextResponse.json(newUser, {status: 201})
+    return NextResponse.json({success: true}, {status: 201})
 }

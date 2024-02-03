@@ -16,10 +16,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
 type PasswordFormData = z.infer<typeof userSigninSchema>;
 const PasswordSigninForm = () => {
   const [error, setError] = useState("");
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!isPasswordVisible);
+  };
+
   const {
     register,
     handleSubmit,
@@ -42,7 +48,7 @@ const PasswordSigninForm = () => {
 
   return (
     <Flex direction="column">
-      <form className="space-y-5 mb-3" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-2 mt-3">
           <label>Email</label>
           <TextField.Root>
@@ -71,11 +77,25 @@ const PasswordSigninForm = () => {
               <LockClosedIcon />
             </TextField.Slot>
             <TextFieldInput
-              type="password"
+               type={isPasswordVisible ? "text" : "password"}
               placeholder="min 6 chracters"
               size="3"
               {...register("password")}
             />
+            <button
+                type="button"
+                onClick={togglePasswordVisibility}
+              >
+                {isPasswordVisible ? (
+                  <TextField.Slot>
+                    <FaRegEyeSlash className="cursor-pointer"/>
+                  </TextField.Slot>
+                ) : (
+                  <TextField.Slot>
+                    <FaRegEye  className="cursor-pointer"/>
+                  </TextField.Slot>
+                )}
+              </button>
           </TextField.Root>
         </div>
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
@@ -84,7 +104,7 @@ const PasswordSigninForm = () => {
           className="w-full "
           size="3"
           type="submit"
-          //   disabled={isSubmitting || !isValid}
+            disabled={isSubmitting || !isValid}
         >
           Sign in
         </Button>
