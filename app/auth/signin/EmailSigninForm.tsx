@@ -25,8 +25,8 @@ const EmailSigninForm= () => {
   }
   return (
     <form className="space-y-5 mb-3" onSubmit={handleSubmit(onSubmit)}>
-    <div className="space-y-3 mt-3">
-      <label>Email address</label>
+    <div className="space-y-2 mt-3">
+      <label>Email</label>
       <TextField.Root>
         <TextField.Slot>
           <EnvelopeClosedIcon />

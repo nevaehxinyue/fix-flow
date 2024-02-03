@@ -3,8 +3,8 @@ import GoogleProvider from "next-auth/providers/google";
 import prisma from "@/prisma/client";
 import { AuthOptions } from "next-auth";
 import EmailProvider from 'next-auth/providers/email';
-import nodemailer from 'nodemailer';
-
+import CredentialsProvider from "next-auth/providers/credentials";
+import bcryptjs from "bcryptjs"
 
 const authOptions: AuthOptions  = {
   pages: {
@@ -27,6 +27,30 @@ const authOptions: AuthOptions  = {
         },
         from: process.env.EMAIL_FROM,
 
+      }),
+      CredentialsProvider({
+        name: "Credentials",
+        credentials: {
+          email: {label: 'email', type:'email'},
+          password: {label: 'password', type:"password"}
+        },
+        async authorize(credentials, req){
+          const formEmail = credentials?.email;
+          const formPassword = credentials?.password!;
+
+          const user = await prisma.user.findUnique({
+            where: {email: formEmail}
+          })
+
+          if(!user) return null;
+          if(!user.password) return null;
+
+          const isValidPassword = await bcryptjs.compare(formPassword, user.password);
+          if(!isValidPassword) return null;
+
+          return user;
+
+        }
       })
 
 

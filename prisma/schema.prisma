@@ -24,7 +24,7 @@ model Issue {
   assingedToUser   User?     @relation("AssignedToUser", fields: [assignedToUserId], references: [id])
   projectId        Int
   project          Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  comments         Comment[] 
+  comments         Comment[]
 }
 
 enum Status {
@@ -51,16 +51,16 @@ model Comment {
 }
 
 model Project {
-  id          Int           @id @default(autoincrement())
-  title       String        @db.VarChar(255)
-  description String?
-  status      ProjectStatus @default(OPEN)
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-  createdByUserId   String   @db.VarChar(255)
-  createdBy         User     @relation(fields: [createdByUserId], references: [id], onDelete: Cascade)  
-  assignedToUsers       ProjecOftUsers[] //Many to many relationship to User
-  issues      Issue[] //One to Many relationship to Issue
+  id              Int              @id @default(autoincrement())
+  title           String           @db.VarChar(255)
+  description     String?
+  status          ProjectStatus    @default(OPEN)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  createdByUserId String           @db.VarChar(255)
+  createdBy       User             @relation(fields: [createdByUserId], references: [id], onDelete: Cascade)
+  assignedToUsers ProjecOftUsers[] //Many to many relationship to User
+  issues          Issue[] //One to Many relationship to Issue
 }
 
 enum ProjectStatus {
@@ -69,10 +69,10 @@ enum ProjectStatus {
 }
 
 model ProjecOftUsers {
-  projectId Int
-  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  userId    String  @db.VarChar(255)
-  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId  Int
+  project    Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId     String   @db.VarChar(255)
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   assignedAt DateTime @default(now())
 
   @@id([projectId, userId]) //The primary keys are 'projectId' and 'userId'
@@ -106,19 +106,24 @@ model Session {
 }
 
 model User {
-  id             String        @id @default(cuid())
-  name           String?
-  email          String?       @unique
-  emailVerified  DateTime?
-  image          String?
-  password    String?
-  accounts       Account[]
-  sessions       Session[]
-  createdProjects Project[]
-  assignedProjects       ProjecOftUsers[]
-  createdIssue   Issue[]       @relation("CreatedBy")
-  assignedIssues Issue[]       @relation("AssignedToUser")
-  comments       Comment[]
+  id                String           @id @default(cuid())
+  name              String?
+  email             String?          @unique
+  emailVerified     DateTime?
+  image             String?
+  password          String?
+  active            Boolean?
+  verifyToken       String?  @unique
+  verifyTokenExpiry DateTime?
+  forgotPasswordToken       String?  @unique
+  forgotPasswordTokenExpiry DateTime?
+  accounts          Account[]
+  sessions          Session[]
+  createdProjects   Project[]
+  assignedProjects  ProjecOftUsers[]
+  createdIssue      Issue[]          @relation("CreatedBy")
+  assignedIssues    Issue[]          @relation("AssignedToUser")
+  comments          Comment[]
 }
 
 model VerificationToken {

@@ -16,13 +16,14 @@ import { useSession } from "next-auth/react";
 import { Skeleton } from "@/app/components";
 
 const NavBar = () => {
+
   return (
     <nav className="border-b mb-5 px-5 py-4 ">
       <Container>
         <Flex justify="between" align="center">
           <Flex gap="3" align="center">
             <Link href="/">
-            <SiGhost />
+            <SiGhost size="22" />
             </Link>
             <NavLinks />
           </Flex>

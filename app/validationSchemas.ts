@@ -13,11 +13,27 @@ export const patchIssueSchema = z.object({
   assignedToUserId: z.string().min(1, 'AssignedToUserId is required.').max(255).optional().nullable(),
 })
 
-export const credentialSchema = z.object ({
+export const userRegisterSchema = z.object ({
+  name:z.string().min(1, "User name is required").max(255),
   email: z.string().email({message: "Invalid email address."}),
   password: z.string().min(6, 'Minimun 6 characters are required.')
+
 })
+
+export const userSigninSchema = z.object ({
+  email: z.string().email({message: "Invalid email address."}),
+  password: z.string().min(6, 'Minimun 6 characters are required.')
+
+})
+
 
 export const emailSchema = z.object ({
   email: z.string().email({message: "Invalid email address."}),
 })
+
+export const passwordSchema = z.object ({
+  password: z.string().min(6, 'Minimun 6 characters are required.'),
+  verifyToken: z.string()
+})
+
+
