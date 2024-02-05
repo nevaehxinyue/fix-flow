@@ -7,7 +7,7 @@ import { Button, TextField, TextFieldInput } from '@radix-ui/themes'
 import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from "zod";
-
+import { FaEnvelope } from "react-icons/fa6";
 
 type EmailFormData = z.infer<typeof emailSchema>;
 
@@ -25,7 +25,7 @@ const EmailSigninForm= () => {
   }
   return (
     <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
-    <div className="space-y-2 mt-1">
+    <div className="space-y-2">
       <label>Email</label>
       <TextField.Root>
         <TextField.Slot>
@@ -42,7 +42,9 @@ const EmailSigninForm= () => {
     </div>
     <ErrorMessage>{errors.email?.message}</ErrorMessage>
    <Button  type="submit" className="w-full " size="3" >
-      Continue with email
+      Continue with email<FaEnvelope />
+
+
     </Button>
     </form>
   )

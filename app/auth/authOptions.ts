@@ -36,16 +36,19 @@ const authOptions: AuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "email", type: "email" },
-        password: { label: "password", type: "password" },
+        email: { label: "Email", type: "text",},
+        password: { label: "Password", type: "password"} ,
       },
       async authorize(credentials, req) {
         const formEmail = credentials?.email;
         const formPassword = credentials?.password!;
+        console.log(`formEmail: ${formEmail}`)
+        console.log(`formPassword: ${formEmail}`)
 
         const user = await prisma.user.findUnique({
           where: { email: formEmail },
         });
+        console.log(`user: ${user}`)
 
         if (!user) return null;
         if (!user.password) return null;

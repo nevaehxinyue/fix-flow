@@ -13,6 +13,26 @@ export const patchIssueSchema = z.object({
   assignedToUserId: z.string().min(1, 'AssignedToUserId is required.').max(255).optional().nullable(),
 })
 
+export const commentSchema = z.object ({
+  content: z.string().min(1, 'Comment is required.').max(65535),
+  createdByUserId: z.string().min(1, 'Invalid User.').max(255),
+  belongedToIssueId: z.number().min(1, 'Issue ID is required.')
+})
+
+export const projectSchema = z.object ({
+  title: z.string().min(1, 'Project name is required.').max(255),
+  description: z.string().max(65535).optional().nullable(),
+  createdByUserId: z.string().min(1, 'Invalid User.').max(255),
+  status: z.enum(['OPEN', 'COMPLETED']).optional()
+  // assignedToUsers: z.array(z.string().min(1, 'Invalid User ID.').optional().nullable())
+})
+
+export const patchProjectSchema = z.object ({
+  title: z.string().min(1, 'Project name is required.').max(255).optional(),
+  description: z.string().max(65535).optional().nullable(),
+  status: z.enum(['OPEN', 'COMPLETED']).optional()
+})
+
 export const userRegisterSchema = z.object ({
   name:z.string().min(1, "User name is required").max(255),
   email: z.string().email({message: "Invalid email address."}),
@@ -39,6 +59,7 @@ export const passwordSchema = z.object ({
 export const userProfileUpdateSchema = z.object({
   name: z.string().min(1, 'Username is required.').max(255).optional(),
   password: z.string().min(6, 'Minimun 6 characters are required.').optional(),
+  confirmPassword: z.string().min(6, 'Minimun 6 characters are required.').optional(),
 })
 
 

@@ -4,7 +4,8 @@ import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { Button, Callout, Flex } from "@radix-ui/themes";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import UsernameChangeForm from "./UsernameChangeForm";
 
 const ChangeUserNameMessage = () => {
   const { data: session } = useSession();
@@ -21,20 +22,18 @@ const ChangeUserNameMessage = () => {
           console.log("Username cannot be generated", error);
         });
     }
-  }, [session]);
+  }, [session?.user.id]);
 
   return (
     <div>
-      <Callout.Root color="blue">
+      <Callout.Root >
         <Callout.Icon>
           <InfoCircledIcon />
         </Callout.Icon>
         <Callout.Text>
           Your username has been generated automatically. You can change it
           here.
-          <Button ml="2" size="1">
-            Change name
-          </Button>
+        <UsernameChangeForm />
         </Callout.Text>
       </Callout.Root>
     </div>

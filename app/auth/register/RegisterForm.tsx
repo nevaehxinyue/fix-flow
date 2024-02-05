@@ -27,7 +27,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 type PasswordFormData = z.infer<typeof userRegisterSchema>;
 const RegisterForm = () => {
-  const [error, setError] = useState("");
   const [registerSuccess, setRegisterSuccess] = useState(false);
   const [isPasswordVisible, setPasswordVisible] = useState(false);
 
@@ -52,8 +51,9 @@ const RegisterForm = () => {
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
-        setError(error.response.data.error);
-      } else setError("An unexpected error occurred.");
+        toast.error(`${error.response.data.error}`);
+  
+      } else {toast.error("An unexpected error occurred.");}
     }
   };
 
@@ -140,11 +140,6 @@ const RegisterForm = () => {
           Already have an account? <Link href="/auth/signin">Log in</Link>
         </Text>
       </Flex>
-      {error && (
-        <Callout.Root color="red">
-          <Callout.Text>{error}</Callout.Text>
-        </Callout.Root>
-      )}
     </>
   );
 };

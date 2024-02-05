@@ -17,9 +17,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
+import { useRouter } from "next/navigation";
 
 type PasswordFormData = z.infer<typeof userSigninSchema>;
 const PasswordSigninForm = () => {
+  const router = useRouter();
   const [error, setError] = useState("");
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
@@ -36,11 +38,21 @@ const PasswordSigninForm = () => {
 
   const onSubmit = async (data: PasswordFormData) => {
     try {
-      await signIn("credentials", {
+     
+      const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        callbackUrl: "/",
+        redirect: false
       });
+      console.log({result})
+      if (result?.error) {
+        if(result.error === 'CredentialsSignin'){
+          setError("Your email or password is incorrect.")
+
+        }
+      } else {
+        router.push('/')
+      }
     } catch (error: any) {
       setError(error.message);
     }
@@ -48,6 +60,11 @@ const PasswordSigninForm = () => {
 
   return (
     <Flex direction="column">
+      {error && (
+        <Callout.Root color="red">
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}
       <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-2 mt-3">
           <label>Email</label>
@@ -77,7 +94,7 @@ const PasswordSigninForm = () => {
               <LockClosedIcon />
             </TextField.Slot>
             <TextFieldInput
-               type={isPasswordVisible ? "text" : "password"}
+              type={isPasswordVisible ? "text" : "password"}
               placeholder="min 6 chracters"
               size="3"
               {...register("password")}
@@ -104,16 +121,12 @@ const PasswordSigninForm = () => {
           className="w-full "
           size="3"
           type="submit"
-            disabled={isSubmitting || !isValid}
+            disabled={isSubmitting}
         >
           Sign in
         </Button>
       </form>
-      {error && (
-        <Callout.Root color="red">
-          <Callout.Text>{error}</Callout.Text>
-        </Callout.Root>
-      )}
+      
     </Flex>
   );
 };

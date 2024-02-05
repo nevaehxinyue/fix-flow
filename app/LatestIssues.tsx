@@ -31,7 +31,7 @@ const LatestIssues = async () => {
                   {issue.assingedToUser && (
                     <Flex align='center' gap='2'>
                       <Avatar
-                        src={issue.assingedToUser.image!}
+                        src={issue.assingedToUser.image ?  issue.assingedToUser.image : '/user_avatar2.svg'}
                         fallback="?"
                         size="2"
                         radius="full"
