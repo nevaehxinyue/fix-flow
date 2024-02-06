@@ -23,21 +23,17 @@ import { ErrorMessage } from "@/app/components";
 import { FetchedProjectType } from "../[id]/page";
 import { useQueryClient } from "@tanstack/react-query";
 import ProjectStatusBadge from "./ProjectStatusBadge";
+import toast, { Toaster } from "react-hot-toast";
+import DeleteProjectButton from "../[id]/DeleteProjectButton";
 
 type ProjectFormData = z.infer<typeof projectSchema>;
+type ButtonVariants = 'soft'| 'classic'
 
 const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
   const [isSubmitting, setSubmitting] = useState(false);
   const router = useRouter();
   const [submissionError, setSubmissionError] = useState("");
-
-  const { data: users, error } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get<User[]>("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
-  });
-  if (error) return null;
+  const [ buttonVariant, setButtonVariant ] = useState<ButtonVariants>("soft");
 
   const { data: session } = useSession();
 
@@ -54,15 +50,19 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
     let response;
     try {
       setSubmitting(true);
-      if (project) { await axios.patch("/api/projects/" + project.id, data); 
-      router.refresh();} 
-      else {
-        response = await axios.post("/api/projects", data);
-        console.log(response.status)
-        if (response.status === 201){
-            queryClient.invalidateQueries( { queryKey: ["projects"], });}
+      if (project) {
+        const response = await axios.patch("/api/projects/" + project.id, data);
+        if (response.status === 201) {
+          toast.success("Your submission is successful!");
+        }
+        router.refresh();
+      } else {
+        const response = await axios.post("/api/projects", data);
+        if (response.status === 201) {
+          toast.success("Your submission is successful!");
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
+        }
       }
-     
     } catch (error) {
       setSubmissionError("An unexpected error occurred.");
     } finally {
@@ -74,7 +74,7 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
     <>
       {submissionError && (
         <Callout.Root color="red">
-          <Callout.Text>{error}</Callout.Text>
+          <Callout.Text>{submissionError}</Callout.Text>
         </Callout.Root>
       )}
       <form onSubmit={onSubmit}>
@@ -104,6 +104,8 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
           <ErrorMessage>{errors.description?.message}</ErrorMessage>
 
           {project && (
+            <>
+            {/* // Change status */}
             <Flex direction="column" gap="2" align="start">
               <Text className="text-md font-bold mb-3" size="3">
                 Change Status
@@ -133,6 +135,24 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
                 )}
               />
             </Flex>
+
+            {/* // Options for deleting project */}
+            <Flex direction="column" gap="2" align="start">
+              <Text className="text-md font-bold mb-3" size="3">
+                Remove project
+              </Text>
+              <Flex gap="3">
+                 <Button onClick={() => setButtonVariant('classic')} type="button" size="1"color="gray" variant={buttonVariant}>No </Button>
+                 
+                 <DeleteProjectButton project={project}/>
+                 </Flex>
+               
+            
+            </Flex>
+
+            </>
+
+            
           )}
           {/* //Fetch creator userId from the session */}
           <input
@@ -147,9 +167,9 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
                 Cancel
               </Button>
             </Dialog.Close>
-         
-              <Button type="submit">Submit</Button>
-       
+
+            <Button type="submit">Submit</Button>
+            <Toaster />
           </Flex>
         </Flex>
       </form>

@@ -29,3 +29,22 @@ export async function PATCH(
   });
   return NextResponse.json({ updatedProject }, { status: 201 });
 }
+
+export async function DELETE(request: NextRequest, {params}: {params: {id: string}}){
+    //Secure the API
+      const session = await getServerSession(authOptions);
+      if (!session)
+        return NextResponse.json({ message: "Unauthorized request" }, { status: 401 });
+    
+     console.log(params.id)
+    
+        try {
+            await prisma.project.delete({
+                where: {id: parseInt(params.id) }
+            })
+            return NextResponse.json({success: true}, {status: 201})
+        }catch(error: any){
+            return NextResponse.json({error: error.message}, {status: 400});
+        }
+    
+    };

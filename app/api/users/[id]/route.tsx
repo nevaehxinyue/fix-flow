@@ -2,21 +2,44 @@ import { userProfileUpdateSchema } from "@/app/validationSchemas";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/prisma/client";
+import authOptions from "@/app/auth/authOptions";
 
-export async function PATCH(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  //Protect the route
-  const session = getServerSession();
+//Fetch indiviudal user 
+export async function GET(request: NextRequest){
+      //Protect the API endpoint
+      const session = await getServerSession(authOptions);
   if (!session)
     return NextResponse.json(
       { error: "Unauthorized request" },
       { status: 401 }
     );
+    try{ 
+      const user = await prisma.user.findUnique({
+      where: {id: session.user.id}
+    })
+    return NextResponse.json(user, {status: 200})
+
+    }catch(error: any) {
+      return NextResponse.json({error: error.message}, {status: 400})
+    }
+}
+
+// Update user profile
+export async function PATCH(
+  request: NextRequest
+) {
+    //Protect the API endpoint
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json(
+      { error: "Unauthorized request" },
+      { status: 401 }
+    );
+   console.log(session.user.id) 
 
   //Validate the request
   const body = await request.json();
+
   const validation = userProfileUpdateSchema.safeParse(body);
   if (!validation.success)
     return NextResponse.json(
@@ -28,12 +51,13 @@ export async function PATCH(
   const { name, password } = body;
   try {
     const updatedUser = await prisma.user.update({
-      where: { id: params.id },
+      where: { id: session.user.id },
       data: {
         name,
         password,
       },
     });
+    console.log(`updatedUser: ${updatedUser}`)
     return NextResponse.json({success: true}, {status: 201})
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });

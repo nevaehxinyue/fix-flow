@@ -4,11 +4,14 @@ import { projectSchema } from "@/app/validationSchemas";
 import { getServerSession } from "next-auth";
 import authOptions from "@/app/auth/authOptions";
 
+
+
 // Get all projects belonging to the logged in user.
 export async function GET(request: NextRequest) {
+    //Secure the API
   const session = await getServerSession(authOptions);
   if (!session)
-    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+    return NextResponse.json({ message: "Unauthorized request"}, { status: 401 });
 
   const projects = await prisma.project.findMany({
     where: {
@@ -34,8 +37,9 @@ export async function GET(request: NextRequest) {
     },
   });
 
-  return NextResponse.json({ projects }, { status: 200 });
-}
+  return NextResponse.json(projects, { status: 200 });
+};
+
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -57,4 +61,9 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json({ newProject }, { status: 201 });
-}
+};
+
+
+
+
+

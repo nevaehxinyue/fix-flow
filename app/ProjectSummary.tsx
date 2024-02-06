@@ -13,8 +13,6 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Skeleton from "react-loading-skeleton";
 import { Link } from "./components";
-
-
 import ProjectButtons from "./projects/_components/ProjectButtons";
 import ProjectStatusBadge from "./projects/_components/ProjectStatusBadge";
 
@@ -38,19 +36,19 @@ interface ProjectType {
   issues: Issue[];
 }
 
-interface ProjectApiResponse {
-  projects: ProjectType[];
-}
+// interface ProjectApiResponse {
+//   projects: ProjectType[];
+// }
 
 const ProjectSummary = () => {
   const {
     data: projects,
     error,
     isLoading,
-  } = useQuery<ProjectApiResponse>({
+  } = useQuery<ProjectType[]>({
     queryKey: ["projects"],
     queryFn: () =>
-      axios.get<ProjectApiResponse>("/api/projects").then((res) => res.data),
+      axios.get<ProjectType[]>("/api/projects").then((res) => res.data),
     staleTime: 60 * 1000, //60s
     retry: 3,
     
@@ -68,7 +66,7 @@ const ProjectSummary = () => {
 
   //   console.log("projects type:", typeof projects);
   //   console.log("Is projects an array:", Array.isArray(projects));
-  //   console.log({ projects });
+    // console.log(projects);
 
   return (
     <Card>
@@ -91,7 +89,7 @@ const ProjectSummary = () => {
         </Table.Header>
 
         <Table.Body>
-          {projects?.projects.map((project) => (
+          {projects?.map((project) => (
             <Table.Row key={project.id}>
               <Table.Cell>
                 <Link href={`/projects/${project.id}`}>{project.title}</Link>

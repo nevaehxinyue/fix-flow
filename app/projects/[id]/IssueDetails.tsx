@@ -3,7 +3,7 @@ import prisma from "@/prisma/client";
 import ReactMarkdown from "react-markdown";
 import { IssueStatusBadge } from "../../components";
 import IssueSeverityBadge from "../../components/IssueSeverityBadge";
-import { useQuery } from "@tanstack/react-query";
+
 
 const IssueDetails = async ({
   searchParams,

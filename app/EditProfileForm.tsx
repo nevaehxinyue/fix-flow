@@ -18,11 +18,20 @@ import { useSession } from "next-auth/react";
 import { useMenuDialogStore } from "./store";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { User } from "@prisma/client";
+
+
 
 type EditProfileFormData = z.infer<typeof userProfileUpdateSchema>;
 
+
 const EditProfileForm = () => {
+
+  const [error, setError] = useState("");
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   const { setIsDialogOpen, setIsMenuOpen } = useMenuDialogStore();
 
   const handleDialogClose = () => {
@@ -39,7 +48,13 @@ const EditProfileForm = () => {
   const { data: session } = useSession();
   if (!session) return null;
 
-  const [error, setError] = useState("");
+  const { data: user } = useQuery<User>({
+        queryKey: ['user'],
+        queryFn: () => axios.get<User>(`/api/users/${session.user.id}`).then((res) => res.data),
+        staleTime: 7 * 24 * 60 * 60 * 1000, //7 days
+        retry: 3,
+  })
+
 
   const {
     register,
@@ -50,15 +65,37 @@ const EditProfileForm = () => {
   });
 
   const onSubmit = async (data: EditProfileFormData) => {
-    try {
-      // Check if the passwords match
-      if (data.password !== data.confirmPassword) {
-        setError("Passwords do not match.");
+    const updateData: { name?: string; password?: string, confirmPassword?: string} = {};
+    
+    if(data.name) {
+        updateData.name = data.name;
+    }
+    if(data.password && data.confirmPassword){
+          // Check if the passwords match
+        if (data.password !== data.confirmPassword) {
+            setError("Passwords do not match.");
+            return null;
+          }else if (data.password.length < 6 || data.confirmPassword.length < 6) {
+                setError("Minimum 6 characters are required.");
+                return null;
+          }
+          else{
+            updateData.password = data.password;
+            updateData.confirmPassword = data.confirmPassword
+        }
+
+    }  else if (data.password || data.confirmPassword) {
+        setError('Please fill both password fields to update your password.');
         return null;
-      }
-      const response = await axios.patch("api/users/" + session.user.id, data);
+    }
+ 
+    try {
+      
+      const response = await axios.patch(`/api/users/${session.user.id}`, updateData);
       if (response.data.success) {
         toast.success("Your changes have been saved!");
+        // Make sure the page that the user is currently on reflects the user profile changes
+        queryClient.invalidateQueries({ queryKey: ["projects"]});
       }
     } catch (error) {
       setError("Profile update failed.Please try again.");
@@ -74,7 +111,7 @@ const EditProfileForm = () => {
               Name
             </Text>
             <TextField.Input
-              placeholder={session?.user.name}
+              placeholder={user?.name || undefined}
               {...register("name")}
             />
             <ErrorMessage>{errors.name?.message}</ErrorMessage>

@@ -31,7 +31,7 @@ export default function RootLayout({
         <AuthProvider>
         <Theme accentColor="bronze">
           <NavBar />
-          <main className="p-5">
+          <main className="p-5" >
             <Container>{children}</Container>
           </main>
           {/* <ThemePanel /> */}
