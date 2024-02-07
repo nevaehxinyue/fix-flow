@@ -9,7 +9,7 @@ import { User } from '@prisma/client';
 import MemberDeleteButton from './MemberDeleteButton';
 
 
-const ProjectMemberTable = ( { members }: { members: User[]}) => {
+const ProjectMemberTable = ( { members, creator, currentPage }: { members: User[], creator: User, currentPage: number}) => {
    const columns = [
     {label: 'Name', classNames: 'text-gray-400 font-bold'},
     {label: 'Email', classNames: 'text-gray-400 font-bold'},
@@ -17,6 +17,10 @@ const ProjectMemberTable = ( { members }: { members: User[]}) => {
    ]
    
    if (!members) return null
+
+   //Check if we are on teh first page so as to include the creator or not
+  let displayedMembers = currentPage === 1 ? [creator, ...members] : [...members]
+
 
   return (
     
@@ -31,7 +35,7 @@ const ProjectMemberTable = ( { members }: { members: User[]}) => {
             </Table.Header>
             <Table.Body>
                 
-                {members.map((member) => 
+                {displayedMembers.map((member) => 
                 <Table.Row key={member.id}>
                 
                 <Table.Cell>

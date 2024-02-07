@@ -13,38 +13,34 @@ interface CommentType {
   createdBy: User;
 }
 
-interface CommentApiResponse  {
 
-    comments: CommentType[]
-
-  
-}
 const CommentDetails = ({ issueId }: { issueId: string }) => {
   const {
-    data: commentsResponse,
+    data: comments,
     error,
     isLoading,
-  } = useQuery<CommentApiResponse>({
-    queryKey: ["comments"],
+  } = useQuery<CommentType[]>({
+    queryKey: ["comments", issueId],
     queryFn: () =>
       axios
-        .get<CommentApiResponse>(`/api/comments/issue/${issueId}`)
+        .get<CommentType[]>(`/api/comments/issue/${issueId}`)
         .then((res) => res.data),
-    staleTime: 60 * 1000,
-    retry: 3,
-   
+    staleTime: 60 * 1000,//60s
+    retry: 3,  
   });
+
   
   if (error) return null;
   if (isLoading) return <Skeleton height="3rem" />;
 
   return (
     <>
-      {commentsResponse?.comments?.map((comment) => (
+      {comments?.map((comment) => (
         <Box key={comment.id} p="2">
           <Flex direction="column">
             <Flex align="center" gap="2">
               <Avatar
+                size="2"
                 src={comment.createdBy.image!}
                 fallback="?"
                 radius="full"
@@ -58,7 +54,7 @@ const CommentDetails = ({ issueId }: { issueId: string }) => {
                 )}
               </Text>
             </Flex>
-            <Text ml="8" className="text-lg">{comment.content}</Text>
+            <Text ml="8" size="2" >{comment.content}</Text>
           </Flex>
         </Box>
       ))}

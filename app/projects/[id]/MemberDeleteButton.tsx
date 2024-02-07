@@ -35,7 +35,7 @@ const MemberDeleteButton = ({memberId}: {memberId: string}) => {
       <>
         <AlertDialog.Root>
           <AlertDialog.Trigger>
-            <Button color="tomato" variant='soft' disabled={isDeleting}>
+            <Button size="1" color="tomato" variant='soft' disabled={isDeleting}>
               Remove {isDeleting && <Spinner />}
             </Button>
           </AlertDialog.Trigger>

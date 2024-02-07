@@ -1,6 +1,7 @@
 "use client";
 import { Issue, ProjectStatus, User } from "@prisma/client";
 import {
+  Box,
   Button,
   Card,
   Flex,
@@ -69,7 +70,7 @@ const ProjectSummary = () => {
     // console.log(projects);
 
   return (
-    <Card>
+    <Box className=" shadow-lg border-0">
       <Flex justify="between" className="border-b ">
         <Heading size="4" mb="5">
           Projects
@@ -112,7 +113,7 @@ const ProjectSummary = () => {
           ))}
         </Table.Body>
       </Table.Root>
-    </Card>
+    </Box>
   );
 };
 

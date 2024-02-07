@@ -13,7 +13,7 @@ const LatestIssues = async () => {
   });
 
   return (
-    <Card>
+    <>
       <Heading size="4" mb="5">
         Latest Issues
       </Heading>
@@ -29,9 +29,13 @@ const LatestIssues = async () => {
                   </Flex>
 
                   {issue.assingedToUser && (
-                    <Flex align='center' gap='2'>
+                    <Flex align="center" gap="2">
                       <Avatar
-                        src={issue.assingedToUser.image ?  issue.assingedToUser.image : '/user_avatar2.svg'}
+                        src={
+                          issue.assingedToUser.image
+                            ? issue.assingedToUser.image
+                            : "/user_avatar2.svg"
+                        }
                         fallback="?"
                         size="2"
                         radius="full"
@@ -45,7 +49,7 @@ const LatestIssues = async () => {
           ))}
         </Table.Body>
       </Table.Root>
-    </Card>
+    </>
   );
 };
 

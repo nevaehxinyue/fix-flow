@@ -1,20 +1,25 @@
-import { Cross2Icon } from "@radix-ui/react-icons"
+'use client'
+import { Cross2Icon, DotsVerticalIcon } from "@radix-ui/react-icons"
 import { Button, Dialog, Flex } from "@radix-ui/themes"
-import CreateIssueForm from "@/app/projects/_components/CreateIssueForm"
+import IssueForm from "@/app/projects/_components/IssueForm"
+import { Issue } from "@prisma/client"
 
 
 
-const NewIssueButton = () => {
+const IssueButtons = ({issue}: { issue?: Issue}) => {
     return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button >New issue</Button>
+        { issue ?  <button>
+          <DotsVerticalIcon />
+          </button> : <Button>New issue</Button>}
+        
       </Dialog.Trigger>
      
       <Dialog.Content className="max-w-md">
         <Flex justify="between" align="center">
           <Dialog.Title>
-            New issue
+            { issue ? 'Edit issue':'New issue' }
           </Dialog.Title>
           <Dialog.Close>
             <button
@@ -24,11 +29,11 @@ const NewIssueButton = () => {
             </button>
           </Dialog.Close>
         </Flex>
-        <CreateIssueForm />
+        <IssueForm issue={issue} />
       </Dialog.Content>
     </Dialog.Root>
     )
 
 }
 
-export default NewIssueButton
+export default IssueButtons

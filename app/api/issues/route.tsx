@@ -14,11 +14,16 @@ export async function POST(request: NextRequest) {
   const validation = issueSchema.safeParse(body);
   if (!validation.success)
     return NextResponse.json(validation.error.format(), { status: 400 });
+
+    const { title, description, status, severity, createdByUserId, projectId} = body;
   const newIssue = await prisma.issue.create({
     data: {
-      title: body.title,
-      description: body.description,
-      status: body.status,
+      title,
+      description,
+      status,
+      severity,
+      createdByUserId,
+      projectId: parseInt(projectId)
     },
   });
   return NextResponse.json(newIssue, { status: 201 });

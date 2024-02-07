@@ -15,8 +15,9 @@ interface Props {
   currentPage: number;
 }
 
-const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
-  const pageCount = Math.ceil(itemCount / pageSize);
+const MemberPagination
+ = ({ itemCount, pageSize, currentPage }: Props) => {
+  const pageCount = currentPage === 1 ? Math.ceil(itemCount / pageSize) : (Math.ceil(itemCount / pageSize) + 1)
   if (pageCount <= 1) return null;
 
   const router = useRouter();
@@ -24,21 +25,12 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
 
   const changePage = (page: number) => {
     const params = new URLSearchParams(searchParams);
-    params.set("page", page.toString());
+    params.set("memberPage", page.toString());
     router.push("?" + params.toString());
   };
 
   return (
     <Flex align="center" gap="2">
-      
-      <Button
-        color="gray"
-        variant="soft"
-        disabled={currentPage === 1}
-        onClick={() => changePage(1)}
-      >
-        <DoubleArrowLeftIcon />
-      </Button>
       <Button color="gray" variant="soft" disabled={currentPage === 1} onClick={() => changePage(currentPage - 1)}>
         <ChevronLeftIcon />
       </Button>
@@ -48,11 +40,9 @@ const Pagination = ({ itemCount, pageSize, currentPage }: Props) => {
       <Button color="gray" variant="soft" disabled={currentPage === pageCount} onClick={() => changePage(currentPage + 1)}>
         <ChevronRightIcon />
       </Button>
-      <Button color="gray" variant="soft" disabled={currentPage === pageCount} onClick={() => changePage(pageCount)}>
-        <DoubleArrowRightIcon />
-      </Button>
     </Flex>
   );
 };
 
-export default Pagination;
+export default MemberPagination
+;

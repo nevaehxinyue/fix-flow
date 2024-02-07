@@ -32,12 +32,12 @@ const IssueDetails = async ({
 
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Creator</Text>
-          <Text>{issue?.createdBy.name}</Text>
+          <Text size="2">{issue?.createdBy.name}</Text>
         </Flex>
 
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Assignee</Text>
-          <Text>{issue?.assingedToUser?.name}</Text>
+          <Text size="2">{issue?.assingedToUser?.name}</Text>
         </Flex>
 
         <Flex direction="column" gap="3" align="start">
@@ -49,17 +49,15 @@ const IssueDetails = async ({
           <Text className="text-gray-400 font-bold">Severity</Text>
           <IssueSeverityBadge severity={issue!.severity} />
         </Flex>
-        <Flex direction="column" gap="3">
-          <Button className="w-1/2">Edit Issue</Button>
-          <Button className="w-1/2" color="red" variant="soft">
-            Delete Issue
-          </Button>
+
+        <Flex direction="column" gap="3" align="start">
+          <Text className="text-gray-400 font-bold">Created at</Text>
+          <Text size="2"> {issue!.createdAt.toDateString()}</Text>
         </Flex>
 
         <Flex className="col-span-3 border-t-2">
           <Flex direction="column" gap="3" mt="4" mb="4">
             <Text className="text-gray-400 font-bold">Description</Text>
-
             <ReactMarkdown>{issue?.description}</ReactMarkdown>
           </Flex>
         </Flex>

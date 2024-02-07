@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { commentSchema } from "../../validationSchemas";
 import { z } from "zod";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ErrorMessage } from "../../components";
 import { useSession } from "next-auth/react";
 
@@ -91,7 +91,6 @@ const IssueCommentForm = ({ issueId }: { issueId: string }) => {
           </Button>
   
         </Flex>
-        
         <ErrorMessage>{errors.content?.message}</ErrorMessage>
       </form>
     </div>

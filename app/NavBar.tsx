@@ -22,9 +22,9 @@ const NavBar = () => {
 
 
   return (
-    <nav className="border-b mb-5 px-5 py-4 ">
-      <Container>
-        <Flex justify="between" align="center">
+    <nav className="border-b mb-5 px-5 py-4 bg-neutral-100">
+  
+        <Flex justify="between" align="center" className="ml-24 mr-24 ">
           <Flex gap="3" align="center">
             <Link href="/">
             <SiGhost size="22" />
@@ -33,7 +33,7 @@ const NavBar = () => {
           </Flex>
           <AuthStatus />
         </Flex>
-      </Container>
+     
     </nav>
   );
 };
@@ -47,14 +47,14 @@ const NavLinks = () => {
   const pathname = usePathname();
 
   return (
-    <ul className="flex space-x-6">
+    <ul className="flex space-x-5">
       {links.map((link) => (
         <li key={link.label}>
           <Link
             href={link.href}
             className={classNames({
               "nav-link": true,
-              "!text-zinc-900": link.href === pathname,
+              "!text-zinc-800": link.href === pathname,
             })}
           >
             {link.label}

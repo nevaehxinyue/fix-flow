@@ -1,6 +1,5 @@
 import { Box, Button, Flex, Grid } from "@radix-ui/themes";
-import IssueChart from "./IssueChart";
-import IssuesSummary from "./IssuesSummary";
+import IssueStatusChart from "./IssueStatusChart";
 import LatestIssues from "./LatestIssues";
 import prisma from "@/prisma/client";
 
@@ -9,24 +8,69 @@ import ChangeUserNameMessage from "./ChangeUserNameMessage";
 import { getServerSession } from "next-auth";
 import authOptions from "./auth/authOptions";
 import ProjectSummary from "./ProjectSummary";
+import IssueSeveritySummary from "./IssueSeveritySummary";
+import IssueStatusSummary from "./IssueStatusSummary";
+
 
 export default async function Home() {
-  const openIssueCount = await prisma.issue.count({
-    where: { status: "OPEN" },
-  });
-  const inProgressIssueCount = await prisma.issue.count({
-    where: { status: "IN_PROGRESS" },
-  });
-  const closedIssueCount = await prisma.issue.count({
-    where: { status: "CLOSED" },
-  });
   const session = await getServerSession(authOptions);
   const user = await prisma.user.findUnique({
     where: { id: session?.user.id },
   });
 
+  const openIssueCount = await prisma.issue.count({
+    where: { status: 'OPEN',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]}
+  });
+
+  const inProgressIssueCount = await prisma.issue.count({
+    where: { status: 'IN_PROGRESS',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]}
+  });
+
+  const closedIssueCount = await prisma.issue.count({
+    where: { status:'CLOSED',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]}
+  });
+
+  const minorIssueCount = await prisma.issue.count({
+    where: { severity:'MINOR',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]},
+  });
+
+  const mediumIssueCount = await prisma.issue.count({
+    where: { severity:"MEDIUM",
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]},
+  });
+
+  const majorIssueCount = await prisma.issue.count({
+    where: { severity:'MAJOR',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]},
+  });
+
+  const criticalIssueCount = await prisma.issue.count({
+    where: { severity:'CRITICAL',
+    OR: [
+      {createdByUserId: session?.user.id}, {assignedToUserId: session?.user.id}
+    ]},
+  });
+
+  
+
   return (
-    <Grid columns={{ initial: "1", md: "2" }} gap="5">
+    <Grid columns={{ initial: "1", md: "2fr 1fr" }} gap="9">
       {!user?.name && user && (
         <div className="col-span-2">
           <ChangeUserNameMessage />
@@ -35,20 +79,35 @@ export default async function Home() {
       <Box className="col-span-2">
         <ProjectSummary />
       </Box>
+  
+      <Flex direction="column" gap="5" mb="5">
+        <Flex className="gap-x-24">
+        <IssueStatusSummary
+          open={openIssueCount}
+          inProgress={inProgressIssueCount}
+          closed={closedIssueCount}
+        />
+        <IssueSeveritySummary 
+          minor={minorIssueCount}
+          medium={mediumIssueCount}
+          major={majorIssueCount}
+          critical={criticalIssueCount}/>
+          </Flex>
 
-      <Flex direction="column" gap="5">
-        <IssuesSummary
+        <IssueStatusChart
           open={openIssueCount}
           inProgress={inProgressIssueCount}
           closed={closedIssueCount}
+          minor={minorIssueCount}
+         medium={mediumIssueCount}
+         major={majorIssueCount}
+         critical={criticalIssueCount}
         />
-        <IssueChart
-          open={openIssueCount}
-          inProgress={inProgressIssueCount}
-          closed={closedIssueCount}
-        />
-      </Flex>
+    </Flex>
+ 
+    <Box className="shadow-lg border-0">
       <LatestIssues />
+      </Box>
     </Grid>
   );
 }

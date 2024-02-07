@@ -4,8 +4,9 @@ export const issueSchema = z.object({
   title: z.string().min(1, "Title is required.").max(255),
   description: z.string().min(1, "Description is required.").max(65535),
   status: z.enum(["OPEN", "IN_PROGRESS", "CLOSED"]),
-  severity: z.enum([" CRITICAL", "MAJOR", "MEDIUM", "MINOR"]),
-  projectId: z.number()
+  createdByUserId: z.string().min(1, "User id is required.").max(255),
+  severity: z.enum(["CRITICAL", "MAJOR", "MEDIUM", "MINOR"]),
+  projectId: z.string()
 });
 
 export const patchIssueSchema = z.object({
@@ -16,6 +17,7 @@ export const patchIssueSchema = z.object({
     .max(65535)
     .optional(),
   status: z.enum(["OPEN", "IN_PROGRESS", "CLOSED"]).optional(),
+  severity: z.enum(["CRITICAL", "MAJOR", "MEDIUM", "MINOR"]).optional(),
   assignedToUserId: z
     .string()
     .min(1, "AssignedToUserId is required.")

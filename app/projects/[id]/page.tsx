@@ -1,7 +1,7 @@
 import { Box, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { cache } from "react";
 import ProjectMemberTable from "./ProjectMemberTable";
-import ProjectIssuesTable from "./ProjectIssuesTable";
+import ProjectIssuesTable, { IssueQuery, columnNames } from "./ProjectIssuesTable";
 import IssueDetails from "./IssueDetails";
 import prisma from "@/prisma/client";
 import AddMemberButton from "./AddMemberButton";
@@ -9,9 +9,10 @@ import CommentDetails from "./CommentDetails";
 import { Skeleton } from "@/app/components";
 import IssueCommentForm from "./IssueCommentForm";
 import ProjectButtons from "../_components/ProjectButtons";
-import { ProjecOftUsers, User } from "@prisma/client";
-import { all } from "axios";
+import { Issue, ProjecOftUsers, User } from "@prisma/client";
 import Pagination from "@/app/components/Pagination";
+import MemberPagination from "@/app/components/MemberPagination";
+import IssueButtons from "../_components/IssueButtons";
 
 // const IssueCommentForm = dynamic(() => import('../IssueCommentForm'), {
 //   ssr:false,
@@ -41,11 +42,13 @@ const fetchProject = cache((projectId: number) => {
   });
 });
 
+
+
 const ProjectDetialPage = async ({
   searchParams,
   params,
 }: {
-  searchParams: { issueId: string; page: string };
+  searchParams: IssueQuery;
   params: { id: string };
 }) => {
   const projectId = parseInt(params.id);
@@ -55,19 +58,48 @@ const ProjectDetialPage = async ({
   const assignedUsers = project?.assignedToUsers
     ? project?.assignedToUsers.map((assignment) => assignment.user)
     : [];
-  const members = [creator, ...assignedUsers];
-  const membersIds = members.map((member) => member.id);
+
+  const allMembers = [creator, ...assignedUsers];
+  const membersIds = allMembers.map((member) => member.id);
   const allUsers = await prisma.user.findMany();
-  const projectAssginees = allUsers.filter(
+  const projectAvailableAssginees = allUsers.filter(
     (user) => !membersIds.includes(user.id)
   );
+
+  //Fetch members on each page
+  const memberPageSize = 3;
+  const memberPage = parseInt(searchParams.memberPage) || 1;
+  const memberCount =
+    (await prisma.projecOftUsers.count({
+      where: { projectId: projectId },
+    })) + (memberPage === 1 ? 1 : 0);
+
+  const memberSkip =
+    memberPage === 1 ? 0 : (memberPage - 1) * memberPageSize - 1;
+  const memberTake = memberPage === 1 ? memberPageSize - 1 : memberPageSize;
+
+  const membersOnEachPage = (
+    await prisma.projecOftUsers.findMany({
+      where: {
+        projectId: projectId,
+      },
+      include: {
+        user: true,
+      },
+      skip: memberSkip,
+      take: memberTake,
+    })
+  ).map((object) => object.user);
 
   //Fetch issues on each page
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 3;
-
+  //Sort issues by orderBy
+  const orderBy = searchParams.orderBy ? { [searchParams.orderBy]:'asc'}: undefined;
+  // columnNames.includes(searchParams.orderBy) ? { [searchParams.orderBy]:'desc'} : undefined;
   const issuesOnEachPage = await prisma.issue.findMany({
     where: { projectId: projectId },
+    orderBy: orderBy,
     skip: (page - 1) * pageSize,
     take: pageSize,
   });
@@ -77,7 +109,7 @@ const ProjectDetialPage = async ({
   });
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" >
       <Flex direction="column" gap="5">
         <Heading>Project</Heading>
         <Flex justify="between">
@@ -90,18 +122,43 @@ const ProjectDetialPage = async ({
 
       <Text mb="5">{project?.description}</Text>
 
-      <Grid columns={{ initial: "1", md: "3" }} gap="8">
-        <Card>
-          <Flex justify="between" mb="5">
+      <Grid columns={{ initial: "1", md: "1.5fr 2fr 2fr" }} gap="8">
+       
+        <Card className="col-span-1">
+          <Flex justify="between" mb="4" className="relative">
             <Heading size="4">Team</Heading>
-            <AddMemberButton projectAssginees={projectAssginees} />
+            <AddMemberButton projectAssginees={projectAvailableAssginees} />
           </Flex>
-          <ProjectMemberTable members={members} />
+
+          <ProjectMemberTable
+            members={membersOnEachPage}
+            creator={creator}
+            currentPage={memberPage}
+          />
+
+          <Flex
+            mt="4"
+            justify="center"
+            className="relative lg:absolute inset-x-0 pb-2 bottom-0 "
+          >
+            <MemberPagination
+              itemCount={memberCount}
+              pageSize={pageSize}
+              currentPage={memberPage}
+            />
+          </Flex>
         </Card>
 
-        <Card className="p-0 col-span-2" >
-          <ProjectIssuesTable issuesOnEachPage={issuesOnEachPage} />
-          <Flex  justify="center">
+        <Card className=" col-span-2 space-y-2 relative">
+          <Flex direction="column" className="lg:mb-10">
+            <Flex justify="between" mb="4">
+              <Heading size="4">Issues</Heading>
+              <IssueButtons />
+            </Flex>
+     
+            <ProjectIssuesTable searchParams={searchParams} issuesOnEachPage={issuesOnEachPage} />
+          </Flex>
+          <Flex mt="3" justify="center" className="relative lg:absolute inset-x-0 pb-2 bottom-0 mt-2 ">
             <Pagination
               itemCount={issuesCount}
               pageSize={pageSize}
@@ -109,15 +166,19 @@ const ProjectDetialPage = async ({
             />
           </Flex>
         </Card>
+        </Grid>
+     
 
-        <Box className="col-span-2">
-          <Heading className="border-b pb-5" mb="5" size="4">
+        <Box >
+          <Heading className="border-b pb-5" mb="5" mt="8" size="4">
             Selected Issue Info
           </Heading>
 
           {searchParams.issueId && (
-            <Grid columns={{ initial: "1", md: "2" }} gap="5">
+            <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
+              <div className="col-span-2">
               <IssueDetails searchParams={searchParams} />
+              </div>
               <Card className="space-y-5">
                 <Heading className="border-b pb-4" size="4">
                   Comments
@@ -129,7 +190,7 @@ const ProjectDetialPage = async ({
             </Grid>
           )}
         </Box>
-      </Grid>
+     
     </Flex>
   );
 };

@@ -18,8 +18,6 @@ export interface IssueQuery {
   }
 
 const IssueTable = ({ searchParams, issues }: Props) => {
- 
-  
 
   return (
     <Table.Root variant="surface">
@@ -48,7 +46,8 @@ const IssueTable = ({ searchParams, issues }: Props) => {
       {issues.map((issue) => (
         <Table.Row key={issue.id}>
           <Table.Cell>
-            <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
+
+            <Link href={`/projects/${issue.projectId}?issueId=${issue.id}`}>{issue.title}</Link>
             <div className="block md:hidden">
               <IssueStatusBadge status={issue.status} />
             </div>
