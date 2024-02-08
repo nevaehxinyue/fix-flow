@@ -21,7 +21,7 @@ model Issue {
   createdByUserId  String    @db.VarChar(255)
   createdBy        User      @relation("CreatedBy", fields: [createdByUserId], references: [id], onDelete: Cascade)
   assignedToUserId String?   @db.VarChar(255)
-  assingedToUser   User?     @relation("AssignedToUser", fields: [assignedToUserId], references: [id])
+  assignedToUser   User?     @relation("AssignedToUser", fields: [assignedToUserId], references: [id])
   projectId        Int
   project          Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
   comments         Comment[]
@@ -106,24 +106,24 @@ model Session {
 }
 
 model User {
-  id                String           @id @default(cuid())
-  name              String?
-  email             String?          @unique
-  emailVerified     DateTime?
-  image             String?
-  password          String?
-  active            Boolean?
-  verifyToken       String?  @unique
-  verifyTokenExpiry DateTime?
-  forgotPasswordToken       String?  @unique
+  id                        String           @id @default(cuid())
+  name                      String?
+  email                     String?          @unique
+  emailVerified             DateTime?
+  image                     String?
+  password                  String?
+  active                    Boolean?
+  verifyToken               String?          @unique
+  verifyTokenExpiry         DateTime?
+  forgotPasswordToken       String?          @unique
   forgotPasswordTokenExpiry DateTime?
-  accounts          Account[]
-  sessions          Session[]
-  createdProjects   Project[]
-  assignedProjects  ProjecOftUsers[]
-  createdIssue      Issue[]          @relation("CreatedBy")
-  assignedIssues    Issue[]          @relation("AssignedToUser")
-  comments          Comment[]
+  accounts                  Account[]
+  sessions                  Session[]
+  createdProjects           Project[]
+  assignedProjects          ProjecOftUsers[]
+  createdIssue              Issue[]          @relation("CreatedBy")
+  assignedIssues            Issue[]          @relation("AssignedToUser")
+  comments                  Comment[]
 }
 
 model VerificationToken {

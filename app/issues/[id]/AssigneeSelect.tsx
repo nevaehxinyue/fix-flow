@@ -31,20 +31,18 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
         assignedToUserId: userId === "unassigned" ? null : userId,
         
       })
-      .then(() => {
-        if (userId === "unassigned") {
-          toast.success("Successfully unassigned!");
-        } else {
-          toast.success(`Successfully assigned to ${userToAssign?.name}!`);
-        }
-      })
+      // .then(() => {
+      //   if (userId === "unassigned") {
+      //     toast.success("Successfully unassigned!");
+      //   } else {
+      //     toast.success(`Successfully assigned to ${userToAssign?.name}!`);
+      //   }
+      // })
       .catch(() => {
         toast.error("Change could not be saved.");
       });
       router.refresh()
   };
-
-  console.log(issue.assignedToUserId)
 
   return (
     <>

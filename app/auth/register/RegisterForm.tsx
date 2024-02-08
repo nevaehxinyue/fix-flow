@@ -12,13 +12,12 @@ import {
   TextField,
   TextFieldInput,
   Flex,
-  Button,
   Text,
   Callout,
 } from "@radix-ui/themes";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
-import { Link } from "@/app/components";
+import { ErrorMessage, Link } from "@/app/components";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -52,10 +51,12 @@ const RegisterForm = () => {
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
         toast.error(`${error.response.data.error}`);
-  
-      } else {toast.error("An unexpected error occurred.");}
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
+  console.log(errors)
 
   return (
     <>
@@ -79,7 +80,9 @@ const RegisterForm = () => {
               </TextField.Slot>
               <TextFieldInput required size="3" {...register("name")} />
             </TextField.Root>
+            <ErrorMessage>{errors.name?.message}</ErrorMessage>
           </div>
+          
 
           <div className="space-y-1">
             <label>Email</label>
@@ -95,6 +98,7 @@ const RegisterForm = () => {
                 {...register("email")}
               />
             </TextField.Root>
+            <ErrorMessage>{errors.email?.message}</ErrorMessage>
           </div>
 
           <div className="space-y-1">
@@ -110,30 +114,26 @@ const RegisterForm = () => {
                 size="3"
                 {...register("password")}
               />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
+              <button type="button" onClick={togglePasswordVisibility}>
                 {isPasswordVisible ? (
                   <TextField.Slot>
-                    <FaRegEyeSlash className="cursor-pointer"/>
+                    <FaRegEyeSlash className="cursor-pointer" />
                   </TextField.Slot>
                 ) : (
                   <TextField.Slot>
-                    <FaRegEye  className="cursor-pointer"/>
+                    <FaRegEye className="cursor-pointer" />
                   </TextField.Slot>
                 )}
               </button>
             </TextField.Root>
+            <ErrorMessage>{errors.password?.message}</ErrorMessage>
           </div>
-          <Button
-            className="w-full "
-            size="3"
+          <button
+            className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
             type="submit"
-            disabled={isSubmitting || !isValid}
           >
             Submit
-          </Button>
+          </button>
           <Toaster />
         </form>
         <Text>

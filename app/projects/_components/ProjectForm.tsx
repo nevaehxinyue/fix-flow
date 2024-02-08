@@ -1,5 +1,4 @@
 "use client";
-import { User } from "@prisma/client";
 import {
   Button,
   Flex,
@@ -10,7 +9,6 @@ import {
   RadioGroup,
   Dialog,
 } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { projectSchema } from "../../validationSchemas";
@@ -167,8 +165,7 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
                 Cancel
               </Button>
             </Dialog.Close>
-
-            <Button type="submit">Submit</Button>
+            <button className="theme-button" type="submit">Submit</button>
             <Toaster />
           </Flex>
         </Flex>

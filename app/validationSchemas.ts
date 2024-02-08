@@ -28,8 +28,8 @@ export const patchIssueSchema = z.object({
 
 export const commentSchema = z.object({
   content: z.string().min(1, "Comment is required.").max(65535),
-  createdByUserId: z.string().min(1, "Invalid User.").max(255),
-  belongedToIssueId: z.number().min(1, "Issue ID is required."),
+  // createdByUserId: z.string().min(1, "Invalid User.").max(255),
+  // belongedToIssueId: z.string().min(1, "Issue ID is required."),
 });
 
 export const projectSchema = z.object({

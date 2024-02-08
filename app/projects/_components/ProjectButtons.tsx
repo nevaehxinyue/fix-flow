@@ -1,9 +1,10 @@
 "use client";
-import { Button, Flex, Dialog } from "@radix-ui/themes";
+import { Flex, Dialog } from "@radix-ui/themes";
 
 import { FetchedProjectType } from "../[id]/page";
 import ProjectForm from "./ProjectForm";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { TbPencilBolt } from "react-icons/tb";
 
 
 const ProjectButtons = ({
@@ -14,7 +15,8 @@ const ProjectButtons = ({
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>{project ? "Edit Project" : "New Project"}</Button>
+        {project ? <button className="text-white hover:scale-125"><TbPencilBolt /></button> : <button className="theme-button mb-3">New project</button>}
+       
       </Dialog.Trigger>
      
       <Dialog.Content className="max-w-md">

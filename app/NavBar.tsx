@@ -1,53 +1,55 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import { SiGhost } from "react-icons/si";
 import classNames from "classnames";
 import {
   Avatar,
-  Box,
-  Button,
-  Container,
   DropdownMenu,
   Flex,
+  Heading,
   Text,
 } from "@radix-ui/themes";
 import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "@/app/components";
 import EditProfileButton from "./EditProfileButton";
 import { useMenuDialogStore } from "./store";
+import { LuLayoutDashboard } from "react-icons/lu";
+import { PiBugDroidBold } from "react-icons/pi";
 
 const NavBar = () => {
 
 
   return (
-    <nav className="border-b mb-5 px-5 py-4 bg-neutral-100">
-  
-        <Flex justify="between" align="center" className="ml-24 mr-24 ">
-          <Flex gap="3" align="center">
+    <nav className="w-60 relative flex flex-col flex-shrink-0 h-auto border-b px-5 py-4 bg-white gap-8 shadow-lg border-0">
+        {/* <Flex justify="between" align="center" className="ml-24 mr-24 "> */}
+          {/* <Flex gap="3" align="center"> */}
             <Link href="/">
-            <SiGhost size="22" />
+              <Flex gap="3" align="center">
+            <SiGhost size="38" />
+            <Heading>Fix Flow</Heading>
+            </Flex>
             </Link>
             <NavLinks />
-          </Flex>
+          {/* </Flex> */}
           <AuthStatus />
-        </Flex>
-     
+        {/* </Flex>   */}
     </nav>
   );
 };
 
 const NavLinks = () => {
   const links = [
-    { label: "Dashboard", href: "/" },
-    { label: "Issues", href: "/issues/list" },
+    { label: "Dashboard", href: "/" , icon: <LuLayoutDashboard />},
+    { label: "Issues", href: "/issues/list", icon: <PiBugDroidBold /> },
   ];
 
   const pathname = usePathname();
 
   return (
     <ul className="flex space-x-5">
+      <Flex direction="column" gap="5">
       {links.map((link) => (
         <li key={link.label}>
           <Link
@@ -57,10 +59,15 @@ const NavLinks = () => {
               "!text-zinc-800": link.href === pathname,
             })}
           >
-            {link.label}
+            <Heading size="4">
+          <Flex align="center" gap="3">
+           {link.icon} {link.label}
+           </Flex>
+            </Heading>
           </Link>
         </li>
       ))}
+      </Flex>
     </ul>
   );
 };
@@ -71,17 +78,9 @@ const AuthStatus = () => {
   const { isMenuOpen, setIsMenuOpen } = useMenuDialogStore();  
 
   if (status === "loading") return <Skeleton width="3rem"/>;
-
-  if (status === "unauthenticated")
-    return (
-      <Link href="/auth/signin" className="nav-link">
-        Log in
-      </Link>
-    );
-   
-
+  
   return (
-    <Box>
+    <Flex gap="2">
       {status === "authenticated" && (
         <DropdownMenu.Root  open={isMenuOpen} onOpenChange={setIsMenuOpen}>
           <DropdownMenu.Trigger onClick={()=> setIsMenuOpen(true)}>
@@ -112,7 +111,8 @@ const AuthStatus = () => {
           </DropdownMenu.Content>
         </DropdownMenu.Root>
       )}
-    </Box>
+      <Text size="3" className="font-semibold">{session?.user!.name}</Text>
+    </Flex>
   );
 };
 

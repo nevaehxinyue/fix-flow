@@ -1,8 +1,11 @@
 'use client'
 import { Cross2Icon, DotsVerticalIcon } from "@radix-ui/react-icons"
-import { Button, Dialog, Flex } from "@radix-ui/themes"
+import { Dialog, Flex } from "@radix-ui/themes"
 import IssueForm from "@/app/projects/_components/IssueForm"
 import { Issue } from "@prisma/client"
+import { TbPencilBolt } from "react-icons/tb";
+import { RiPencilFill } from "react-icons/ri";
+import { HiOutlinePencil } from "react-icons/hi";
 
 
 
@@ -10,9 +13,11 @@ const IssueButtons = ({issue}: { issue?: Issue}) => {
     return (
     <Dialog.Root>
       <Dialog.Trigger>
-        { issue ?  <button>
-          <DotsVerticalIcon />
-          </button> : <Button>New issue</Button>}
+        { issue ?  <button className=" hover:text-blue-500 hover:scale-125">
+          <TbPencilBolt />
+          {/* <RiPencilFill /> */}
+      
+          </button> : <button className="theme-button">New issue</button>}
         
       </Dialog.Trigger>
      

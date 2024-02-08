@@ -1,6 +1,12 @@
 "use client";
-import { Button, Checkbox, Dialog, Flex, Separator, Text } from "@radix-ui/themes";
-import { useQuery } from "@tanstack/react-query";
+import {
+  Button,
+  Checkbox,
+  Dialog,
+  Flex,
+  Separator,
+  Text,
+} from "@radix-ui/themes";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { Cross2Icon } from "@radix-ui/react-icons";
@@ -9,51 +15,51 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 interface Props {
-
   projectAssginees: User[];
 }
 
 const AddMemberButton = ({ projectAssginees }: Props) => {
-  const [ selectedUserIds, setSelectedUserIds ] = useState<string[]>([]);
-  const params  = useParams();
+  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const params = useParams();
   const router = useRouter();
-  
 
-  const handleCheckboxChange = (userId: string ) => {
-    setSelectedUserIds((prevSelectedUserIds)=> {
-      if(prevSelectedUserIds.includes(userId)){
-        return prevSelectedUserIds.filter(id => id !== userId);
-      }else {
-        return [...prevSelectedUserIds, userId]
+  const handleCheckboxChange = (userId: string) => {
+    setSelectedUserIds((prevSelectedUserIds) => {
+      if (prevSelectedUserIds.includes(userId)) {
+        return prevSelectedUserIds.filter((id) => id !== userId);
+      } else {
+        return [...prevSelectedUserIds, userId];
       }
-    })
-  }
-
-
-  const handleSubmit = async () => {
-    if(selectedUserIds.length === 0) {
-      toast.error('Please select at least one member to add.')
-    }
-    try {
-      const response = await axios.post(`/api/projects/${params.id}/members`, {
-        userIds: selectedUserIds,
-      });
-      if(response.data.success){
-      toast.success('Members added successfully.');
-      router.refresh();
-      }
-
-    } catch (error) {
-      // Handle error
-      toast.error('Error adding members.');
-    }
+    });
   };
 
+  const handleSubmit = async () => {
+    if (selectedUserIds.length === 0) {
+      toast.error("Please select at least one member to add.");
+    } else {
+      try {
+        const response = await axios.post(
+          `/api/projects/${params.id}/members`,
+          {
+            userIds: selectedUserIds,
+          }
+        );
+        if (response.data.success) {
+          toast.success("Members added successfully.");
+          router.refresh();
+        }
+      } catch (error) {
+        // Handle error
+        toast.error("Error adding members.");
+      }
+    }
+  };
 
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button>New Member</Button>
+        <button className="theme-button">New Member</button>
+      
       </Dialog.Trigger>
       <Dialog.Content>
         <Flex justify="between">
@@ -64,27 +70,34 @@ const AddMemberButton = ({ projectAssginees }: Props) => {
             </button>
           </Dialog.Close>
         </Flex>
-          {projectAssginees.map((assignee) => (
-       
-            <Flex key={assignee.id} align="center" gap="5">
-              <Checkbox value={assignee.id} checked={selectedUserIds.includes(assignee.id)} onCheckedChange={() => handleCheckboxChange(assignee.id)} />
-              <Text>{assignee.name} </Text>
-              <Separator orientation="vertical"/>
-              <Text>{assignee.email}</Text> 
-            </Flex>
-         
-           
-          ))}
-     <Flex gap="3" mt="4" justify="end">
-       <Dialog.Close>
+        {projectAssginees.map((assignee) => (
+          <Flex key={assignee.id} align="center" gap="5">
+            <Checkbox
+              value={assignee.id}
+              checked={selectedUserIds.includes(assignee.id)}
+              onCheckedChange={() => handleCheckboxChange(assignee.id)}
+            />
+            <Text>{assignee.name} </Text>
+            <Separator orientation="vertical" />
+            <Text>{assignee.email}</Text>
+          </Flex>
+        ))}
+        <Flex gap="3" mt="4" justify="end">
+          <Dialog.Close>
             <Button variant="soft" color="gray">
               Cancel
             </Button>
           </Dialog.Close>
-          <Button type="submit" onClick={handleSubmit}>Add</Button>
+          <button
+            type="submit"
+            onClick={handleSubmit}
+            className="theme-button w-1/7"
+          >
+            Add
+          </button>
+      
           <Toaster />
-          </Flex>
-
+        </Flex>
       </Dialog.Content>
     </Dialog.Root>
   );

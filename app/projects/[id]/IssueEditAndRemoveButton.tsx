@@ -1,7 +1,6 @@
 import { Cross2Icon, DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Dialog, Flex } from "@radix-ui/themes";
 import React from "react";
-import IssueButtons from "../_components/IssueButtons";
 import { Issue } from "@prisma/client";
 import IssueForm from "../_components/IssueForm";
 

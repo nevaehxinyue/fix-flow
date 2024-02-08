@@ -1,6 +1,5 @@
 "use client";
 import {
-  Button,
   Callout,
   Flex,
   TextFieldInput,
@@ -9,61 +8,59 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { commentSchema } from "../../validationSchemas";
 import { z } from "zod";
-import { useEffect, useState } from "react";
-import axios, { AxiosError } from "axios";
+import { useState } from "react";
+import axios from "axios";
 import { ErrorMessage } from "../../components";
-import { useSession } from "next-auth/react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
+
 type CommentFormSchema = z.infer<typeof commentSchema>;
 
-const IssueCommentForm = ({ issueId }: { issueId: string }) => {
+const IssueCommentForm = ({issueId}: {issueId: string}) => {
+
   const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
-  
-  const { data: session } = useSession();
- 
+
+  console.log(issueId);
+
 // setValue here is used to ensure 'session.user.id' is submittedd with the form.
 
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<CommentFormSchema>({
     resolver: zodResolver(commentSchema),
-    defaultValues: {
-      content: "",
-      belongedToIssueId: parseInt(issueId),
-      createdByUserId:  "",
-    },
   });
 
-  useEffect(() => {
-    if(session?.user?.id) {
-      setValue('createdByUserId', session.user.id);
-    }
-  }, [session, setValue])
+  // useEffect(() => {
+  //   if(session?.user?.id) {
+  //     setValue('createdByUserId', session.user.id);
+  //   }
+  // }, [session, setValue])
 
   // Refetch the comments after the user submit a comment 
 
   const queryClient = useQueryClient();
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = async (data: CommentFormSchema) => {
     // event?.preventDefault();
     try {
       setSubmitting(true);
-      await axios.post("/api/comments", data);
-      queryClient.invalidateQueries({ queryKey: ['comments']});
-
+      await axios.post(`/api/comments/issue/${issueId}`, data);
+      queryClient.refetchQueries({ queryKey: ['comments']});
+      reset();
     } catch (error) {
       setError("An unexpected error occurred.");
     } finally {
       setSubmitting(false);
     }
-  });
+  };
+  console.log(errors)
 
 
   return (
@@ -74,22 +71,17 @@ const IssueCommentForm = ({ issueId }: { issueId: string }) => {
         </Callout.Root>
       )}
 
-      <form className="space-y-5 mt-4" onSubmit={onSubmit}>
+      <form className="space-y-5 mt-4" onSubmit={handleSubmit(onSubmit)}>
         <Flex gap="3">
-
-          <ErrorMessage>{errors.belongedToIssueId?.message}</ErrorMessage>
-
-          <ErrorMessage>{errors.createdByUserId?.message}</ErrorMessage>
           <div className="w-full">
             <TextFieldInput
+              // autoComplete="off"
               placeholder="Comment here..."
               {...register("content")}
             />
           </div>
-          <Button disabled={isSubmitting} type="submit">
-            Comment
-          </Button>
-  
+          {/* <input hidden={true} value={issueId} {...register('belongedToIssueId')}/> */}
+          <button className="theme-button" type="submit" disabled={isSubmitting}>Comment</button>
         </Flex>
         <ErrorMessage>{errors.content?.message}</ErrorMessage>
       </form>

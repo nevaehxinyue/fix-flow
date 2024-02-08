@@ -6,11 +6,21 @@
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+ 
+  /* --tw-color-shallow-bronze: 141, 164, 239;
+  --tw-color-middle-bronze: 141, 164, 239;
+  --tw-color-solid-bronze: 62, 99, 221; */
+  
+  --tw-color-shallow-bronze: 82 82 82;
+  /* --tw-color-middle-bronze: 100, 100, 100; */
+  --tw-color-solid-bronze: 32, 32, 32;
+
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
+
   }
 }
 
@@ -22,4 +32,11 @@ body {
   .nav-link {
     @apply text-zinc-500 hover:text-zinc-800 transition-colors;
   }
+  .bg-gradient-bronze {
+    background-image: linear-gradient(to right, rgb(var(--tw-color-shallow-bronze)), rgb(var(--tw-color-solid-bronze)));
+  }
+  .theme-button {
+    @apply bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto;
+  }
 }
+

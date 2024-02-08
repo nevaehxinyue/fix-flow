@@ -1,9 +1,6 @@
 "use client";
 import { Issue, ProjectStatus, User } from "@prisma/client";
 import {
-  Box,
-  Button,
-  Card,
   Flex,
   Heading,
   Table,
@@ -56,28 +53,35 @@ const ProjectSummary = () => {
   });
 
   if (error) return null;
-  if (isLoading) {
-    return (
-      <Flex direction="column">
-        <Skeleton height="2rem" />
-        <Skeleton height="5rem" />
-      </Flex>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className="bg-white shadow-lg border-0 p-8 rounded-lg">
+  //     <Flex direction="column">
+  //       <Skeleton height="2rem" />
+  //       <Skeleton height="5rem" />
+  //     </Flex>
+  //     </div>
+  //   );
+  // }
 
   //   console.log("projects type:", typeof projects);
   //   console.log("Is projects an array:", Array.isArray(projects));
     // console.log(projects);
 
   return (
-    <Box className=" shadow-lg border-0">
-      <Flex justify="between" className="border-b ">
+    <div className="bg-white shadow-lg border-0 p-8 rounded-lg">
+      <Flex justify="between" align="center" className="border-b ">
         <Heading size="4" mb="5">
           Projects
         </Heading>
         <ProjectButtons />
       </Flex>
 
+      {isLoading &&<Flex direction="column">
+        <Skeleton height="2rem" />
+        <Skeleton height="10rem" />
+      </Flex>}
+      {!isLoading &&
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -88,12 +92,12 @@ const ProjectSummary = () => {
             <TableColumnHeaderCell></TableColumnHeaderCell>
           </Table.Row>
         </Table.Header>
-
+      
         <Table.Body>
           {projects?.map((project) => (
             <Table.Row key={project.id}>
               <Table.Cell>
-                <Link href={`/projects/${project.id}`}>{project.title}</Link>
+                <Link href={`/projects/${project.id}`}><Text size="3" className="font-semibold">{project.title}</Text></Link>
               </Table.Cell>
               <Table.Cell>{project.description}</Table.Cell>
               <Table.Cell>
@@ -112,8 +116,8 @@ const ProjectSummary = () => {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table.Root>
-    </Box>
+      </Table.Root>}
+    </div>
   );
 };
 

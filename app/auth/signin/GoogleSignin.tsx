@@ -1,14 +1,20 @@
 'use client'
-import { Button } from '@radix-ui/themes'
+import { Flex } from '@radix-ui/themes'
 import { signIn } from 'next-auth/react'
 import { FaGoogle } from "react-icons/fa";
 
 
 const GoogleSignin = () => {
   return (
-    <Button className="w-full" size="3" onClick={()=> signIn('google', {callbackUrl:'/'})}>
-      Continue with Google <FaGoogle />
-    </Button>
+    <button
+    onClick={()=> signIn('google', {callbackUrl:'/'})}
+    className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+    type="submit"
+  >
+    <Flex gap="2" justify="center" align="center">
+    Continue with Google <FaGoogle />
+    </Flex>
+  </button>
 
   )
 }

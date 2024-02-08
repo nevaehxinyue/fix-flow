@@ -1,10 +1,9 @@
 "use client";
-
 import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { Button, Callout, Flex } from "@radix-ui/themes";
+import { Callout } from "@radix-ui/themes";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import UsernameChangeForm from "./UsernameChangeForm";
 
 const ChangeUserNameMessage = () => {

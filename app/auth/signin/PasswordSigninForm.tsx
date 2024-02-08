@@ -6,7 +6,6 @@ import {
   TextField,
   TextFieldInput,
   Flex,
-  Button,
   Text,
   Callout,
 } from "@radix-ui/themes";
@@ -116,15 +115,14 @@ const PasswordSigninForm = () => {
           </TextField.Root>
         </div>
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
-
-        <Button
-          className="w-full "
-          size="3"
-          type="submit"
-            disabled={isSubmitting}
-        >
+        <button
+        className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+        type="submit"
+      >
+        <Flex gap="2" justify="center" align="center">
           Sign in
-        </Button>
+        </Flex>
+      </button>
       </form>
       
     </Flex>

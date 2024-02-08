@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
-import { Box, Container, Theme, ThemePanel } from "@radix-ui/themes";
+import { Box, Container, Flex, Theme, ThemePanel } from "@radix-ui/themes";
 import "./globals.css";
 import React from "react";
 import NavBar from "./NavBar";
@@ -28,15 +28,19 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.variable}>
         <QueryClientProvider>
-        <AuthProvider>
-        <Theme accentColor="bronze">
-          <NavBar />
-          <main className="p-5" >
-            <Box className="m-24">{children}</Box>
-          </main>
-          {/* <ThemePanel /> */}
-        </Theme>
-        </AuthProvider>
+          <AuthProvider>
+            <Theme accentColor="gray">
+              <div className="flex min-h-screen bg-neutral-100">
+                
+                <Box className="bg-gradient-bronze shadow-lg border-0 absolute inset-0 z-0 h-60" />
+                <NavBar />
+                <main className="flex-grow p-5 relative z-10">
+                  <Box className="m-24">{children}</Box>
+                </main>
+              </div>
+              {/* <ThemePanel /> */}
+            </Theme>
+          </AuthProvider>
         </QueryClientProvider>
       </body>
     </html>

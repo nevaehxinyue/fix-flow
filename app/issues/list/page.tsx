@@ -39,7 +39,7 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   });
 
   return (
-    <Flex gap="3" direction="column">
+    <div className="flex flex-col gap-10 p-8 bg-white border-0 rounded-lg shadow-lg">
       <IssuesToolBar />
       <IssueTable searchParams={searchParams} issues={issues}/>
       <Flex justify="center">
@@ -49,7 +49,7 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
         pageSize={pageSize}
       />
       </Flex>
-    </Flex>
+    </div>
   );
 };
 

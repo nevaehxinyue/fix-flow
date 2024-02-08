@@ -4,12 +4,10 @@ import IssueStatusFilter from "./IssueStatusFilter";
 
 const IssuesToolBar = () => {
   return (
-    <Flex mb="3" justify="between">
+    <Flex justify="start">
       <IssueStatusFilter />
-      <Button>
-        <Link href="/issues/new">New Issue</Link>
-      </Button>
-    </Flex>
+      </Flex>
+
   );
 };
 

@@ -172,7 +172,9 @@ const EditProfileForm = () => {
               Cancel
             </Button>
           </Dialog.Close>
-          <Button type="submit">Save</Button>
+          <button className="theme-button" type="submit">
+            Save</button>
+
           <Toaster />
         </Flex>
       </form>

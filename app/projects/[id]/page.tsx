@@ -1,23 +1,20 @@
-import { Box, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { cache } from "react";
 import ProjectMemberTable from "./ProjectMemberTable";
-import ProjectIssuesTable, { IssueQuery, columnNames } from "./ProjectIssuesTable";
+import ProjectIssuesTable, {
+  IssueQuery,
+} from "./ProjectIssuesTable";
 import IssueDetails from "./IssueDetails";
 import prisma from "@/prisma/client";
 import AddMemberButton from "./AddMemberButton";
 import CommentDetails from "./CommentDetails";
-import { Skeleton } from "@/app/components";
-import IssueCommentForm from "./IssueCommentForm";
 import ProjectButtons from "../_components/ProjectButtons";
-import { Issue, ProjecOftUsers, User } from "@prisma/client";
+import { ProjecOftUsers, User } from "@prisma/client";
 import Pagination from "@/app/components/Pagination";
 import MemberPagination from "@/app/components/MemberPagination";
 import IssueButtons from "../_components/IssueButtons";
-
-// const IssueCommentForm = dynamic(() => import('../IssueCommentForm'), {
-//   ssr:false,
-//   loading: () => <Skeleton height="3rem"/>
-// })
+import IssueCommentForm from "./IssueCommentForm";
+import ProjectDescriptionDialog from "./ProjectDescriptionDialog";
 
 export interface FetchedProjectType {
   id: number;
@@ -41,8 +38,6 @@ const fetchProject = cache((projectId: number) => {
     },
   });
 });
-
-
 
 const ProjectDetialPage = async ({
   searchParams,
@@ -95,7 +90,9 @@ const ProjectDetialPage = async ({
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 3;
   //Sort issues by orderBy
-  const orderBy = searchParams.orderBy ? { [searchParams.orderBy]:'asc'}: undefined;
+  const orderBy = searchParams.orderBy
+    ? { [searchParams.orderBy]: "asc" }
+    : undefined;
   // columnNames.includes(searchParams.orderBy) ? { [searchParams.orderBy]:'desc'} : undefined;
   const issuesOnEachPage = await prisma.issue.findMany({
     where: { projectId: projectId },
@@ -109,22 +106,21 @@ const ProjectDetialPage = async ({
   });
 
   return (
-    <Flex direction="column" >
-      <Flex direction="column" gap="5">
-        <Heading>Project</Heading>
-        <Flex justify="between">
-          <Heading size="5" mb="5">
+    <Flex direction="column" gap="8">
+    {/* // <Flex direction="column" className="bg-white shadow-lg border-0 p-5 rounded-lg"> */}
+      <Flex direction="column" gap="5" mb="2">
+        <Heading className="text-white">Project</Heading>
+        <Flex justify='between' mb="8">
+          <Heading className="text-white" size="5">
             {project?.title}
           </Heading>
-          <ProjectButtons project={project} />
-        </Flex>
+          <ProjectDescriptionDialog projectTitle={project?.title} projectDescription={project?.description}/>
+          <ProjectButtons project={project} /> 
+        </Flex>  
       </Flex>
-
-      <Text mb="5">{project?.description}</Text>
-
-      <Grid columns={{ initial: "1", md: "1.5fr 2fr 2fr" }} gap="8">
-       
-        <Card className="col-span-1">
+  
+      <Grid columns={{ initial: "1", lg: "1.5fr 1.5fr 1.5fr" }} gap="8">
+        <Box className="bg-white rounded-lg shadow-lg border-0 col-span-1 p-5 relative">
           <Flex justify="between" mb="4" className="relative">
             <Heading size="4">Team</Heading>
             <AddMemberButton projectAssginees={projectAvailableAssginees} />
@@ -139,7 +135,7 @@ const ProjectDetialPage = async ({
           <Flex
             mt="4"
             justify="center"
-            className="relative lg:absolute inset-x-0 pb-2 bottom-0 "
+            className="relative xl:absolute inset-x-0 pb-2 bottom-0 "
           >
             <MemberPagination
               itemCount={memberCount}
@@ -147,50 +143,56 @@ const ProjectDetialPage = async ({
               currentPage={memberPage}
             />
           </Flex>
-        </Card>
+        </Box>
 
-        <Card className=" col-span-2 space-y-2 relative">
+        <Box className="bg-white rounded-lg shadow-lg col-span-2 space-y-2 relative border-0 p-5">
           <Flex direction="column" className="lg:mb-10">
             <Flex justify="between" mb="4">
               <Heading size="4">Issues</Heading>
               <IssueButtons />
             </Flex>
-     
-            <ProjectIssuesTable searchParams={searchParams} issuesOnEachPage={issuesOnEachPage} />
+
+            <ProjectIssuesTable
+              searchParams={searchParams}
+              issuesOnEachPage={issuesOnEachPage}
+            />
           </Flex>
-          <Flex mt="3" justify="center" className="relative lg:absolute inset-x-0 pb-2 bottom-0 mt-2 ">
+          <Flex
+            mt="3"
+            justify="center"
+            className="relative lg:absolute inset-x-0 pb-2 bottom-0 mt-2 "
+          >
             <Pagination
               itemCount={issuesCount}
               pageSize={pageSize}
               currentPage={page}
             />
           </Flex>
-        </Card>
-        </Grid>
-     
-
-        <Box >
-          <Heading className="border-b pb-5" mb="5" mt="8" size="4">
-            Selected Issue Info
-          </Heading>
-
-          {searchParams.issueId && (
-            <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
-              <div className="col-span-2">
-              <IssueDetails searchParams={searchParams} />
-              </div>
-              <Card className="space-y-5">
-                <Heading className="border-b pb-4" size="4">
-                  Comments
-                </Heading>
-                <CommentDetails issueId={searchParams.issueId} />
-                <IssueCommentForm issueId={searchParams.issueId} />
-                {/* <IssueComments issueId={searchParams.issueId} /> */}
-              </Card>
-            </Grid>
-          )}
         </Box>
-     
+      </Grid>
+
+      <Box className="bg-white rounded-lg shadow-lg border-0 p-5">
+        <Heading className="border-b pb-5" mb="5" mt="3" size="4">
+          Selected Issue Info
+        </Heading>
+
+        {searchParams.issueId && (
+          <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
+            <div className="col-span-2 bg-white rounded-lg shadow-lg border-0 p-5">
+              <IssueDetails searchParams={searchParams} />
+            </div>
+            <Box className="space-y-5 bg-white rounded-lg shadow-lg border-0 p-5">
+              <Heading className="border-b pb-4" size="4">
+                Comments
+              </Heading>
+              <CommentDetails issueId={searchParams.issueId} />
+              <IssueCommentForm issueId={searchParams.issueId} />
+              {/* <IssueComments issueId={searchParams.issueId} /> */}
+            </Box>
+          </Grid>
+        )}
+      </Box>
+    {/* // </Flex> */}
     </Flex>
   );
 };

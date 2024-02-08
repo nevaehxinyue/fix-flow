@@ -42,7 +42,7 @@ const MemberDeleteButton = ({memberId}: {memberId: string}) => {
           <AlertDialog.Content>
             <AlertDialog.Title>Note</AlertDialog.Title>
             <AlertDialog.Description>
-              Are you sure you want to remove this member from your team?
+              Are you sure you want to remove this member from your team? You can add them back later.
             </AlertDialog.Description>
   
             <Flex mt="8" gap="3" justify="end">

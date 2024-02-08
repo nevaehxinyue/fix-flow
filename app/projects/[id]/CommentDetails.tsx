@@ -1,10 +1,12 @@
 "use client";
-import { Comment, User } from "@prisma/client";
+import { User } from "@prisma/client";
 import { Box, Text, Flex, Avatar } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Skeleton } from "@/app/components";
 import { format } from "date-fns";
+import DeleteCommentButton from "./DeleteCommentButton";
+import { useSession } from "next-auth/react";
 
 interface CommentType {
   id: number;
@@ -13,8 +15,8 @@ interface CommentType {
   createdBy: User;
 }
 
-
 const CommentDetails = ({ issueId }: { issueId: string }) => {
+  const { data: sesion } = useSession(); 
   const {
     data: comments,
     error,
@@ -28,10 +30,11 @@ const CommentDetails = ({ issueId }: { issueId: string }) => {
     staleTime: 60 * 1000,//60s
     retry: 3,  
   });
-
   
   if (error) return null;
   if (isLoading) return <Skeleton height="3rem" />;
+
+
 
   return (
     <>
@@ -54,7 +57,11 @@ const CommentDetails = ({ issueId }: { issueId: string }) => {
                 )}
               </Text>
             </Flex>
+            <Flex justify="between">
             <Text ml="8" size="2" >{comment.content}</Text>
+            {/* //Make sure only the user who wrote the comment can delete the comment. */}
+            {comment.createdBy.id === sesion?.user.id && <DeleteCommentButton commentId={comment.id} />}
+            </Flex>
           </Flex>
         </Box>
       ))}

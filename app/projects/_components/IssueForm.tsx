@@ -26,11 +26,11 @@ import { z } from "zod";
 import DeleteIssueButton from "../[id]/DeleteIssueButton";
 
 type CreateIssueFormData = z.infer<typeof issueSchema>;
-type ButtonVariants = 'soft'| 'classic'
+type ButtonVariants = "soft" | "classic";
 
 const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [submissionError, setSubmissionError] = useState("");
-  const [ buttonVariant, setButtonVariant ] = useState<ButtonVariants>("soft");
+  const [buttonVariant, setButtonVariant] = useState<ButtonVariants>("soft");
 
   const { data: session } = useSession();
   const router = useRouter();
@@ -43,12 +43,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
     formState: { errors, isSubmitting },
   } = useForm<CreateIssueFormData>({ resolver: zodResolver(issueSchema) });
 
-  console.log(errors)
-
-
   const onSubmit = handleSubmit(async (data) => {
     try {
-    
       if (issue) {
         const response = await axios.patch("/api/issues/" + issue.id, data);
         if (response.status === 201) {
@@ -64,7 +60,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       }
     } catch (error) {
       setSubmissionError("An unexpected error occurred.");
-  }});
+    }
+  });
 
   return (
     <>
@@ -170,29 +167,33 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
           </Flex>
           {issue && (
             <>
-            <Flex direction="column" gap="2" align="start">
-              <Text className="text-md font-bold mb-3" size="3">
-                Assignee
-              </Text>
-              <AssigneeSelect issue={issue}/>
-            </Flex>
-            
-            {(issue.createdByUserId === session?.user.id || issue.assignedToUserId === session?.user.id) && 
-            <Flex direction="column" gap="2" align="start">
-            <Text className="text-md font-bold mb-3" size="3">
-              Remove issue
-            </Text>
-            <Flex gap="3">
-               <Button onClick={() => setButtonVariant('classic')} type="button" size="1"color="gray" variant={buttonVariant}>No </Button>
-               <DeleteIssueButton issue={issue}/>
-               </Flex>
-             
-          
-          </Flex>}
+              <Flex direction="column" gap="2" align="start">
+                <Text className="text-md font-bold mb-3" size="3">
+                  Assignee
+                </Text>
+                <AssigneeSelect issue={issue} />
+              </Flex>
 
-            
-
-
+              {(issue.createdByUserId === session?.user.id ||
+                issue.assignedToUserId === session?.user.id) && (
+                <Flex direction="column" gap="2" align="start">
+                  <Text className="text-md font-bold mb-3" size="3">
+                    Remove issue
+                  </Text>
+                  <Flex gap="3">
+                    <Button
+                      onClick={() => setButtonVariant("classic")}
+                      type="button"
+                      size="1"
+                      color="gray"
+                      variant={buttonVariant}
+                    >
+                      No{" "}
+                    </Button>
+                    <DeleteIssueButton issue={issue} />
+                  </Flex>
+                </Flex>
+              )}
             </>
           )}
 
@@ -213,7 +214,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               </Button>
             </Dialog.Close>
 
-            <Button type="submit" disabled={isSubmitting}>Submit</Button>
+            <button className="theme-button" type="submit" disabled={isSubmitting}>Submit</button>
             <Toaster />
           </Flex>
         </Flex>

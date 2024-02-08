@@ -14,7 +14,13 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        'theme-bronze': '#A18072',
+        // '#A18072','#DFCDC5', 
+        'theme-bronze':'#957468',
+        // 'button-color': '#8DA4EF',
+        // 'button-hover-color': '#3E63DD'
+        'button-color': '#202020',
+        'button-hover-color': '#646464'
+
       }
     },
   },

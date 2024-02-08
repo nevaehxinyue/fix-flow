@@ -1,4 +1,4 @@
-import { Button, Card, Flex, Grid, Heading, Text } from "@radix-ui/themes";
+import { Box, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import prisma from "@/prisma/client";
 import ReactMarkdown from "react-markdown";
 import { IssueStatusBadge } from "../../components";
@@ -15,13 +15,13 @@ const IssueDetails = async ({
   const issue = await prisma.issue.findUnique({
     where: { id: parseInt(searchParams.issueId) },
     include: {
-      assingedToUser: true,
+     assignedToUser: true,
       createdBy: true,
     },
   });
 
   return (
-    <Card>
+    <Box>
       <Grid columns="3" gap="5">
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Issue Title</Text>
@@ -37,7 +37,7 @@ const IssueDetails = async ({
 
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Assignee</Text>
-          <Text size="2">{issue?.assingedToUser?.name}</Text>
+          <Text size="2">{issue?.assignedToUser?.name}</Text>
         </Flex>
 
         <Flex direction="column" gap="3" align="start">
@@ -62,7 +62,7 @@ const IssueDetails = async ({
           </Flex>
         </Flex>
       </Grid>
-    </Card>
+    </Box>
   );
 };
 

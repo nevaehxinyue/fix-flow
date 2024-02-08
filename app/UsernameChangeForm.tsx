@@ -8,7 +8,6 @@ import {
   Dialog,
   Flex,
   TextField,
-  TextFieldInput,
   Text,
 } from "@radix-ui/themes";
 import axios from "axios";
@@ -89,7 +88,7 @@ const UsernameChangeForm = () => {
               </Button>
             </Dialog.Close>
             <Dialog.Close>
-              <Button type="submit">Save</Button>
+                <button className="theme-button" type="submit">Save</button>
             </Dialog.Close>
             <Toaster />
           </Flex>

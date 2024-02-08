@@ -8,9 +8,7 @@ import {
   Flex,
   TextField,
   TextFieldInput,
-  Button,
   Callout,
-
 } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -96,22 +94,19 @@ const ResetPasswordForm = () => {
               </TextField.Slot>
 
               <TextFieldInput
-              type={isPasswordVisible ? "text" : "password"}
+                type={isPasswordVisible ? "text" : "password"}
                 placeholder="min 6 chracters"
                 size="3"
                 {...register("password")}
               />
-              <button
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
+              <button type="button" onClick={togglePasswordVisibility}>
                 {isPasswordVisible ? (
                   <TextField.Slot>
-                    <FaRegEyeSlash className="cursor-pointer"/>
+                    <FaRegEyeSlash className="cursor-pointer" />
                   </TextField.Slot>
                 ) : (
                   <TextField.Slot>
-                    <FaRegEye  className="cursor-pointer"/>
+                    <FaRegEye className="cursor-pointer" />
                   </TextField.Slot>
                 )}
               </button>
@@ -119,14 +114,12 @@ const ResetPasswordForm = () => {
           </div>
           <ErrorMessage>{errors.password?.message}</ErrorMessage>
 
-          <Button
-            className="w-full "
-            size="3"
+          <button
+            className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
             type="submit"
-            disabled={isSubmitting || !isValid}
           >
             Reset
-          </Button>
+          </button>
           <Toaster />
         </form>
         {error && (

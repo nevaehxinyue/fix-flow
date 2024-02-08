@@ -2,14 +2,13 @@
 import { IssueStatusBadge } from "@/app/components";
 import IssueSeverityBadge from "@/app/components/IssueSeverityBadge";
 import { Issue } from "@prisma/client";
-import {  Flex, Table, Text } from "@radix-ui/themes";
+import {  Flex, Table } from "@radix-ui/themes";
 import NextLink from "next/link";
-
 import { useParams, useRouter, useSearchParams } from "next/navigation";
-
 import IssueButtons from "../_components/IssueButtons";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
+
 
 
 const columns: { label: string; value: keyof Issue }[] = [
