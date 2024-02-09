@@ -9,6 +9,7 @@ import  { useEffect, useState } from 'react'
 import toast, { Toaster } from 'react-hot-toast'
 import { FetchedProjectType } from './page'
 import { useSession } from 'next-auth/react'
+import { useQueryClient } from '@tanstack/react-query'
 
 const DeleteProjectButton = ({project}: { project?: FetchedProjectType | null }) => {
     const [error, setError] = useState(false);
@@ -17,6 +18,7 @@ const DeleteProjectButton = ({project}: { project?: FetchedProjectType | null })
     const params = useParams();
     const router = useRouter();
     const { data: session } = useSession();
+    const queryClient = useQueryClient();
 
     //Check if the current user is the creator of the current project
     useEffect(()=> {
@@ -33,8 +35,11 @@ const DeleteProjectButton = ({project}: { project?: FetchedProjectType | null })
             setDeleting(true);
             if(isCreator){
                 response = await axios.delete(`/api/projects/${params.id}` )
+                queryClient.refetchQueries({queryKey: ['projects']})
+                
             } else {
                 response = await axios.delete(`/api/projects/${params.id}/users/${session?.user.id}`)
+                queryClient.refetchQueries({queryKey: ['projects']})
             }
             
             if(response?.status === 201){

@@ -1,18 +1,15 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@radix-ui/themes/styles.css";
-import "./theme-config.css";
+import "@/app/theme-config.css";
 import { Box, Theme } from "@radix-ui/themes";
-import "./globals.css";
+import "@/app/globals.css";
 import React from "react";
-import NavBar from "./NavBar";
-import AuthProvider from "./auth/Provider";
-import QueryClientProvider from "./QueryClientProvider";
+import AuthProvider from "@/app/auth/Provider";
+import QueryClientProvider from "@/app/QueryClientProvider";
 import { ChakraProvider } from '@chakra-ui/react'
-import TopBackgroundBox from "./TopBackgroundBox";
-import DrawerButton from "./DrawerButton";
-import { getServerSession } from "next-auth";
-import authOptions from "./auth/authOptions";
+import TopBackgroundBox from "@/app/TopBackgroundBox";
+import DrawerButton from "@/app/DrawerButton";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,7 +21,7 @@ export const metadata: Metadata = {
   description: "An issue tracker app",
 };
 
-export default function RootLayout({
+export default function CustomLayoutForAuth({
   children,
 }: {
   children: React.ReactNode;
@@ -38,13 +35,11 @@ export default function RootLayout({
             <Theme accentColor="gray">
               <div className="flex min-h-screen bg-neutral-100">
                 <TopBackgroundBox />
-                <NavBar />
-                <main className="flex-grow relative z-10">
+                <main className="flex-grow p-5 relative z-10">
                 <DrawerButton />
                   <Box className="m-24">{children}</Box>
                 </main>
               </div>
-              {/* <ThemePanel /> */}
             </Theme>
             </ChakraProvider>
           </AuthProvider>

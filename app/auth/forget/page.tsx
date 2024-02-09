@@ -1,12 +1,12 @@
-import { Flex, Heading, Card } from "@radix-ui/themes";
+import { Flex, Heading, Card, Box } from "@radix-ui/themes";
 import React from "react";
 import { SiGhost } from "react-icons/si";
 import ForgotPasswordForm from "./ForgotPasswordForm";
 
 const ForgetPasswordPage = () => {
   return (
-    <div>
-      <Flex direction="column" align="center" gap="3" mt="9" mb="6">
+    <div className="flex flex-col justify-center ">
+      <Flex direction="column" align="center" gap="3" className="mt-48">
         <SiGhost size="50" />
       </Flex>
       <Flex direction="column" gap="3" align="center" justify="center" mt="9">

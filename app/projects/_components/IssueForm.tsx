@@ -14,8 +14,6 @@ import {
   RadioGroup,
   Dialog,
 } from "@radix-ui/themes";
-
-import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams, useRouter } from "next/navigation";

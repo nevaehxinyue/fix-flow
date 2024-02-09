@@ -1,62 +1,40 @@
-'use client'
-import {
-  Button,
-  Callout,
-  Dialog,
-  Flex,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
-import React, { useState } from "react";
-import { ErrorMessage } from "./components";
-import toast, { Toaster } from "react-hot-toast";
-import { z } from "zod";
-import { userProfileUpdateSchema } from "./validationSchemas";
-import { useForm } from "react-hook-form";
+"use client";
+import { ErrorMessage } from "@/app/components";
+import { userProfileUpdateSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { User } from "@prisma/client";
+import { Flex, TextField, Callout, Button, Text, Container, Heading } from "@radix-ui/themes";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useMenuDialogStore } from "./store";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { User } from "@prisma/client";
-
-
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast, { Toaster } from "react-hot-toast";
+import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
+import { z } from "zod";
 
 type EditProfileFormData = z.infer<typeof userProfileUpdateSchema>;
-
-
-const EditProfileForm = () => {
+const EditProfileSingleForm = () => {
+  const { data: session } = useSession();
 
   const [error, setError] = useState("");
   const router = useRouter();
   const queryClient = useQueryClient();
-
-  const { setIsDialogOpen, setIsMenuOpen } = useMenuDialogStore();
-
-  const handleDialogClose = () => {
-    setIsDialogOpen(false);
-    setIsMenuOpen(false);
-    router.refresh();
-  };
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
 
-  const { data: session } = useSession();
-  if (!session) return null;
-
   const { data: user } = useQuery<User>({
-    queryKey: ['user'],
-    queryFn: () => axios.get<User>(`/api/users/${session?.user.id}`).then((res) => res.data),
-    staleTime: 60 * 1000, //60s
+    queryKey: ["user"],
+    queryFn: () =>
+      axios.get<User>(`/api/users/${session?.user.id}`).then((res) => res.data),
+    staleTime: 7 * 24 * 60 * 60 * 1000, //7 days
     retry: 3,
-})
-
-const {
+  });
+  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -64,42 +42,44 @@ const {
     resolver: zodResolver(userProfileUpdateSchema),
   });
 
-
-
-  
-
   const onSubmit = async (data: EditProfileFormData) => {
-    const updateData: { name?: string; password?: string, confirmPassword?: string} = {};
-    
-    if(data.name) {
-        updateData.name = data.name;
-    }
-    if(data.password && data.confirmPassword){
-          // Check if the passwords match
-        if (data.password !== data.confirmPassword) {
-            setError("Passwords do not match.");
-            return null;
-          }else if (data.password.length < 6 || data.confirmPassword.length < 6) {
-                setError("Minimum 6 characters are required.");
-                return null;
-          }
-          else{
-            updateData.password = data.password;
-            updateData.confirmPassword = data.confirmPassword
-        }
+    const updateData: {
+      name?: string;
+      password?: string;
+      confirmPassword?: string;
+    } = {};
 
-    }  else if (data.password || data.confirmPassword) {
-        setError('Please fill both password fields to update your password.');
-        return null;
+    if (data.name) {
+      updateData.name = data.name;
     }
- 
+    if (data.password && data.confirmPassword) {
+      // Check if the passwords match
+      if (data.password !== data.confirmPassword) {
+        setError("Passwords do not match.");
+        return null;
+      } else if (data.password.length < 6 || data.confirmPassword.length < 6) {
+        setError("Minimum 6 characters are required.");
+        return null;
+      } else {
+        updateData.password = data.password;
+        updateData.confirmPassword = data.confirmPassword;
+      }
+    } else if (data.password || data.confirmPassword) {
+      setError("Please fill both password fields to update your password.");
+      return null;
+    }
+
     try {
-      
-      const response = await axios.patch(`/api/users/${session.user.id}`, updateData);
+      const response = await axios.patch(
+        `/api/users/${session?.user.id}`,
+        updateData
+      );
       if (response.data.success) {
         toast.success("Your changes have been saved!");
         // Make sure the page that the user is currently on reflects the user profile changes
-        queryClient.invalidateQueries({ queryKey: ["projects"]});
+        queryClient.refetchQueries({ queryKey: ["projects"] });
+        queryClient.refetchQueries({ queryKey: ["user"] });
+        
       }
     } catch (error) {
       setError("Profile update failed.Please try again.");
@@ -107,7 +87,7 @@ const {
   };
 
   return (
-    <Flex direction="column" gap="3">
+    <Flex direction="column" gap="3" className="bg-white shadow-lg border-0 p-8 rounded-lg w-64 xl:w-96">
       <form onSubmit={handleSubmit(onSubmit)}>
         <Flex direction="column" gap="3">
           <label>
@@ -170,14 +150,14 @@ const {
           </label>
         </Flex>
 
-        <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close>
-            <Button variant="soft" color="gray" onClick={handleDialogClose}>
-              Cancel
-            </Button>
-          </Dialog.Close>
+        <Flex gap="3" mt="6" justify="end">
+          <Button variant="soft" color="gray">
+            Cancel
+          </Button>
+
           <button className="theme-button" type="submit">
-            Save</button>
+            Save
+          </button>
 
           <Toaster />
         </Flex>
@@ -188,7 +168,8 @@ const {
         </Callout.Root>
       )}
     </Flex>
+
   );
 };
 
-export default EditProfileForm;
+export default EditProfileSingleForm;

@@ -53,16 +53,6 @@ const ProjectSummary = () => {
   });
 
   if (error) return null;
-  // if (isLoading) {
-  //   return (
-  //     <div className="bg-white shadow-lg border-0 p-8 rounded-lg">
-  //     <Flex direction="column">
-  //       <Skeleton height="2rem" />
-  //       <Skeleton height="5rem" />
-  //     </Flex>
-  //     </div>
-  //   );
-  // }
 
   //   console.log("projects type:", typeof projects);
   //   console.log("Is projects an array:", Array.isArray(projects));

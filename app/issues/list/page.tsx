@@ -5,7 +5,10 @@ import Pagination from "@/app/components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
 import { Flex } from "@radix-ui/themes";
 import { title } from "process";
-import { Metadata } from "next";
+import { GetServerSidePropsContext, Metadata } from "next";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/authOptions";
+import { redirect } from "next/dist/server/api-utils";
 
 const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   //Validate the query parameter for status and orderBy, if unvalid, return all issues
@@ -21,9 +24,15 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   const page = parseInt(searchParams.page) || 1;
   const pageSize = 10;
 
+  const session = await getServerSession(authOptions);
+  console.log(session)
   const issues = await prisma.issue.findMany({
     where: {
       status,
+      OR: [
+        {createdByUserId: session?.user.id},
+        {assignedToUserId: session?.user.id}
+      ]
     },
     //specify how the returned records should be sorted.
     orderBy,
@@ -35,19 +44,23 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   const issueCount = await prisma.issue.count({
     where: {
       status,
+      OR: [
+        {createdByUserId: session?.user.id},
+        {assignedToUserId: session?.user.id}
+      ]
     },
   });
 
   return (
     <div className="flex flex-col gap-10 p-8 bg-white border-0 rounded-lg shadow-lg">
       <IssuesToolBar />
-      <IssueTable searchParams={searchParams} issues={issues}/>
+      <IssueTable searchParams={searchParams} issues={issues} />
       <Flex justify="center">
-      <Pagination
-        itemCount={issueCount}
-        currentPage={page}
-        pageSize={pageSize}
-      />
+        <Pagination
+          itemCount={issueCount}
+          currentPage={page}
+          pageSize={pageSize}
+        />
       </Flex>
     </div>
   );
@@ -58,7 +71,8 @@ export const dynamic = "force-dynamic";
 
 export default IssuePage;
 
+
 export const metadata: Metadata = {
-  title: 'Issue Tracker -  List ',
-  description: 'A List of all issues'
-}
+  title: "Issue Tracker -  List ",
+  description: "A List of all issues",
+};

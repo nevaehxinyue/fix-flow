@@ -4,69 +4,69 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { SiGhost } from "react-icons/si";
 import classNames from "classnames";
-import {
-  Avatar,
-  DropdownMenu,
-  Flex,
-  Heading,
-  Text,
-} from "@radix-ui/themes";
+import { Avatar, DropdownMenu, Flex, Heading, Text } from "@radix-ui/themes";
 import { signOut, useSession } from "next-auth/react";
 import { Skeleton } from "@/app/components";
 import EditProfileButton from "./EditProfileButton";
 import { useMenuDialogStore } from "./store";
 import { LuLayoutDashboard } from "react-icons/lu";
 import { PiBugDroidBold } from "react-icons/pi";
+import { useQuery } from "@tanstack/react-query";
+import { User } from "@prisma/client";
+import axios from "axios";
+import { RiUser5Line } from "react-icons/ri";
 
 const NavBar = () => {
-
+  const { data: session } = useSession();
+  if (!session) return null;
 
   return (
-    <nav className="w-60 relative flex flex-col flex-shrink-0 h-auto border-b px-5 py-4 bg-white gap-8 shadow-lg border-0">
+    <div className="hidden xl:flex">
+      <nav className="w-72 relative flex flex-col flex-shrink-0 h-auto border-b px-5 py-4 bg-white gap-8 shadow-lg border-0 ">
         {/* <Flex justify="between" align="center" className="ml-24 mr-24 "> */}
-          {/* <Flex gap="3" align="center"> */}
-            <Link href="/">
-              <Flex gap="3" align="center">
+        {/* <Flex gap="3" align="center"> */}
+        <Link href="/">
+          <Flex gap="3" align="center">
             <SiGhost size="38" />
             <Heading>Fix Flow</Heading>
-            </Flex>
-            </Link>
-            <NavLinks />
-          {/* </Flex> */}
-          <AuthStatus />
+          </Flex>
+        </Link>
+        <NavLinks />
+        {/* </Flex> */}
+        <AuthStatus />
         {/* </Flex>   */}
-    </nav>
+      </nav>
+    </div>
   );
 };
 
 const NavLinks = () => {
   const links = [
-    { label: "Dashboard", href: "/" , icon: <LuLayoutDashboard />},
+    { label: "Dashboard", href: "/", icon: <LuLayoutDashboard /> },
     { label: "Issues", href: "/issues/list", icon: <PiBugDroidBold /> },
   ];
-
   const pathname = usePathname();
 
   return (
     <ul className="flex space-x-5">
       <Flex direction="column" gap="5">
-      {links.map((link) => (
-        <li key={link.label}>
-          <Link
-            href={link.href}
-            className={classNames({
-              "nav-link": true,
-              "!text-zinc-800": link.href === pathname,
-            })}
-          >
-            <Heading size="4">
-          <Flex align="center" gap="3">
-           {link.icon} {link.label}
-           </Flex>
-            </Heading>
-          </Link>
-        </li>
-      ))}
+        {links.map((link) => (
+          <li key={link.label}>
+            <Link
+              href={link.href}
+              className={classNames({
+                "nav-link": true,
+                "!text-zinc-800": link.href === pathname,
+              })}
+            >
+              <Heading size="4">
+                <Flex align="center" gap="3">
+                  {link.icon} {link.label}
+                </Flex>
+              </Heading>
+            </Link>
+          </li>
+        ))}
       </Flex>
     </ul>
   );
@@ -74,44 +74,93 @@ const NavLinks = () => {
 
 const AuthStatus = () => {
   const { status, data: session } = useSession();
+  const { data: user } = useQuery<User>({
+    queryKey: ["user"],
+    queryFn: () =>
+      axios.get(`/api/users/${session?.user.id}`).then((res) => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3,
+  });
+  const { isMenuOpen, setIsMenuOpen } = useMenuDialogStore();
 
-  const { isMenuOpen, setIsMenuOpen } = useMenuDialogStore();  
+  if (status === "loading") return <Skeleton width="3rem" />;
+  if (status !== "authenticated") return null;
+  if (session.user.image)
+    return (
+      <Flex gap="2">
+        <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+          <Flex align="center" gap="3">
+            <DropdownMenu.Trigger onClick={() => setIsMenuOpen(true)}>
+              <button>
+                <Avatar
+                  src={session.user!.image}
+                  fallback="?"
+                  size="2"
+                  radius="full"
+                  className="cursor-pointer"
+                />{" "}
+              </button>
+            </DropdownMenu.Trigger>
+            <Text size="3" className="font-semibold">
+              {user?.name}
+            </Text>
+          </Flex>
 
-  if (status === "loading") return <Skeleton width="3rem"/>;
-  
-  return (
-    <Flex gap="2">
-      {status === "authenticated" && (
-        <DropdownMenu.Root  open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-          <DropdownMenu.Trigger onClick={()=> setIsMenuOpen(true)}>
-            <Avatar
-              src={session.user!.image ? session.user!.image : '/user_avatar2.svg'}
-              fallback="?"
-              size="2"
-              radius="full"
-              className="cursor-pointer"
-            />
-          </DropdownMenu.Trigger>
           <DropdownMenu.Content>
             <DropdownMenu.Label>
               <Text size="2">{session.user!.email}</Text>
             </DropdownMenu.Label>
             <DropdownMenu.Item>
-              <button className="w-full flex justify-start" onClick={() => signOut({callbackUrl: "/"})}>Log out</button>
+              <button
+                className="w-full flex justify-start"
+                onClick={() => signOut({ callbackUrl: "/" })}
+              >
+                Log out
+              </button>
               {/* <Link href="/api/auth/signout">Log out</Link> */}
-            </DropdownMenu.Item >
-      
-           <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
-           
-           <EditProfileButton />
-           </DropdownMenu.Item>
-           
-            
-          
+            </DropdownMenu.Item>
+
+            <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
+              <EditProfileButton />
+            </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
-      )}
-      <Text size="3" className="font-semibold">{session?.user!.name}</Text>
+      </Flex>
+    );
+
+  return (
+    <Flex gap="2">
+      <DropdownMenu.Root open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <Flex align="center" gap="3">
+          <DropdownMenu.Trigger onClick={() => setIsMenuOpen(true)}>
+            <button>
+              <RiUser5Line />
+            </button>
+          </DropdownMenu.Trigger>
+          <Text size="3" className="font-semibold">
+            {user?.name}
+          </Text>
+        </Flex>
+
+        <DropdownMenu.Content>
+          <DropdownMenu.Label>
+            <Text size="2">{session.user!.email}</Text>
+          </DropdownMenu.Label>
+          <DropdownMenu.Item>
+            <button
+              className="w-full flex justify-start"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            >
+              Log out
+            </button>
+            {/* <Link href="/api/auth/signout">Log out</Link> */}
+          </DropdownMenu.Item>
+
+          <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
+            <EditProfileButton />
+          </DropdownMenu.Item>
+        </DropdownMenu.Content>
+      </DropdownMenu.Root>
     </Flex>
   );
 };

@@ -3,11 +3,12 @@ import prisma from "@/prisma/client";
 import Link from "next/link";
 import { IssueStatusBadge } from "./components";
 import { Issue, User } from "@prisma/client";
+import { RiUser5Line } from "react-icons/ri";
 
 interface LatestIssuesType {
   id: number;
   title: string;
-  status: 'OPEN'|'IN_PROGRESS'|'CLOSED';
+  status: "OPEN" | "IN_PROGRESS" | "CLOSED";
   projectId: number;
   assignedToUser?: User | null;
 }
@@ -17,7 +18,6 @@ const LatestIssues = ({
 }: {
   latestIssues: LatestIssuesType[];
 }) => {
-
   return (
     <>
       <Heading size="4" mb="5">
@@ -30,22 +30,25 @@ const LatestIssues = ({
               <Table.Cell>
                 <Flex justify="between">
                   <Flex direction="column" gap="2" align="start">
-                    <Link href={`/projects/${issue.projectId}?issueId=${issue.id}`}>{issue.title}</Link>{" "}
+                    <Link
+                      href={`/projects/${issue.projectId}?issueId=${issue.id}`}
+                    >
+                      {issue.title}
+                    </Link>{" "}
                     <IssueStatusBadge status={issue.status} />
                   </Flex>
 
                   {issue.assignedToUser && (
                     <Flex align="center" gap="2">
-                      <Avatar
-                        src={
-                          issue.assignedToUser.image
-                            ? issue.assignedToUser.image
-                            : "/user_avatar2.svg"
-                        }
-                        fallback="?"
-                        size="2"
-                        radius="full"
-                      />
+                      {issue.assignedToUser.image ?(
+                        <Avatar
+                          src={issue.assignedToUser.image}
+                          fallback="?"
+                          size="2"
+                          radius="full"
+                        />
+                      ) :  <div className="text-xl"><RiUser5Line /></div>}
+
                       <Text>{issue.assignedToUser.name!}</Text>
                     </Flex>
                   )}
