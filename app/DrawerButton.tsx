@@ -35,8 +35,6 @@ const DrawerButton = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { status, data: session } = useSession();
      if(status === 'unauthenticated' ) return null;
-   
-    if (status === "loading") return <Skeleton width="3rem"/>;
 
   return (
     <div className='ml-5 mt-5 w-60 xl:hidden '>
