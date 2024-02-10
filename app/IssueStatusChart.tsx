@@ -78,7 +78,7 @@ const IssueStatusChart = ({ open, inProgress, closed }: Props) => {
   return (
     <Box className="w-96 shadow-lg border-0">
       <Heading ml="3" size="4">
-        Issue by status
+        Issues by status
       </Heading>
       <Box className="p-8">
       <ResponsiveContainer width="100%" height={200}>
