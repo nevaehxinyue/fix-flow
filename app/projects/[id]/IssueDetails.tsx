@@ -120,7 +120,7 @@ const IssueDetails = async ({
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Issue Title</Text>
           <Heading size="4" color="bronze">
-            {issu?.title}
+            {issue?.title}
           </Heading>
         </Flex>
 
