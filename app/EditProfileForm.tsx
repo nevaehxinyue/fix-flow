@@ -47,7 +47,7 @@ const EditProfileForm = () => {
   };
 
   const { data: session } = useSession();
-  if (!session) return null;
+ 
 
   const { data: user } = useQuery<User>({
     queryKey: ['user'],
@@ -64,9 +64,7 @@ const {
     resolver: zodResolver(userProfileUpdateSchema),
   });
 
-
-
-  
+  if(!session) return null;
 
   const onSubmit = async (data: EditProfileFormData) => {
     const updateData: { name?: string; password?: string, confirmPassword?: string} = {};
@@ -95,11 +93,12 @@ const {
  
     try {
       
-      const response = await axios.patch(`/api/users/${session.user.id}`, updateData);
+      const response = await axios.patch(`/api/users/${session?.user.id}`, updateData);
       if (response.data.success) {
         toast.success("Your changes have been saved!");
         // Make sure the page that the user is currently on reflects the user profile changes
-        queryClient.invalidateQueries({ queryKey: ["projects"]});
+        queryClient.refetchQueries({ queryKey: ["projects"]});
+        queryClient.refetchQueries({queryKey: ['user']})
       }
     } catch (error) {
       setError("Profile update failed.Please try again.");

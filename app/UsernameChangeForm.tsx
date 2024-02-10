@@ -10,6 +10,7 @@ import {
   TextField,
   Text,
 } from "@radix-ui/themes";
+import { useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -25,6 +26,7 @@ const UsernameChangeForm = () => {
   const [error, setError] = useState("");
   const { data: session } = useSession();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
 
   console.log(`session: ${session}`);
@@ -47,8 +49,9 @@ const UsernameChangeForm = () => {
           toast.success(
             "Your username has been updated successfully! You'll be redirected the dashboard in seconds."
           );
+          queryClient.refetchQueries({queryKey: ['user']})
           router.refresh();
-          
+        
         }
       } catch (error) {
         setError("Something went wrong. Username cannot be saved.");
@@ -59,9 +62,8 @@ const UsernameChangeForm = () => {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
-        <Button ml="2" size="1">
-          Change name
-        </Button>
+        <button className="theme-button ml-2">Change name</button>
+       
       </Dialog.Trigger>
       <Dialog.Content>
         <Dialog.Title>Change your username</Dialog.Title>

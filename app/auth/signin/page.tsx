@@ -22,7 +22,7 @@ const SigninPage = () => {
             <Flex direction="column" gap="2" align="center">
               <PasswordSigninForm />
               <Text>
-                Don't have an account?{" "}
+                Don&apos;t have an account?{" "}
                 <Link href="/auth/register">Sign up</Link>
               </Text>
             </Flex>

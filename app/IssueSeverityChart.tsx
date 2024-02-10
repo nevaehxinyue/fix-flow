@@ -25,7 +25,7 @@ interface CustomLabelProps {
         { label: "Major", value: major},
         { label: "Critical", value: critical },
       ];
-      const COLORS2 = [  "#D9D9D9","#838383","#A18072",'#202020' ];
+      const COLORS2 = [  "#646464","#8EC8F6","#C2A499",'#EB8E90' ];
       
       const RADIAN = Math.PI / 180;
       const renderCustomizedLabel = ({ cx, cy, midAngle,innerRadius, outerRadius, percent, index}: CustomLabelProps) => {

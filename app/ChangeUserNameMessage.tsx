@@ -21,15 +21,15 @@ const ChangeUserNameMessage = () => {
           console.log("Username cannot be generated", error);
         });
     }
-  }, [session?.user.id]);
+  }, [session?.user]);
 
   return (
     <div>
-      <Callout.Root >
-        <Callout.Icon>
+      <Callout.Root className="text-white" >
+        <Callout.Icon className="text-white">
           <InfoCircledIcon />
         </Callout.Icon>
-        <Callout.Text>
+        <Callout.Text className="text-white">
           Your username has been generated automatically. You can change it
           here.
         <UsernameChangeForm />

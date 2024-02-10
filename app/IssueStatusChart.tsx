@@ -36,7 +36,7 @@ const IssueStatusChart = ({ open, inProgress, closed }: Props) => {
   //red: "#E54D2E", orange: "#F76B15", blue'#0090FF'
   // green: "#ADDDC0", blue: '#8EC8F6', orange:"#FFC182", red: "#C2B5F5"
 
-  const COLORS1 = ["#D9D9D9", "#838383", "#202020"];
+  const COLORS1 = ["#EB8E90", "#8EC8F6", "#646464"];
   // const COLORS2 = [ "#ADDDC0", '#8EC8F6', "#FFC182", "#EB8E90"];
 
   const RADIAN = Math.PI / 180;
@@ -72,7 +72,7 @@ const IssueStatusChart = ({ open, inProgress, closed }: Props) => {
 
   if (open + inProgress + closed === 0) {
     // Don't try to render the chart if there is no data.
-    return <Text>No data yet</Text>;
+    return <Text className="font-semibold">No data yet</Text>;
   }
 
   return (

@@ -1,9 +1,9 @@
 import prisma from "@/prisma/client";
 import IssuesToolBar from "./IssuesToolBar";
-import { Issue, Status } from "@prisma/client";
+import { Status } from "@prisma/client";
 import Pagination from "@/app/components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
-import { Flex } from "@radix-ui/themes";
+import { Flex, Text } from "@radix-ui/themes";
 import { title } from "process";
 import { GetServerSidePropsContext, Metadata } from "next";
 import { getServerSession } from "next-auth";
@@ -51,6 +51,12 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
     },
   });
 
+  if(issues.length === 0) {
+    return (
+      <div className="flex mt-72 justify-center">
+    <Text className="font-semibold mt-48 text-lg">No issue yet</Text></div>)
+  }
+
   return (
     <div className="flex flex-col gap-10 p-8 bg-white border-0 rounded-lg shadow-lg">
       <IssuesToolBar />
@@ -73,6 +79,6 @@ export default IssuePage;
 
 
 export const metadata: Metadata = {
-  title: "Issue Tracker -  List ",
-  description: "A List of all issues",
+  title: "Fix Flow -  List ",
+  description: "A List of all issues belonging to the current user",
 };

@@ -14,11 +14,11 @@ interface Props {
 
 const MemberPagination
  = ({ itemCount, pageSize, currentPage }: Props) => {
-  const pageCount = currentPage === 1 ? Math.ceil(itemCount / pageSize) : (Math.ceil(itemCount / pageSize) + 1)
-  if (pageCount <= 1) return null;
-
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const pageCount = currentPage === 1 ? Math.ceil(itemCount / pageSize) : (Math.ceil(itemCount / pageSize) + 1)
+  if (pageCount <= 1) return null;
 
   const changePage = (page: number) => {
     const params = new URLSearchParams(searchParams);

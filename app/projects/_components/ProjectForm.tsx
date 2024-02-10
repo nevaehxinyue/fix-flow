@@ -53,12 +53,12 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
         if (response.status === 201) {
           toast.success("Your submission is successful!");
         }
-        router.refresh();
+        queryClient.refetchQueries({ queryKey: ["projects"] });
       } else {
         const response = await axios.post("/api/projects", data);
         if (response.status === 201) {
           toast.success("Your submission is successful!");
-          queryClient.invalidateQueries({ queryKey: ["projects"] });
+          queryClient.refetchQueries({ queryKey: ["projects"] });
         }
       }
     } catch (error) {

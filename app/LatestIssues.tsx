@@ -18,6 +18,15 @@ const LatestIssues = ({
 }: {
   latestIssues: LatestIssuesType[];
 }) => {
+  if (latestIssues.length === 0)
+    return (
+      <>
+        <Heading size="4" mb="5">
+          Latest Issues
+        </Heading>
+        <Text className="font-semibold">No data yet</Text>
+      </>
+    );
   return (
     <>
       <Heading size="4" mb="5">
@@ -40,14 +49,18 @@ const LatestIssues = ({
 
                   {issue.assignedToUser && (
                     <Flex align="center" gap="2">
-                      {issue.assignedToUser.image ?(
+                      {issue.assignedToUser.image ? (
                         <Avatar
                           src={issue.assignedToUser.image}
                           fallback="?"
                           size="2"
                           radius="full"
                         />
-                      ) :  <div className="text-xl"><RiUser5Line /></div>}
+                      ) : (
+                        <div className="text-xl">
+                          <RiUser5Line />
+                        </div>
+                      )}
 
                       <Text>{issue.assignedToUser.name!}</Text>
                     </Flex>

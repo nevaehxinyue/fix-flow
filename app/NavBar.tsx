@@ -110,6 +110,11 @@ const AuthStatus = () => {
             <DropdownMenu.Label>
               <Text size="2">{session.user!.email}</Text>
             </DropdownMenu.Label>
+
+            <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
+              <EditProfileButton />
+            </DropdownMenu.Item>
+
             <DropdownMenu.Item>
               <button
                 className="w-full flex justify-start"
@@ -117,11 +122,6 @@ const AuthStatus = () => {
               >
                 Log out
               </button>
-              {/* <Link href="/api/auth/signout">Log out</Link> */}
-            </DropdownMenu.Item>
-
-            <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
-              <EditProfileButton />
             </DropdownMenu.Item>
           </DropdownMenu.Content>
         </DropdownMenu.Root>
@@ -146,6 +146,9 @@ const AuthStatus = () => {
           <DropdownMenu.Label>
             <Text size="2">{session.user!.email}</Text>
           </DropdownMenu.Label>
+          <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
+            <EditProfileButton />
+          </DropdownMenu.Item>
           <DropdownMenu.Item>
             <button
               className="w-full flex justify-start"
@@ -154,10 +157,6 @@ const AuthStatus = () => {
               Log out
             </button>
             {/* <Link href="/api/auth/signout">Log out</Link> */}
-          </DropdownMenu.Item>
-
-          <DropdownMenu.Item onSelect={(event) => event.preventDefault()}>
-            <EditProfileButton />
           </DropdownMenu.Item>
         </DropdownMenu.Content>
       </DropdownMenu.Root>

@@ -7,6 +7,7 @@ import { Skeleton } from "@/app/components";
 import { format } from "date-fns";
 import DeleteCommentButton from "./DeleteCommentButton";
 import { useSession } from "next-auth/react";
+import { RiUser5Line } from "react-icons/ri";
 
 interface CommentType {
   id: number;
@@ -42,12 +43,13 @@ const CommentDetails = ({ issueId }: { issueId: string }) => {
         <Box key={comment.id} p="2">
           <Flex direction="column">
             <Flex align="center" gap="2">
-              <Avatar
+              {comment.createdBy.image ? <Avatar
                 size="2"
                 src={comment.createdBy.image!}
                 fallback="?"
                 radius="full"
-              />
+              /> : <div className="text-xl"><RiUser5Line /></div>}
+              
               <Text className="font-bold">{comment.createdBy.name} </Text>
               <Text className="text-sm">
                 -{" "}

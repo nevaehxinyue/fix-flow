@@ -1,5 +1,6 @@
 import { Flex, Heading, Text } from "@radix-ui/themes"
 import EditProfileSingleForm from "../EditProfileSingleForm"
+import { Metadata } from "next"
 
 const UserEditProfilePage = () => {
   return (
@@ -13,3 +14,8 @@ const UserEditProfilePage = () => {
 }
 
 export default UserEditProfilePage
+
+export const metadata: Metadata = {
+  title: "Fix Flow - Edit profile",
+  description: "Edit user profie",
+};

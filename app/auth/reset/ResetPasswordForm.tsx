@@ -38,7 +38,7 @@ const ResetPasswordForm = () => {
     if (!token || verified !== "true") {
       router.push("/auth/signin");
     }
-  }, [token, verified]);
+  }, [token, verified, router]);
 
   const {
     register,

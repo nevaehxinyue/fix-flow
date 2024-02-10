@@ -45,7 +45,7 @@ export function EmailProviderEmail({
     margin: "0 auto",
   };
   const button = {
-    backgroundColor: "#A18072",
+    backgroundColor: "#202020",
     borderRadius: "3px",
     fontWeight: "600",
     color: "#fff",
@@ -93,10 +93,10 @@ export function EmailProviderEmail({
             </Row>
           </Section>
 
-          <Heading style={h1}>Let's get you signed in</Heading>
+          <Heading style={h1}>Let&apos;s get you signed in</Heading>
           <Text style={{ ...text, marginBottom: "14px" }}>Hi {username},</Text>
           <Text style={{ ...text, marginBottom: "14px" }}>
-            We use this easy sign-in button so you don't have to remeber or type in yet another long password.
+            We use this easy sign-in button so you don&apos;t have to remeber or type in yet another long password.
           </Text>
           <Button style={button} href={signinLink}>
             Sign in

@@ -15,6 +15,7 @@ import MemberPagination from "@/app/components/MemberPagination";
 import IssueButtons from "../_components/IssueButtons";
 import IssueCommentForm from "./IssueCommentForm";
 import ProjectDescriptionDialog from "./ProjectDescriptionDialog";
+import { Metadata } from "next";
 
 export interface FetchedProjectType {
   id: number;
@@ -198,3 +199,8 @@ const ProjectDetialPage = async ({
 };
 
 export default ProjectDetialPage;
+
+export const metadata: Metadata = {
+  title: "Fix Flow - Project Page",
+  description: "View details of a project",
+}

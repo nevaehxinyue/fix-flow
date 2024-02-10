@@ -44,7 +44,7 @@ export function VerificationEmail({
     margin: "0 auto",
   };
   const button = {
-    backgroundColor: "#A18072",
+    backgroundColor: "#202020",
     borderRadius: "3px",
     fontWeight: "600",
     color: "#fff",

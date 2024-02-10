@@ -16,17 +16,16 @@ const ProjectButtons = ({
 
   return (
     <Dialog.Root>
-      {project?.createdBy.id === session?.user?.id && (
+      {/* {project?.createdBy.id === session?.user?.id && ( */}
         <Dialog.Trigger>
-          {project ? (
-            <button className="text-white hover:scale-125">
-              <TbPencilBolt />
-            </button>
-          ) : (
-            <button className="theme-button mb-3">New project</button>
-          )}
-        </Dialog.Trigger>
-      )}
+        {project && project?.createdBy.id === session?.user?.id ? (
+      <button className="text-white hover:scale-125">
+        <TbPencilBolt />
+      </button>
+    ) : (
+      <button className="theme-button mb-3">New project</button>
+    )}
+          </Dialog.Trigger>
 
       <Dialog.Content className="max-w-md">
         <Flex justify="between" align="center">

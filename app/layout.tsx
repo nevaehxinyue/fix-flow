@@ -8,11 +8,9 @@ import React from "react";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";
 import QueryClientProvider from "./QueryClientProvider";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider } from "@chakra-ui/react";
 import TopBackgroundBox from "./TopBackgroundBox";
 import DrawerButton from "./DrawerButton";
-import { getServerSession } from "next-auth";
-import authOptions from "./auth/authOptions";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,18 +32,18 @@ export default function RootLayout({
       <body className={inter.variable}>
         <QueryClientProvider>
           <AuthProvider>
-          <ChakraProvider>
-            <Theme accentColor="gray">
-              <div className="flex min-h-screen bg-neutral-100">
-                <TopBackgroundBox />
-                <NavBar />
-                <main className="flex-grow relative z-10">
-                <DrawerButton />
-                  <Box className="m-24">{children}</Box>
-                </main>
-              </div>
-              {/* <ThemePanel /> */}
-            </Theme>
+            <ChakraProvider>
+              <Theme accentColor="gray">
+                <div className="flex min-h-screen bg-neutral-100">
+                  <TopBackgroundBox />
+                  <NavBar />
+                  <main className="flex-grow relative z-10">
+                    <DrawerButton />
+                    <Box className="m-24">{children}</Box>
+                  </main>
+                </div>
+                {/* <ThemePanel /> */}
+              </Theme>
             </ChakraProvider>
           </AuthProvider>
         </QueryClientProvider>

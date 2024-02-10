@@ -34,7 +34,7 @@ import { IoMdLogOut } from "react-icons/io";
 const DrawerButton = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const { status, data: session } = useSession();
-
+     if(status === 'unauthenticated' ) return null;
    
     if (status === "loading") return <Skeleton width="3rem"/>;
 
