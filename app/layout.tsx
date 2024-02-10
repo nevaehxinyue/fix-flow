@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "@radix-ui/themes/styles.css";
 import "./theme-config.css";
 import { Box, Theme } from "@radix-ui/themes";
 import "./globals.css";
+import "@radix-ui/themes/styles.css";
 import React from "react";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";

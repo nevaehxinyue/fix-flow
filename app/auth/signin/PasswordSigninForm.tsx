@@ -10,7 +10,7 @@ import {
   Callout,
 } from "@radix-ui/themes";
 
-import { ErrorMessage, Link } from "@/app/components";
+import { ErrorMessage, Link, Spinner } from "@/app/components";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -118,9 +118,10 @@ const PasswordSigninForm = () => {
         <button
         className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
         type="submit"
+        disabled={isSubmitting}
       >
         <Flex gap="2" justify="center" align="center">
-          Sign in
+          Sign in{isSubmitting && <Spinner />}
         </Flex>
       </button>
       </form>

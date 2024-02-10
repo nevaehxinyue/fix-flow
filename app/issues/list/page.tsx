@@ -18,7 +18,7 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
     : undefined;
 
   const orderBy = columnNames.includes(searchParams.orderBy)
-    ? { [searchParams.orderBy]: "desc" }
+    ? { [searchParams.orderBy]: "asc" }
     : undefined;
 
   const page = parseInt(searchParams.page) || 1;
