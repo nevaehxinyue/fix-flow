@@ -59,9 +59,9 @@ const IssueDetails = ({
   
   }, [searchParams.issueId])
 
-  if(!issue) {
-    return <Text className="font-semibold" size="3">No issue details available.</Text>;
-  }
+  // if(!issue) {
+  //   return <Text className="font-semibold" size="3">No issue details available.</Text>;
+  // }
 
   if(isLoading) return (
     <Box>
