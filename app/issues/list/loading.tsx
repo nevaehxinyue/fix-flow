@@ -7,7 +7,7 @@ import IssuesToolBar from "./IssuesToolBar";
 const LoadingIssuesPage = () => {
   const issues = [1, 2, 3, 4, 5];
   return (
-    <div>
+    <div className="flex flex-col gap-10 p-8 bg-white border-0 rounded-lg shadow-lg">
         <IssuesToolBar />
       <Table.Root variant="surface">
         <Table.Header>
