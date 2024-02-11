@@ -16,7 +16,7 @@ const EditProfileButton = () => {
   const handleDialogClose = () => {
     setIsDialogOpen(false);
     setIsMenuOpen(false);
-    router.refresh();
+
   };
 
   return (

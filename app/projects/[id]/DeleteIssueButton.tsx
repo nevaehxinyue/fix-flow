@@ -12,13 +12,14 @@ const DeleteIssueButton = ({issue}: {issue: Issue}) => {
     const [error, setError] = useState(false);
     const [isDeleting, setDeleting] = useState(false);
     const router = useRouter();
+   const params = useParams()
 
 
     const deleteIssue = async() => {
         try {
             setDeleting(true);
             await axios.delete(`/api/issues/${issue.id}`);
-            router.refresh();
+            router.push(`/projects/${params.id}`);
         }catch(error){
             setError(true)
         }

@@ -41,7 +41,7 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
       .catch(() => {
         toast.error("Change could not be saved.");
       });
-      router.refresh()
+      // router.refresh()
   };
 
   return (

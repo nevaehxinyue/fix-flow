@@ -38,7 +38,7 @@ const EditProfileForm = () => {
   const handleDialogClose = () => {
     setIsDialogOpen(false);
     setIsMenuOpen(false);
-    router.refresh();
+    // router.refresh();
   };
 
   const [isPasswordVisible, setPasswordVisible] = useState(false);

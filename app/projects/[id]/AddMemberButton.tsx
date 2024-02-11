@@ -46,7 +46,7 @@ const AddMemberButton = ({ projectAssginees }: Props) => {
         );
         if (response.data.success) {
           toast.success("Members added successfully.");
-          router.refresh();
+          // router.refresh();
         }
       } catch (error) {
         // Handle error

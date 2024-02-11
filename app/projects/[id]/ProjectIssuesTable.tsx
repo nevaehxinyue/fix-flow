@@ -31,21 +31,17 @@ export interface IssueQuery {
 
 const ProjectIssuesTable = ({searchParams, issuesOnEachPage}: {searchParams: IssueQuery, issuesOnEachPage: Issue[]}) => {
 const router = useRouter();
-// const searchParamsNavigation = useSearchParams();
+const searchParamsNavigation = useSearchParams();
 const queryClient = useQueryClient();
 
 
 const showIssueDetails = (issueId: number)=> {
-  // const queryParams = new URLSearchParams();
-
-  // queryParams.set('issueId', issueId.toString());
-  router.push(`?issueId=${issueId}`);
+  const queryParams = new URLSearchParams(searchParamsNavigation);
+  
+  queryParams.set('issueId', issueId.toString());
+  console.log(queryParams)
+  router.push('?' + queryParams.toString());
   queryClient.refetchQueries({ queryKey: ['comments'] });
-
-  // router.push({
-  //   pathname: router.pathname,
-  //   query: {...router.query, issueId: issueId.toString()},
-  // }, undefined, { shallow: true})
 
 };
 
