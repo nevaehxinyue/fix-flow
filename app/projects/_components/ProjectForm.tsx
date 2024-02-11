@@ -52,7 +52,7 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
         const response = await axios.patch("/api/projects/" + project.id, data);
         if (response.status === 201) {
           toast.success("Your submission is successful!");
-          queryClient.invalidateQueries({ queryKey: ["projects"] });
+          router.refresh();
       
         }
         
