@@ -39,19 +39,19 @@ interface ProjectType {
 //   projects: ProjectType[];
 // }
 
-const ProjectSummary = ({projects}: {projects:ProjectType[]}) => {
-  // const {
-  //   data: projects,
-  //   error,
-  //   isLoading,
-  // } = useQuery<ProjectType[]>({
-  //   queryKey: ["projects"],
-  //   queryFn: () =>
-  //     axios.get<ProjectType[]>("/api/projects").then((res) => res.data),
-  //   staleTime: 60 * 1000, //60s
-  //   retry: 3,
+const ProjectSummary = () => {
+  const {
+    data: projects,
+    error,
+    isLoading,
+  } = useQuery<ProjectType[]>({
+    queryKey: ["projects"],
+    queryFn: () =>
+      axios.get<ProjectType[]>("/api/projects").then((res) => res.data),
+    staleTime: 60 * 1000, //60s
+    retry: 3,
     
-  // });
+  });
 
   // if (error) return null;
 

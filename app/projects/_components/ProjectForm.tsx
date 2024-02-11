@@ -52,13 +52,15 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
         const response = await axios.patch("/api/projects/" + project.id, data);
         if (response.status === 201) {
           toast.success("Your submission is successful!");
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
+      
         }
-        queryClient.refetchQueries({ queryKey: ["projects"] });
+        
       } else {
         const response = await axios.post("/api/projects", data);
         if (response.status === 201) {
           toast.success("Your submission is successful!");
-          queryClient.refetchQueries({ queryKey: ["projects"] });
+          queryClient.invalidateQueries({ queryKey: ["projects"] });
         }
       }
     } catch (error) {

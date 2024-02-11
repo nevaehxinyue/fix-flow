@@ -111,31 +111,31 @@ export default async function Home() {
     },
   });
 
-  const projects = await prisma.project.findMany({
-    where: {
-      OR: [
-        { createdByUserId: session?.user?.id },
-        {
-          assignedToUsers: {
-            some: {
-              userId: session?.user?.id,
-            },
-          },
-        },
-      ],
-    },
-    include: {
-      createdBy: true,
-      assignedToUsers: {
-        include: {
-          user: true,
-        },
-      },
-      issues: true,
-    },
-  });
+  // const projects = await prisma.project.findMany({
+  //   where: {
+  //     OR: [
+  //       { createdByUserId: session?.user?.id },
+  //       {
+  //         assignedToUsers: {
+  //           some: {
+  //             userId: session?.user?.id,
+  //           },
+  //         },
+  //       },
+  //     ],
+  //   },
+  //   include: {
+  //     createdBy: true,
+  //     assignedToUsers: {
+  //       include: {
+  //         user: true,
+  //       },
+  //     },
+  //     issues: true,
+  //   },
+  // });
 
-  console.log(projects[0].assignedToUsers)
+  // console.log(projects[0].assignedToUsers)
 
   return (
     <Grid columns={{ initial: "1", lg: "1fr 1fr 1fr" }} gap="8">
@@ -145,7 +145,7 @@ export default async function Home() {
         </div>
       )}
       <Box className="col-span-3">
-        <ProjectSummary projects={projects}/>
+        <ProjectSummary />
       </Box>
 
       
