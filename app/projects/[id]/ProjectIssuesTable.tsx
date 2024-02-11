@@ -36,12 +36,12 @@ const queryClient = useQueryClient();
 
 
 const showIssueDetails = (issueId: number)=> {
-  const queryParams = new URLSearchParams();
+  // const queryParams = new URLSearchParams();
 
-  queryParams.set('issueId', issueId.toString());
-  router.push('?' + queryParams.toString());
+  // queryParams.set('issueId', issueId.toString());
+  router.push(`?issueId=${issueId}`);
   queryClient.refetchQueries({ queryKey: ['comments'] });
-  
+
   // router.push({
   //   pathname: router.pathname,
   //   query: {...router.query, issueId: issueId.toString()},
