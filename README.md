@@ -11,7 +11,7 @@
 
 ## Overview
 <div>
-  <img width="1496" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/7bbad816-098b-4660-a8e6-8d5bd58d5948" style="width: 49%; margin-right: 2%;">
+<img width="1496" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/7bbad816-098b-4660-a8e6-8d5bd58d5948" style="width: 49%; margin-right: 2%;">
 <img width="1475" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/bd88b859-9baf-4ab0-9e83-d350567d6d36" style="width: 49%; ">
 </div>
 <br/>
@@ -21,10 +21,16 @@
 </div>
 <br/>
 <div>
-  <img width="1499" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/886cc74c-c26d-4359-a4c3-7cae4557b9eb" style="width: 49%; margin-right: 2%;">
-
+<img width="1502" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/c51a7b08-a295-4864-a267-3362e6407374" style="width: 49%; margin-right: 2%;">
+<img width="1489" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/6a904be4-af6b-4e7d-adc8-ee147098ff19" style="width: 49%; ">
+</div>
+<br/>
+<div>
+<img width="1499" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/886cc74c-c26d-4359-a4c3-7cae4557b9eb" style="width: 49%; margin-right: 2%;">
 <img width="1501" alt="image" src="https://github.com/nevaehxinyue/fix-flow/assets/151484982/89844ccc-4551-4789-9492-23eed7ed4686" style="width: 49%; ">
 </div>
+
+
 
 
 ## Tech Stack
