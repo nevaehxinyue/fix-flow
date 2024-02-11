@@ -23,7 +23,7 @@ const ProjectButtons = ({
         <TbPencilBolt />
       </button>
     ) : (
-      <button className="theme-button mb-3">New project</button>
+      <button className="theme-button mb-3">{!project ? 'New project':''}</button>
     )}
           </Dialog.Trigger>
 
