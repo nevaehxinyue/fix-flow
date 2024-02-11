@@ -4,11 +4,11 @@ import IssueSeverityBadge from "@/app/components/IssueSeverityBadge";
 import { Issue } from "@prisma/client";
 import {  Flex, Table } from "@radix-ui/themes";
 import NextLink from "next/link";
-// import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import IssueButtons from "../_components/IssueButtons";
 import { useQueryClient } from "@tanstack/react-query";
 import { ArrowUpIcon } from "@radix-ui/react-icons";
-import { useRouter } from "next/router";
+
 
 
 
@@ -36,15 +36,16 @@ const queryClient = useQueryClient();
 
 
 const showIssueDetails = (issueId: number)=> {
-  // const queryParams = new URLSearchParams();
+  const queryParams = new URLSearchParams();
 
-  // queryParams.set('issueId', issueId.toString());
-  // router.push('?' + queryParams.toString());
-  // queryClient.refetchQueries({ queryKey: ['comments'] });
-  router.push({
-    pathname: router.pathname,
-    query: {...router.query, issueId: issueId.toString()},
-  }, undefined, { shallow: true})
+  queryParams.set('issueId', issueId.toString());
+  router.push('?' + queryParams.toString());
+  queryClient.refetchQueries({ queryKey: ['comments'] });
+  
+  // router.push({
+  //   pathname: router.pathname,
+  //   query: {...router.query, issueId: issueId.toString()},
+  // }, undefined, { shallow: true})
 
 };
 

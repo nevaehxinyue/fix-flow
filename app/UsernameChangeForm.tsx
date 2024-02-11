@@ -50,7 +50,7 @@ const UsernameChangeForm = () => {
             "Your username has been updated successfully! You'll be redirected the dashboard in seconds."
           );
           queryClient.refetchQueries({queryKey: ['user']})
-          router.refresh();
+          // router.refresh();
         
         }
       } catch (error) {
