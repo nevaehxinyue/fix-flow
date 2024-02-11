@@ -1,5 +1,5 @@
 "use client";
-import { Issue, ProjectStatus, User } from "@prisma/client";
+import { Issue, ProjecOftUsers, ProjectStatus, User } from "@prisma/client";
 import {
   Flex,
   Heading,
@@ -19,18 +19,19 @@ interface assignedUserApi {
   projectId: number;
   user: User;
   userId: string;
+  assignedAt: Date;
 }
 
 interface ProjectType {
   id: number;
   title: string;
-  description: string;
+  description: string | null;
   status: ProjectStatus;
   createdAt: Date;
   updatedAt: Date;
   createdByUserId: string;
   createdBy: User;
-  assignedToUsers: assignedUserApi[];
+  assignedToUsers:assignedUserApi[] | null;
   issues: Issue[];
 }
 
@@ -38,21 +39,21 @@ interface ProjectType {
 //   projects: ProjectType[];
 // }
 
-const ProjectSummary = () => {
-  const {
-    data: projects,
-    error,
-    isLoading,
-  } = useQuery<ProjectType[]>({
-    queryKey: ["projects"],
-    queryFn: () =>
-      axios.get<ProjectType[]>("/api/projects").then((res) => res.data),
-    staleTime: 60 * 1000, //60s
-    retry: 3,
+const ProjectSummary = ({projects}: {projects:ProjectType[]}) => {
+  // const {
+  //   data: projects,
+  //   error,
+  //   isLoading,
+  // } = useQuery<ProjectType[]>({
+  //   queryKey: ["projects"],
+  //   queryFn: () =>
+  //     axios.get<ProjectType[]>("/api/projects").then((res) => res.data),
+  //   staleTime: 60 * 1000, //60s
+  //   retry: 3,
     
-  });
+  // });
 
-  if (error) return null;
+  // if (error) return null;
 
   //   console.log("projects type:", typeof projects);
   //   console.log("Is projects an array:", Array.isArray(projects));
@@ -66,12 +67,11 @@ const ProjectSummary = () => {
         </Heading>
         <ProjectButtons />
       </Flex>
-
-      {isLoading &&<Flex direction="column">
+      {/* {isLoading &&<Flex direction="column">
         <Skeleton height="2rem" />
         <Skeleton height="10rem" />
-      </Flex>}
-      {!isLoading &&
+      </Flex>} */}
+      {/* {!isLoading && */}
       <Table.Root>
         <Table.Header>
           <Table.Row>
@@ -96,8 +96,8 @@ const ProjectSummary = () => {
               <Table.Cell>
                 <Flex direction="column" gap="2">
                   <Text>{project.createdBy.name}</Text>
-                  {project.assignedToUsers.map((assignedUser) => (
-                    <Text key={assignedUser.user.id}>
+                  {project.assignedToUsers?.map((assignedUser) => (
+                    <Text key={assignedUser.userId}>
                       {assignedUser.user.name}
                     </Text>
                   ))}
@@ -106,7 +106,7 @@ const ProjectSummary = () => {
             </Table.Row>
           ))}
         </Table.Body>
-      </Table.Root>}
+      </Table.Root>
     </div>
   );
 };

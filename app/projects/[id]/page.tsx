@@ -16,6 +16,11 @@ import IssueButtons from "../_components/IssueButtons";
 import IssueCommentForm from "./IssueCommentForm";
 import ProjectDescriptionDialog from "./ProjectDescriptionDialog";
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const DynamicIssueDetails = dynamic(() => import('./IssueDetails'), {
+  ssr: false
+})
 
 export interface FetchedProjectType {
   id: number;
@@ -105,7 +110,17 @@ const ProjectDetialPage = async ({
   const issuesCount = await prisma.issue.count({
     where: { projectId: projectId },
   });
-
+  
+let requestedIssue
+if(searchParams.issueId){ 
+  requestedIssue =  await prisma.issue.findUnique({
+  where: { id: parseInt(searchParams.issueId) },
+  include: {
+    assignedToUser: true,
+    createdBy: true,
+  },
+});}
+ 
   return (
     <Flex direction="column" gap="8">
     {/* // <Flex direction="column" className="bg-white shadow-lg border-0 p-5 rounded-lg"> */}
@@ -180,7 +195,7 @@ const ProjectDetialPage = async ({
         {searchParams.issueId && (
           <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
             <div className="col-span-2 bg-white rounded-lg shadow-lg border-0 p-5">
-              <IssueDetails searchParams={searchParams} />
+              <DynamicIssueDetails issue={requestedIssue} />
             </div>
             <Box className="space-y-5 bg-white rounded-lg shadow-lg border-0 p-5">
               <Heading className="border-b pb-4" size="4">

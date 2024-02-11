@@ -23,8 +23,6 @@ const IssueCommentForm = ({issueId}: {issueId: string}) => {
   const [error, setError] = useState("");
 
 
-  console.log(issueId);
-
 // setValue here is used to ensure 'session.user.id' is submittedd with the form.
 
   const {
@@ -60,8 +58,6 @@ const IssueCommentForm = ({issueId}: {issueId: string}) => {
       setSubmitting(false);
     }
   };
-  console.log(errors)
-
 
   return (
     <div>

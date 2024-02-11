@@ -4,33 +4,26 @@ import ReactMarkdown from "react-markdown";
 import { ErrorMessage, IssueStatusBadge, Skeleton } from "../../components";
 import IssueSeverityBadge from "../../components/IssueSeverityBadge";
 import { useState } from "react";
+import { Issue, User } from "@prisma/client";
 
-// interface FetchedIssueType {
-//   title: string;
-//   description?: string;
-//   status: 'OPEN' | "IN_PROGRESS" | 'CLOSED';
-//   severity: 'MINOR' | 'MEDIUM'| 'MAJOR' | 'CRITICAL';
-//   createdAt: Date;
-//   createdBy: User;
-//   assignedToUser: User | null ;
-// }
+interface FetchedIssueType {
+  title: string;
+  description?: string;
+  status: 'OPEN' | "IN_PROGRESS" | 'CLOSED';
+  severity: 'MINOR' | 'MEDIUM'| 'MAJOR' | 'CRITICAL';
+  createdAt: Date;
+  createdBy: User;
+  assignedToUser: User | null ;
 
-const IssueDetails = async ({
-  searchParams,
-}: {
-  searchParams: { issueId: string };
-}) => {
+}
+
+const IssueDetails =  ({
+issue}: {issue: FetchedIssueType | null | undefined}) => {
   // const [isLoading, setIsLoading] = useState(true);
   // const [issue, setIssue ] = useState<FetchedIssueType>();
   // const [error, setError] = useState("");
  
-    const issue = await prisma.issue.findUnique({
-      where: { id: parseInt(searchParams.issueId) },
-      include: {
-        assignedToUser: true,
-        createdBy: true,
-      },
-    });
+   
  
   // useEffect(() => {
   //   const fetchIssue = async() => {

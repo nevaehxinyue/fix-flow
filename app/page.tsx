@@ -12,6 +12,7 @@ import IssueSeveritySummary from "./IssueSeveritySummary";
 import IssueStatusSummary from "./IssueStatusSummary";
 
 import dynamic from "next/dynamic";
+import { setEngine } from "crypto";
 
 const DynamicIssueSeverityChart = dynamic(
   () => import('./IssueSeverityChart'), {ssr: false}
@@ -110,6 +111,32 @@ export default async function Home() {
     },
   });
 
+  const projects = await prisma.project.findMany({
+    where: {
+      OR: [
+        { createdByUserId: session?.user?.id },
+        {
+          assignedToUsers: {
+            some: {
+              userId: session?.user?.id,
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      createdBy: true,
+      assignedToUsers: {
+        include: {
+          user: true,
+        },
+      },
+      issues: true,
+    },
+  });
+
+  console.log(projects[0].assignedToUsers)
+
   return (
     <Grid columns={{ initial: "1", lg: "1fr 1fr 1fr" }} gap="8">
       {!user?.name && user && (
@@ -118,7 +145,7 @@ export default async function Home() {
         </div>
       )}
       <Box className="col-span-3">
-        <ProjectSummary />
+        <ProjectSummary projects={projects}/>
       </Box>
 
       
