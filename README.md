@@ -2,7 +2,7 @@
 <img alt="logo" src="https://raw.githubusercontent.com/nevaehxinyue/fix-flow/main/public/logo2.png" width="40">
 <h1 align="center">Fix Flow </h1>
 <h3>Your project and issue management solution. 🖋️ ✨</h3>
-<a href="fix-flow.vercel.app">fix-flow.vercel.app</a>
+<a href="https://fix-flow.vercel.app">fix-flow.vercel.app</a>
 </div>
 
 ## Features
@@ -27,12 +27,6 @@
 </div>
 
 
-
-
-
-
-
-
 ## Tech Stack
 - [Next.js](https://nextjs.org/) – framework
 - [Typescript](https://www.typescriptlang.org/) – language
@@ -44,6 +38,9 @@
 - [NextAuth.js](https://next-auth.js.org/) – auth
 - [Resend](https://resend.com) – email
 - [Vercel](https://vercel.com/) – hosting
+
+## Note
+Please use 'Continue with Google' to log in to this app for now. I'm still configuring a private domain for setting up email sending service. It can only send emails to my private email currently. After you log in, you can set your password by using 'Edit profile' in the Nav bar so that you can also log in with your email and password next time. Thanks for your patience. 💙
 
 
 
