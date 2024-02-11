@@ -8,7 +8,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 
 const AssigneeSelect = ({ issue }: { issue: Issue }) => {
-  const router = useRouter();
+
   const {
     data: users,
     error,
@@ -20,12 +20,15 @@ const AssigneeSelect = ({ issue }: { issue: Issue }) => {
     retry: 3,
   });
 
+
+
+
   if (error) return null;
 
   if (isLoading) return <Skeleton height="2rem" />;
 
   const assignIssue = (userId: string) => {
-    const userToAssign = users?.find((user) => user.id === userId);
+    // const userToAssign = users?.find((user) => user.id === userId);
     axios
       .patch("/api/issues/" + issue.id, {
         assignedToUserId: userId === "unassigned" ? null : userId,
