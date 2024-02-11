@@ -1,5 +1,5 @@
 <div align="center">
-<img alt="logo" src="https://raw.githubusercontent.com/nevaehxinyue/fix-flow/main/public/logo2.png" width="40"  >
+<img alt="logo" width="40"  >
 <h1 align="center">Fix Flow </h1>
 <h3>Your project and issue management solution. 🖋️ ✨</h3>
 <a href="fix-flow.vercel.app">fix-flow.vercel.app</a>
