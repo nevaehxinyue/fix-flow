@@ -33,7 +33,7 @@ export async function PATCH(request: NextRequest) {
       { error: "Unauthorized request" },
       { status: 401 }
     );
-  console.log(session.user.id);
+ 
 
   //Validate the request
   const body = await request.json();
@@ -68,4 +68,36 @@ export async function PATCH(request: NextRequest) {
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
+}
+
+export async function DELETE (request: NextRequest, {params}: {params: {id: string}}) {
+  //Protect the API endpoint
+  const session = await getServerSession(authOptions);
+  if (!session)
+    return NextResponse.json(
+      { error: "Unauthorized request" },
+      { status: 401 }
+    );
+
+    //Check if the user exists
+    const user = await prisma.user.findUnique({
+      where: {id: params.id}
+    })
+    if(!user) return NextResponse.json({error: "User not found."}, {status: 400});
+
+    // Have to implement Cascading manually here because the foreign key constraints
+    //have been removed from prisma models due to deployment to Vecerl by using PlanetScale
+    // database which doesn't support foreign key constraints.
+    try {await prisma.$transaction([
+      prisma.account.deleteMany( {where: {userId: params.id}}),
+      prisma.project.deleteMany( {where: {createdByUserId: params.id}}),
+      prisma.issue.deleteMany({where: {createdByUserId: params.id}}),
+      prisma.comment.deleteMany( {where: {createdByUserId: params.id}}),
+      prisma.user.delete({where: {id: params.id}})
+    ]);
+  }catch(error: any) {
+    return NextResponse.json({error: error.message}, {status: 400})
+  }
+  
+    return NextResponse.json({success: true}, {status: 201});
 }

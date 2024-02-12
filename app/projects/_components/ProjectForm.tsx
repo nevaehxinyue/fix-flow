@@ -143,7 +143,7 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
               </Text>
               <Flex gap="3">
                  <Button onClick={() => setButtonVariant('classic')} type="button" size="1"color="gray" variant={buttonVariant}>No </Button>
-                 
+                
                  <DeleteProjectButton project={project}/>
                  </Flex>
                
