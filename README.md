@@ -46,7 +46,7 @@
 - [Radix UI](https://www.radix-ui.com/) - styling
 
 ## Note
-Please use 'Continue with Google' to log in to this app for now. I'm still configuring a private domain for setting up email sending service. It can only send emails to my private email currently. After you log in, you can set your password by using 'Edit profile' in the Nav bar so that you can also log in with your email and password next time. Thanks for your patience. 💙
+The 'Continue with Google' login option is unavailable for now, as OAuth Google requires developers to provide private policy documents and videos for publishing their projects. I'm still working on that. Thanks for your patience. 💙
 
 
 
