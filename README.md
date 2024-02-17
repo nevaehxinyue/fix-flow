@@ -46,7 +46,7 @@
 - [Radix UI](https://www.radix-ui.com/) - styling
 
 ## Note
-The 'Continue with Google' login option is unavailable for now, as OAuth Google requires developers to provide private policy documents and videos for publishing their projects. I'm still working on that. Thanks for your patience. 💙
+The 'Continue with Google' login option is unavailable for now, as OAuth Google requires developers to provide user data privacy policy documents for publishing their projects. I'm still working on that. Thanks for your patience. 💙
 
 
 
