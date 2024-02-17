@@ -65,7 +65,7 @@ const DeleteUserProfileButton = () => {
 
     <AlertDialog.Root open={isDeletingDone}>
       <AlertDialog.Content>
-        <AlertDialog.Title>Error</AlertDialog.Title>
+        <AlertDialog.Title>Note</AlertDialog.Title>
         <AlertDialog.Description>
           Your profile has been removed.
         </AlertDialog.Description>
@@ -86,7 +86,7 @@ const DeleteUserProfileButton = () => {
       <AlertDialog.Content>
         <AlertDialog.Title>Error</AlertDialog.Title>
         <AlertDialog.Description>
-          Something went wrong. Your profiel cannot be deleted. 
+          Something went wrong. Your profile cannot be deleted. 
         </AlertDialog.Description>
         <Flex justify="end">
           <Button
