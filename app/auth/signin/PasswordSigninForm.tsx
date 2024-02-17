@@ -10,13 +10,14 @@ import {
   Callout,
 } from "@radix-ui/themes";
 
-import { ErrorMessage, Link, Spinner } from "@/app/components";
+import { ErrorMessage, Spinner } from "@/app/components";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { signIn } from "next-auth/react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type PasswordFormData = z.infer<typeof userSigninSchema>;
 const PasswordSigninForm = () => {
@@ -64,7 +65,7 @@ const PasswordSigninForm = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-5 mb-2 w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-2 mt-3">
           <label>Email</label>
           <TextField.Root>
@@ -85,7 +86,7 @@ const PasswordSigninForm = () => {
           <Flex justify="between">
             <label>Password</label>
             <Link href="/auth/forget">
-              <Text size="2">Forget password?</Text>
+              <Text size="2" className="hover:text-red-400 hover:font-semibold transition">Forget password?</Text>
             </Link>
           </Flex>
           <TextField.Root>
@@ -116,7 +117,7 @@ const PasswordSigninForm = () => {
         </div>
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
         <button
-        className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+        className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
         type="submit"
         disabled={isSubmitting}
       >

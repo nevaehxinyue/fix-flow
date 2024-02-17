@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Caveat, Oooh_Baby, Dynalight, Akaya_Telivigala, Akronim, Lavishly_Yours } from "next/font/google";
 import "./theme-config.css";
 import { Box, Theme } from "@radix-ui/themes";
 import "./globals.css";
@@ -17,7 +17,45 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const metadata: Metadata = {
+export const caveat = Caveat({
+  subsets: ["latin"],
+  variable: '--font-caveat',
+  weight: "500"
+});
+export const ooohBaby = Oooh_Baby({
+  subsets: ["latin"],
+  variable: '--font-ooohBaby',
+  weight: "400"
+});
+export const dynalight = Dynalight({
+  subsets: ["latin"],
+  variable: '--font-dynalight',
+  weight: "400"
+});
+
+export const akaya = Akaya_Telivigala({
+  subsets: ["latin"],
+  variable: '--font-akaya',
+  weight: "400"
+});
+
+export const akronim = Akronim({
+  subsets: ["latin"],
+  variable: '--font-akronim',
+  weight: "400"
+});
+
+
+export const lavishly = Lavishly_Yours({
+  subsets: ["latin"],
+  variable: '--font-lavishly',
+  weight: "400"
+});
+
+
+
+
+const metadata: Metadata = {
   title: "Fix Flow",
   description: "An issue tracker app",
 };

@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { RiUser5Line } from "react-icons/ri";
+import { akaya, akronim, caveat, dynalight, lavishly, ooohBaby } from "./layout";
 
 const NavBar = () => {
   const { data: session } = useSession();
@@ -26,9 +27,9 @@ const NavBar = () => {
         {/* <Flex justify="between" align="center" className="ml-24 mr-24 "> */}
         {/* <Flex gap="3" align="center"> */}
         <Link href="/">
-          <Flex gap="3" align="center">
+          <Flex gap="3" align="center" >
             <SiGhost size="38" />
-            <Heading>Fix Flow</Heading>
+            <Heading size="8" mt="2" className={`${dynalight.className}`}>Fix Flow</Heading>
           </Flex>
         </Link>
         <NavLinks />

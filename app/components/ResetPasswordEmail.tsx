@@ -67,6 +67,7 @@ import {
   
     const svgBase64 = Buffer.from(svgString).toString("base64");
     const dataUri = `data:image/svg+xml;base64,${svgBase64}`;
+    const baseUrl = process.env.NEXTAUTH_URL ? process.env.NEXTAUTH_URL : 'http://localhost:3000'
   
     return (
       <Html>
@@ -78,7 +79,7 @@ import {
               <Row>
                 <Column  align="left" width="5">
                   <Img
-                    src={dataUri}
+                    src={`${baseUrl}/logo2.png`}
                     width="32"
                     height="32"
                     alt="Fix Flow"

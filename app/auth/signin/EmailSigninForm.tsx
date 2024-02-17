@@ -24,7 +24,7 @@ const EmailSigninForm = () => {
     await signIn("email", { email: data.email, callbackUrl: "/" });
   };
   return (
-    <form className="space-y-5 mb-2" onSubmit={handleSubmit(onSubmit)}>
+    <form className="space-y-5 mb-2 w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
       <div className="space-y-2">
         <label>Email</label>
         <TextField.Root>
@@ -42,7 +42,7 @@ const EmailSigninForm = () => {
       </div>
       <ErrorMessage>{errors.email?.message}</ErrorMessage>
       <button
-        className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+        className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
         type="submit"
       >
         <Flex gap="2" justify="center" align="center">

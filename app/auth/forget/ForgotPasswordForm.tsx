@@ -37,7 +37,7 @@ const ForgotPasswordForm = () => {
 
   return (
     <Flex direction="column">
-      <form className="space-y-3 mb-3" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-5 mb-3 w-[15rem] sm:w-[18rem] " onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1">
           <label>Email</label>
           <TextField.Root>
@@ -55,7 +55,7 @@ const ForgotPasswordForm = () => {
         </div>
         <ErrorMessage>{errors.email?.message}</ErrorMessage>
         <button
-          className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+          className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
           type="submit"
         >
           Send a request

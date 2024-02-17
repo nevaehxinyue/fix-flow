@@ -59,6 +59,7 @@ const EditProfileForm = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset
   } = useForm<EditProfileFormData>({
     resolver: zodResolver(userProfileUpdateSchema),
   });
@@ -102,6 +103,7 @@ const EditProfileForm = () => {
         // Make sure the page that the user is currently on reflects the user profile changes
         queryClient.refetchQueries({ queryKey: ["projects"] });
         queryClient.refetchQueries({ queryKey: ["user"] });
+        reset();
       }
     } catch (error) {
       setError("Profile update failed.Please try again.");

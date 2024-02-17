@@ -3,16 +3,19 @@
 import { Flex, Heading, Card } from "@radix-ui/themes";
 import { SiGhost } from "react-icons/si";
 import ResetPasswordForm from "./ResetPasswordForm";
+import { dynalight } from "@/app/layout";
 
 
 const ResetPasswordPage = () => {
   return (
     <div className="flex flex-col justify-center ">
-    <Flex direction="column"  align="center" gap="3" className="mt-48" mb="6">
-    <SiGhost size="50" />
+    <Flex direction="column"  align="center" gap="3" className="mt-48" mb="9">
+    <SiGhost size="58" />
+    <Heading size="9" className={dynalight.className}>Fix Flow</Heading>
      </Flex>
+
      <Flex direction="column" gap="3"  align="center" justify="center" mt="9">
-    <Heading mt="6">Reset your password </Heading>
+    <Heading mt="6" size="7">Reset your password </Heading>
 
     <Card size="5" mt="5" >      
     

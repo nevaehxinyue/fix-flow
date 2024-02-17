@@ -2,19 +2,22 @@ import EmailSigninForm from "@/app/auth/signin/EmailSigninForm";
 import { SiGhost } from "react-icons/si";
 import { Card, Flex, Grid, Heading, Separator, Text } from "@radix-ui/themes";
 import PasswordSigninForm from "./PasswordSigninForm";
-import { Link } from "@/app/components";
+
 import GoogleSignin from "./GoogleSignin";
-import { ReactElement } from "react";
+
+import { dynalight } from "@/app/layout";
+import Link from "next/link";
 
 const SigninPage = () => {
   return (
-    <div className="flex flex-col justify-center ">
-      <Flex direction="column" align="center" gap="3" className="mt-48" mb="6">
-        <SiGhost size="50" />
+    <div className="flex flex-col justify-center h-auto ">
+      <Flex direction="column" align="center" gap="3" className="mt-48" mb="9">
+        <SiGhost size="58" />
+        <Heading size="9"  className={dynalight.className}>Fix Flow</Heading>
       </Flex>
 
       <Flex direction="column" gap="3" align="center" justify="center" mt="9">
-        <Heading mt="6">Welcome back </Heading>
+        <Heading mt="6" size="7">Welcome back </Heading>
 
         <Card size="5" mt="5">
           <Grid columns={{ initial: "1", md: "3fr 0.2fr 3fr" }}>
@@ -23,7 +26,7 @@ const SigninPage = () => {
               <PasswordSigninForm />
               <Text>
                 Don&apos;t have an account?{" "}
-                <Link href="/auth/register">Sign up</Link>
+                <Link href="/auth/register"><Text className="hover:text-blue-400 hover:font-semibold transition ">Sign up</Text></Link>
               </Text>
             </Flex>
 

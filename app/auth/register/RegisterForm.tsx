@@ -17,12 +17,13 @@ import {
 } from "@radix-ui/themes";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa6";
 
-import { ErrorMessage, Link } from "@/app/components";
+import { ErrorMessage } from "@/app/components";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
+import Link from "next/link";
 
 type PasswordFormData = z.infer<typeof userRegisterSchema>;
 const RegisterForm = () => {
@@ -37,6 +38,7 @@ const RegisterForm = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isValid },
+    reset
   } = useForm<PasswordFormData>({
     resolver: zodResolver(userRegisterSchema),
   });
@@ -46,7 +48,7 @@ const RegisterForm = () => {
       const response = await axios.post("/api/users/register", data);
       if (response.data.success) {
         setRegisterSuccess(true);
-        toast.success("Your submission is succesful!");
+        reset(); 
       }
     } catch (error) {
       if (axios.isAxiosError(error) && error.response) {
@@ -66,12 +68,12 @@ const RegisterForm = () => {
             <InfoCircledIcon />
           </Callout.Icon>
           <Callout.Text>
-            Please check your email for verifying your account.
+            You account has been created successfully! You can log in now.
           </Callout.Text>
         </Callout.Root>
       )}
       <Flex direction="column">
-        <form className="space-y-3 mb-3" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-3 mb-3 w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-1 ">
             <label>Username </label>
             <TextField.Root>
@@ -129,7 +131,7 @@ const RegisterForm = () => {
             <ErrorMessage>{errors.password?.message}</ErrorMessage>
           </div>
           <button
-            className="w-full bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 h-auto justify-center"
+            className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
             type="submit"
           >
             Submit
@@ -137,7 +139,7 @@ const RegisterForm = () => {
           <Toaster />
         </form>
         <Text>
-          Already have an account? <Link href="/auth/signin">Log in</Link>
+          Already have an account? <Link href="/auth/signin"><Text className="hover:text-blue-400 hover:font-semibold transition">Log in</Text></Link>
         </Text>
       </Flex>
     </>

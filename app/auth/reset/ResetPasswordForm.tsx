@@ -80,12 +80,14 @@ const ResetPasswordForm = () => {
               <InfoCircledIcon />
             </Callout.Icon>
             <Callout.Text>
+              <p className="flex flex-wrap">
               You will be redirected to log in page in seconds.
+              </p>
             </Callout.Text>
           </Callout.Root>
         )}
 
-        <form className="space-y-3 mb-3" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-5 mb-3 w-[15rem] sm:w-[18rem] " onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-1">
             <label>New password</label>
             <TextField.Root>
