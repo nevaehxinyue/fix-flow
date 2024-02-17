@@ -11,6 +11,7 @@ import {
     Row,
     Column,
     Section,
+    Font,
   } from "@react-email/components";
  
   
@@ -71,13 +72,24 @@ import {
   
     return (
       <Html>
-        <Head />
+        <Head >
+        <Font
+          fontFamily="Dynalight"
+          fallbackFontFamily="Verdana"
+          webFont={{
+            url: "https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Akronim&family=Caveat:wght@400..700&family=Dynalight&family=Italianno&family=Lavishly+Yours&family=Oooh+Baby&display=swap",
+            format: "woff2",
+          }}
+          fontWeight={400}
+          fontStyle="normal"
+        />
+          </Head>
         <Preview>Reset your password with this link</Preview>
         <Body>
           <Container style={container}>
             <Section>
               <Row>
-                <Column  align="left" width="5">
+                {/* <Column  align="left" width="5">
                   <Img
                     src={`${baseUrl}/logo2.png`}
                     width="32"
@@ -86,9 +98,9 @@ import {
                     style={{borderRadius: 21 }}
                   />
                   
-                </Column >
+                </Column > */}
                 <Column align="left" width="450" style={{marginLeft: "10px"}}>
-                  <Text style={{ ...text, fontSize: "20px", fontWeight: "bold" }}>
+                  <Text style={{ ...text, fontSize: "20px", fontWeight: "bold", font: "Dynalight"}}>
                     Fix Flow
                   </Text>
                 </Column>
