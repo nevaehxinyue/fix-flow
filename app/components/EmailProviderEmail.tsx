@@ -15,6 +15,7 @@ import {
   Font,
 } from "@react-email/components";
 
+
 export function EmailProviderEmail({
   signinLink,
   username,
@@ -29,7 +30,7 @@ export function EmailProviderEmail({
     color: "#333",
     fontFamily:
       "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif",
-    fontSize: "24px",
+    fontSize: "20px",
     fontWeight: "bold",
     margin: "40px 0",
     padding: "0",
@@ -79,7 +80,7 @@ export function EmailProviderEmail({
           fontFamily="Dynalight"
           fallbackFontFamily="Verdana"
           webFont={{
-            url: "https://fonts.googleapis.com/css2?family=Akaya+Telivigala&family=Akronim&family=Caveat:wght@400..700&family=Dynalight&family=Italianno&family=Lavishly+Yours&family=Oooh+Baby&display=swap",
+            url: "https://fonts.googleapis.com/css2?family=Dynalight&display=swap",
             format: "woff2",
           }}
           fontWeight={400}
@@ -103,7 +104,7 @@ export function EmailProviderEmail({
                 />
               </Column> */}
               <Column align="left" width="450" style={{ marginLeft: "10px" }}>
-                <Text style={{ ...text, fontSize: "20px", fontWeight: "bold", font:"Dynalight" }}>
+                <Text style={{ ...text, fontSize: "25px", fontWeight: "bold" }}>
                   Fix Flow
                 </Text>
               </Column>
