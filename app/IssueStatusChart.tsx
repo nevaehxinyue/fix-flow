@@ -76,7 +76,7 @@ const IssueStatusChart = ({ open, inProgress, closed }: Props) => {
   }
 
   return (
-    <Box className="w-96 shadow-lg border-0">
+    <Box className="w-[20rem] sm:w-[24rem] shadow-lg border-0">
       <Heading ml="3" size="4">
         Issues by status
       </Heading>

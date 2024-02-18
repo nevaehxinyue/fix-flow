@@ -37,7 +37,7 @@ const DrawerButton = () => {
      if(status === 'unauthenticated' ) return null;
 
   return (
-    <div className='ml-5 mt-5 w-60 xl:hidden '>
+    <div className='ml-5 mt-8 w-60 xl:hidden '>
         <button type='button' className='text-white "' onClick={onOpen}>
         <SiGhost size="38" />
         </button>

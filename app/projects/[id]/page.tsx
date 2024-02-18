@@ -1,9 +1,7 @@
 import { Box, Flex, Grid, Heading, Text } from "@radix-ui/themes";
 import { cache } from "react";
 import ProjectMemberTable from "./ProjectMemberTable";
-import ProjectIssuesTable, {
-  IssueQuery,
-} from "./ProjectIssuesTable";
+import ProjectIssuesTable, { IssueQuery } from "./ProjectIssuesTable";
 import IssueDetails from "./IssueDetails";
 import prisma from "@/prisma/client";
 import AddMemberButton from "./AddMemberButton";
@@ -18,9 +16,9 @@ import ProjectDescriptionDialog from "./ProjectDescriptionDialog";
 import { Metadata } from "next";
 import dynamic from "next/dynamic";
 
-const DynamicIssueDetails = dynamic(() => import('./IssueDetails'), {
-  ssr: false
-})
+const DynamicIssueDetails = dynamic(() => import("./IssueDetails"), {
+  ssr: false,
+});
 
 export interface FetchedProjectType {
   id: number;
@@ -110,33 +108,41 @@ const ProjectDetialPage = async ({
   const issuesCount = await prisma.issue.count({
     where: { projectId: projectId },
   });
-  
-let requestedIssue
-if(searchParams.issueId){ 
-  requestedIssue =  await prisma.issue.findUnique({
-  where: { id: parseInt(searchParams.issueId) },
-  include: {
-    assignedToUser: true,
-    createdBy: true,
-  },
-});}
- 
+
+  let requestedIssue;
+  if (searchParams.issueId) {
+    requestedIssue = await prisma.issue.findUnique({
+      where: { id: parseInt(searchParams.issueId) },
+      include: {
+        assignedToUser: true,
+        createdBy: true,
+      },
+    });
+  }
+
   return (
-    <Flex direction="column" gap="8">
-    {/* // <Flex direction="column" className="bg-white shadow-lg border-0 p-5 rounded-lg"> */}
+    <Flex
+      direction="column"
+      gap="8"
+      className="mt-[-3rem] ml-[-3rem] w-[20rem] sm:w-auto xl:mt-0"
+    >
+      {/* // <Flex direction="column" className="bg-white shadow-lg border-0 p-5 rounded-lg"> */}
       <Flex direction="column" gap="5" mb="2">
         <Heading className="text-white">Project</Heading>
-        <Flex justify='between' mb="8">
+        <Flex justify="between" mb="8">
           <Heading className="text-white" size="5">
             {project?.title}
           </Heading>
-          <ProjectDescriptionDialog projectTitle={project?.title} projectDescription={project?.description}/>
-          <ProjectButtons project={project} /> 
-        </Flex>  
+          <ProjectDescriptionDialog
+            projectTitle={project?.title}
+            projectDescription={project?.description}
+          />
+          <ProjectButtons project={project} />
+        </Flex>
       </Flex>
-  
+
       <Grid columns={{ initial: "1", lg: "1.5fr 1.5fr 1.5fr" }} gap="8">
-        <Box className="bg-white rounded-lg shadow-lg border-0 col-span-1 p-5 relative">
+        <Box className="bg-white rounded-lg shadow-lg border-0 col-span-1 p-5 relative w-[18rem] sm:w-auto">
           <Flex justify="between" mb="4" className="relative">
             <Heading size="4">Team</Heading>
             <AddMemberButton projectAssginees={projectAvailableAssginees} />
@@ -187,28 +193,30 @@ if(searchParams.issueId){
         </Box>
       </Grid>
 
-      <Box className="bg-white rounded-lg shadow-lg border-0 p-5">
-        <Heading className="border-b pb-5" mb="5" mt="3" size="4">
-          Selected Issue Info
-        </Heading>
 
-        {searchParams.issueId && (
-          <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
-            <div className="col-span-2 bg-white rounded-lg shadow-lg border-0 p-5">
-              <DynamicIssueDetails issue={requestedIssue} />
-            </div>
-            <Box className="space-y-5 bg-white rounded-lg shadow-lg border-0 p-5">
-              <Heading className="border-b pb-4" size="4">
-                Comments
-              </Heading>
-              <CommentDetails issueId={searchParams.issueId} />
-              <IssueCommentForm issueId={searchParams.issueId} />
-              {/* <IssueComments issueId={searchParams.issueId} /> */}
-            </Box>
-          </Grid>
-        )}
-      </Box>
-    {/* // </Flex> */}
+        <Box className="bg-white rounded-lg shadow-lg border-0 p-5 w-[22rem] left-[-6rem] sm:w-auto">
+          <Heading className="border-b pb-5" mb="5" mt="3" size="4">
+            Selected Issue Info
+          </Heading>
+
+          {searchParams.issueId && (
+            <Grid columns={{ initial: "1", md: "1.25fr 1.25fr 1.5fr" }} gap="5">
+              <div className="col-span-2 bg-white rounded-lg shadow-lg border-0 p-5">
+                <DynamicIssueDetails issue={requestedIssue} />
+              </div>
+              <Box className="space-y-5 bg-white rounded-lg shadow-lg border-0 p-5">
+                <Heading className="border-b pb-4" size="4">
+                  Comments
+                </Heading>
+                <CommentDetails issueId={searchParams.issueId} />
+                <IssueCommentForm issueId={searchParams.issueId} />
+                {/* <IssueComments issueId={searchParams.issueId} /> */}
+              </Box>
+            </Grid>
+          )}
+        </Box>
+
+      {/* // </Flex> */}
     </Flex>
   );
 };
@@ -218,4 +226,4 @@ export default ProjectDetialPage;
 export const metadata: Metadata = {
   title: "Fix Flow - Project Page",
   description: "View details of a project",
-}
+};

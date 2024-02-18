@@ -38,20 +38,18 @@ const PasswordSigninForm = () => {
 
   const onSubmit = async (data: PasswordFormData) => {
     try {
-     
       const result = await signIn("credentials", {
         email: data.email,
         password: data.password,
-        redirect: false
+        redirect: false,
       });
-      console.log({result})
+      console.log({ result });
       if (result?.error) {
-        if(result.error === 'CredentialsSignin'){
-          setError("Your email or password is incorrect.")
-
+        if (result.error === "CredentialsSignin") {
+          setError("Your email or password is incorrect.");
         }
       } else {
-        router.push('/')
+        router.push("/");
       }
     } catch (error: any) {
       setError(error.message);
@@ -59,14 +57,17 @@ const PasswordSigninForm = () => {
   };
 
   return (
-    <Flex direction="column">
+    <Flex direction="column" align="center" justify="center">
       {error && (
         <Callout.Root color="red">
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form className="space-y-5 mb-2 w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-2 mt-3">
+      <form
+        className="space-y-5 mb-2 w-[15rem] sm:w-[18rem]"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="space-y-2">
           <label>Email</label>
           <TextField.Root>
             <TextField.Slot>
@@ -86,7 +87,12 @@ const PasswordSigninForm = () => {
           <Flex justify="between">
             <label>Password</label>
             <Link href="/auth/forget">
-              <Text size="2" className="hover:text-red-400 hover:font-semibold transition">Forget password?</Text>
+              <Text
+                size="2"
+                className="hover:text-red-400 hover:font-semibold transition hidden sm:block"
+              >
+                Forget password?
+              </Text>
             </Link>
           </Flex>
           <TextField.Root>
@@ -99,34 +105,48 @@ const PasswordSigninForm = () => {
               size="3"
               {...register("password")}
             />
-            <button
-                type="button"
-                onClick={togglePasswordVisibility}
-              >
-                {isPasswordVisible ? (
-                  <TextField.Slot>
-                    <FaRegEyeSlash className="cursor-pointer"/>
-                  </TextField.Slot>
-                ) : (
-                  <TextField.Slot>
-                    <FaRegEye  className="cursor-pointer"/>
-                  </TextField.Slot>
-                )}
-              </button>
+            <button type="button" onClick={togglePasswordVisibility}>
+              {isPasswordVisible ? (
+                <TextField.Slot>
+                  <FaRegEyeSlash className="cursor-pointer" />
+                </TextField.Slot>
+              ) : (
+                <TextField.Slot>
+                  <FaRegEye className="cursor-pointer" />
+                </TextField.Slot>
+              )}
+            </button>
           </TextField.Root>
+          <Link href="/auth/forget">
+            <Text
+              size="2"
+              mt="2"
+              className="hover:text-red-400 hover:font-semibold transition block sm:hidden"
+            >
+              Forget password?
+            </Text>
+          </Link>
         </div>
         <ErrorMessage>{errors.password?.message}</ErrorMessage>
         <button
-        className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
-        type="submit"
-        disabled={isSubmitting}
-      >
-        <Flex gap="2" justify="center" align="center">
-          Sign in{isSubmitting && <Spinner />}
-        </Flex>
-      </button>
+          className="w-full h-[2.5rem] bg-button-color rounded-md hover:bg-button-hover-color font-semibold text-white text-xs p-2 justify-center"
+          type="submit"
+          disabled={isSubmitting}
+        >
+          <Flex gap="2" justify="center" align="center">
+            Sign in{isSubmitting && <Spinner />}
+          </Flex>
+        </button>
       </form>
-      
+      <Flex gap="1" className="w-[15rem] sm:w-[18rem]">
+        <Text>Don&apos;t have an account?  <Link href="/auth/register">
+          <Text className="hover:text-blue-400 hover:font-semibold transition  ">
+            Sign up
+          </Text>
+        </Link>
+        </Text>
+       
+      </Flex>
     </Flex>
   );
 };

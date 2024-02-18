@@ -58,7 +58,8 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
   }
 
   return (
-    <div className="flex flex-col gap-10 p-8 bg-white border-0 rounded-lg shadow-lg">
+   
+    <div className="flex flex-col gap-10 p-4 sm:p-8 bg-white border-0 rounded-lg shadow-lg w-[20rem] sm:w-auto ml-[-2.5rem] sm:ml-0">
       <IssuesToolBar />
       <IssueTable searchParams={searchParams} issues={issues} />
       <Flex justify="center">
@@ -69,6 +70,7 @@ const IssuePage = async ({ searchParams }: { searchParams: IssueQuery }) => {
         />
       </Flex>
     </div>
+  
   );
 };
 

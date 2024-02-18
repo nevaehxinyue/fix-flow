@@ -108,7 +108,6 @@ issue}: {issue: FetchedIssueType | null | undefined}) => {
 
   return (
     <Box>
-   
       <Grid columns="3" gap="5">
         <Flex direction="column" gap="3">
           <Text className="text-gray-400 font-bold">Issue Title</Text>

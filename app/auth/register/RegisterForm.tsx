@@ -73,7 +73,7 @@ const RegisterForm = () => {
         </Callout.Root>
       )}
       <Flex direction="column">
-        <form className="space-y-3 mb-3 w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-3 mb-3 w-[15rem] sm:w-[18rem]" onSubmit={handleSubmit(onSubmit)}>
           <div className="space-y-1 ">
             <label>Username </label>
             <TextField.Root>

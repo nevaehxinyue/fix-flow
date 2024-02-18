@@ -15,7 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { User } from "@prisma/client";
 import axios from "axios";
 import { RiUser5Line } from "react-icons/ri";
-import { akaya, akronim, caveat, dynalight, lavishly, ooohBaby } from "./layout";
+import { dynalight } from "./layout";
 
 const NavBar = () => {
   const { data: session } = useSession();

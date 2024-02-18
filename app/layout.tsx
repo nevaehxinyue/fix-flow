@@ -17,42 +17,11 @@ const inter = Inter({
   variable: "--font-inter",
 });
 
-export const caveat = Caveat({
-  subsets: ["latin"],
-  variable: '--font-caveat',
-  weight: "500"
-});
-export const ooohBaby = Oooh_Baby({
-  subsets: ["latin"],
-  variable: '--font-ooohBaby',
-  weight: "400"
-});
 export const dynalight = Dynalight({
   subsets: ["latin"],
   variable: '--font-dynalight',
   weight: "400"
 });
-
-export const akaya = Akaya_Telivigala({
-  subsets: ["latin"],
-  variable: '--font-akaya',
-  weight: "400"
-});
-
-export const akronim = Akronim({
-  subsets: ["latin"],
-  variable: '--font-akronim',
-  weight: "400"
-});
-
-
-export const lavishly = Lavishly_Yours({
-  subsets: ["latin"],
-  variable: '--font-lavishly',
-  weight: "400"
-});
-
-
 
 
 const metadata: Metadata = {
@@ -75,7 +44,7 @@ export default function RootLayout({
                 <div className="flex min-h-screen bg-neutral-100">
                   <TopBackgroundBox />
                   <NavBar />
-                  <main className="flex-grow relative z-10">
+                  <main className="flex-grow relative z-10 w-full">
                     <DrawerButton />
                     <Box className="m-24">{children}</Box>
                   </main>

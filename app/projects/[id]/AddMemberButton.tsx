@@ -63,7 +63,7 @@ const AddMemberButton = ({ projectAssginees }: Props) => {
             </Dialog.Close>
           </Flex>
           <Flex direction="column" gap="3">
-            <label>Type member's email here: </label>
+            <label>Type member&apos;s email here: </label>
             <TextFieldInput
               name="memberEmail"
               value={memberEmail}
@@ -96,7 +96,7 @@ const AddMemberButton = ({ projectAssginees }: Props) => {
             Note
           </AlertDialog.Title>
           <AlertDialog.Description>
-            The memeber doesn't exist. 
+            The memeber doesn&apos;t exist. 
           </AlertDialog.Description>
           <Flex justify="end">
           <Button

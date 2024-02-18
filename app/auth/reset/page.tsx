@@ -15,7 +15,7 @@ const ResetPasswordPage = () => {
      </Flex>
 
      <Flex direction="column" gap="3"  align="center" justify="center" mt="9">
-    <Heading mt="6" size="7">Reset your password </Heading>
+    <text  className="text-xl font-bold sm:text-2xl">Reset your password </text>
 
     <Card size="5" mt="5" >      
     

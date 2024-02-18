@@ -60,9 +60,9 @@ const ProjectSummary = () => {
     // console.log(projects);
 
   return (
-    <div className="bg-white shadow-lg border-0 p-8 rounded-lg">
-      <Flex justify="between" align="center" className="border-b ">
-        <Heading size="4" mb="5">
+    <div className="bg-white shadow-lg border-0 p-4 sm:p-8 w-[25rem] sm:w-auto rounded-lg">
+      <Flex justify="between" align="center" className="border-b">
+        <Heading size="4" mb="2">
           Projects
         </Heading>
         <ProjectButtons />

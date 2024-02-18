@@ -47,14 +47,14 @@ const IssueTable = ({ searchParams, issues }: Props) => {
           <Table.Cell>
 
             <Link href={`/projects/${issue.projectId}?issueId=${issue.id}`}>{issue.title}</Link>
-            <div className="block md:hidden">
+            {/* <div className="block md:hidden">
               <IssueStatusBadge status={issue.status} />
-            </div>
+            </div> */}
           </Table.Cell>
-          <Table.Cell className="hidden md:table-cell">
+          <Table.Cell className="">
             <IssueStatusBadge status={issue.status} />
           </Table.Cell>
-          <Table.Cell className="hidden md:table-cell">
+          <Table.Cell className="hidden sm:table-cell">
             {issue.createdAt.toDateString()}
           </Table.Cell>
         </Table.Row>

@@ -19,16 +19,14 @@ const SigninPage = () => {
       <Flex direction="column" gap="3" align="center" justify="center" mt="9">
         <Heading mt="6" size="7">Welcome back </Heading>
 
-        <Card size="5" mt="5">
+        <Card size="5" mt="5" className="w-[20rem] sm:w-[50rem]">
           <Grid columns={{ initial: "1", md: "3fr 0.2fr 3fr" }}>
             {/* // First column */}
-            <Flex direction="column" gap="2" align="center">
-              <PasswordSigninForm />
-              <Text>
-                Don&apos;t have an account?{" "}
-                <Link href="/auth/register"><Text className="hover:text-blue-400 hover:font-semibold transition ">Sign up</Text></Link>
-              </Text>
-            </Flex>
+         
+            <PasswordSigninForm />
+            
+   
+           
 
             {/* //Second column */}
             <Separator className=" ml-6 mr-6" orientation="vertical" size="4" />

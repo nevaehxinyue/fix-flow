@@ -1,4 +1,3 @@
-
 import { Box, Flex, Grid } from "@radix-ui/themes";
 import LatestIssues from "./LatestIssues";
 import prisma from "@/prisma/client";
@@ -15,11 +14,12 @@ import dynamic from "next/dynamic";
 import { setEngine } from "crypto";
 
 const DynamicIssueSeverityChart = dynamic(
-  () => import('./IssueSeverityChart'), {ssr: false}
+  () => import("./IssueSeverityChart"),
+  { ssr: false }
 );
-const DynamicIssueStatusChart = dynamic(
-  () => import('./IssueStatusChart'), {ssr: false}
-);
+const DynamicIssueStatusChart = dynamic(() => import("./IssueStatusChart"), {
+  ssr: false,
+});
 
 export default async function Home() {
   const session = await getServerSession(authOptions);
@@ -111,69 +111,50 @@ export default async function Home() {
     },
   });
 
-  // const projects = await prisma.project.findMany({
-  //   where: {
-  //     OR: [
-  //       { createdByUserId: session?.user?.id },
-  //       {
-  //         assignedToUsers: {
-  //           some: {
-  //             userId: session?.user?.id,
-  //           },
-  //         },
-  //       },
-  //     ],
-  //   },
-  //   include: {
-  //     createdBy: true,
-  //     assignedToUsers: {
-  //       include: {
-  //         user: true,
-  //       },
-  //     },
-  //     issues: true,
-  //   },
-  // });
-
-  // console.log(projects[0].assignedToUsers)
-
   return (
-    <Grid columns={{ initial: "1", lg: "1fr 1fr 1fr" }} gap="8">
-      {!user?.name && user && (
-        <div className="col-span-3">
-          <ChangeUserNameMessage />
-        </div>
-      )}
-      <Box className="col-span-3">
-        <ProjectSummary />
-      </Box>
+    <Flex direction="column" align="center" justify="center">
+      <Grid
+        columns={{ initial: "1", md: "1fr 1fr", xl: "1fr 1fr 1fr" }}
+        gap="8"
+      >
+        {!user?.name && user && (
+          <div className="col-span-3">
+            <ChangeUserNameMessage />
+          </div>
+        )}
 
-      
+        <Box className="lg:col-span-2 2xl:col-span-3 flex justify-center sm:block ">
+          <ProjectSummary />
+        </Box>
+
+        <Box className="col-span-1 lg:col-span-1 flex justify-center sm:block ">
+          <Flex
+            direction="column"
+            justify="center"
+            align="center"
+            gap="5"
+            className=" bg-white shadow-lg border-0 p-4 sm:p-8 w-[28rem] sm:w-auto rounded-lg"
+          >
+            <IssueStatusSummary
+              open={openIssueCount}
+              inProgress={inProgressIssueCount}
+              closed={closedIssueCount}
+            />
+            <DynamicIssueStatusChart
+              open={openIssueCount}
+              inProgress={inProgressIssueCount}
+              closed={closedIssueCount}
+            />
+          </Flex>
+        </Box>
+
+        <Box className="col-span-1 lg:col-span-1 flex justify-center sm:block ">
         <Flex
           direction="column"
           justify="center"
           align="center"
           gap="5"
-          className="bg-white shadow-lg border-0 p-8 rounded-lg col-span-3 xl:col-span-1 "
-        >
-          <IssueStatusSummary
-            open={openIssueCount}
-            inProgress={inProgressIssueCount}
-            closed={closedIssueCount}
-          />
-          <DynamicIssueStatusChart
-            open={openIssueCount}
-            inProgress={inProgressIssueCount}
-            closed={closedIssueCount}
-          />
-        </Flex>
-
-        <Flex
-          direction="column"
-          justify="center"
-          align="center"
-          gap="5"
-          className="bg-white shadow-lg border-0 p-8 rounded-lg col-span-3 xl:col-span-1 "
+          className="bg-white shadow-lg border-0 p-8 rounded-lg w-[25rem] sm:w-auto"
         >
           <IssueSeveritySummary
             minor={minorIssueCount}
@@ -188,12 +169,17 @@ export default async function Home() {
             critical={criticalIssueCount}
           />
         </Flex>
-    
+        </Box>
 
-      <Box className="shadow-lg border-0 p-5 bg-white rounded-lg col-span-3 xl:col-span-1">
+        <Box className="col-span-1 lg:col-span-2 2xl:col-span-1 w-[24rem] sm:w-auto ml-[-4.5rem] sm:ml-0  ">
+        <Flex direction="column" className=" bg-white shadow-lg border-0 p-4 sm:p-8 rounded-lg ">
         <LatestIssues latestIssues={latestIssues} />
-      </Box>
-    </Grid>
+        </Flex>
+        </Box>
+      
+
+      </Grid>
+    </Flex>
   );
 }
 // export async function getServerSideProps(context) {
