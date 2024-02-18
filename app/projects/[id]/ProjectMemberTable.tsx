@@ -40,7 +40,7 @@ const ProjectMemberTable = ( { members, creator, currentPage }: { members: User[
                     {member.email}
                 </Table.Cell>
                 <Table.Cell className='flex items-center justify-end'>
-                < MemberDeleteButton memberId={member.id} />
+                {creator.id !== member.id && (< MemberDeleteButton memberId={member.id} />) }
                 </Table.Cell>   
             </Table.Row>
                  )}

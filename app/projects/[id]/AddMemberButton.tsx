@@ -1,11 +1,13 @@
 "use client";
 import {
+  AlertDialog,
   Button,
   Checkbox,
   Dialog,
   Flex,
   Separator,
   Text,
+  TextFieldInput,
 } from "@radix-ui/themes";
 import { User } from "@prisma/client";
 import axios from "axios";
@@ -19,87 +21,96 @@ interface Props {
 }
 
 const AddMemberButton = ({ projectAssginees }: Props) => {
-  const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  // const [selectedUserIds, setSelectedUserIds] = useState<string[]>([]);
+  const [memberEmail, setMemberEmail] = useState("");
+  const [error, setError] = useState(false);
   const params = useParams();
   const router = useRouter();
 
-  const handleCheckboxChange = (userId: string) => {
-    setSelectedUserIds((prevSelectedUserIds) => {
-      if (prevSelectedUserIds.includes(userId)) {
-        return prevSelectedUserIds.filter((id) => id !== userId);
-      } else {
-        return [...prevSelectedUserIds, userId];
-      }
-    });
-  };
-
   const handleSubmit = async () => {
-    if (selectedUserIds.length === 0) {
-      toast.error("Please select at least one member to add.");
-    } else {
-      try {
-        const response = await axios.post(
-          `/api/projects/${params.id}/members`,
-          {
-            userIds: selectedUserIds,
-          }
-        );
-        if (response.data.success) {
-          toast.success("Members added successfully.");
-          router.refresh();
-        }
-      } catch (error) {
-        // Handle error
-        toast.error("Error adding members.");
+    try {
+      const response = await axios.post(`/api/projects/${params.id}/members`, {
+        memberEmail: memberEmail,
+      });
+      if (response.data.error) {
+        setError(true);
+
       }
+      if (response.data.success) {
+        toast.success("Member added successfully.");
+        setMemberEmail("");
+        router.refresh();
+      }
+    } catch (error) {
+      // Handle error
+      toast.error("Something went wrong. Please try again. ");
     }
   };
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger>
-        <button className="theme-button">New Member</button>
-      
-      </Dialog.Trigger>
-      <Dialog.Content>
-        <Flex justify="between">
-          <Dialog.Title>Add a new member</Dialog.Title>
-          <Dialog.Close>
-            <button className="mb-5 h-6 w-6 flex items-center justify-center rounded-full border-2 hover:bg-stone-200">
-              <Cross2Icon />
-            </button>
-          </Dialog.Close>
-        </Flex>
-        {projectAssginees.map((assignee) => (
-          <Flex key={assignee.id} align="center" gap="5">
-            <Checkbox
-              value={assignee.id}
-              checked={selectedUserIds.includes(assignee.id)}
-              onCheckedChange={() => handleCheckboxChange(assignee.id)}
-            />
-            <Text>{assignee.name} </Text>
-            <Separator orientation="vertical" />
-            <Text>{assignee.email}</Text>
+    <>
+      <Dialog.Root>
+        <Dialog.Trigger>
+          <button className="theme-button">New Member</button>
+        </Dialog.Trigger>
+        <Dialog.Content>
+          <Flex justify="between">
+            <Dialog.Title>New team member</Dialog.Title>
+            <Dialog.Close>
+              <button className="mb-5 h-6 w-6 flex items-center justify-center rounded-full border-2 hover:bg-stone-200">
+                <Cross2Icon />
+              </button>
+            </Dialog.Close>
           </Flex>
-        ))}
-        <Flex gap="3" mt="4" justify="end">
-          <Dialog.Close>
-            <Button variant="soft" color="gray">
-              Cancel
-            </Button>
-          </Dialog.Close>
-          <button
-            type="submit"
-            onClick={handleSubmit}
-            className="theme-button w-1/7"
+          <Flex direction="column" gap="3">
+            <label>Type member's email here: </label>
+            <TextFieldInput
+              name="memberEmail"
+              value={memberEmail}
+              onChange={(e) => setMemberEmail(e.target.value)}
+            />
+          </Flex>
+    
+          <Flex gap="3" mt="4" justify="end">
+            <Dialog.Close>
+              <Button variant="soft" color="gray">
+                Cancel
+              </Button>
+            </Dialog.Close>
+            <button
+              type="submit"
+              onClick={handleSubmit}
+              className="theme-button w-1/7"
+            >
+              Add
+            </button>
+
+            <Toaster />
+          </Flex>
+        </Dialog.Content>
+      </Dialog.Root>
+
+      <AlertDialog.Root open={error}>
+        <AlertDialog.Content>
+          <AlertDialog.Title>
+            Note
+          </AlertDialog.Title>
+          <AlertDialog.Description>
+            The memeber doesn't exist. 
+          </AlertDialog.Description>
+          <Flex justify="end">
+          <Button
+            color="gray"
+            variant="soft"
+            mt="3"
+            onClick={() => setError(false)}
           >
-            Add
-          </button>
-      
-          <Toaster />
+            OK
+          </Button>
         </Flex>
-      </Dialog.Content>
-    </Dialog.Root>
+        </AlertDialog.Content>
+        </AlertDialog.Root>
+    </>
   );
 };
 

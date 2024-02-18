@@ -13,37 +13,25 @@ export async function POST(
   if (!session) return NextResponse.json({error: "Unauthorized request. "}, { status: 401 });
 
   //Check if the body strcuture is valid (an array is needed)
-  const { userIds } = await request.json();
-  console.log(userIds);
+  const { memberEmail } = await request.json();
 
-  if (!Array.isArray(userIds)) {
-    return NextResponse.json(
-      { error: "userIds must be an array" },
-      { status: 400 }
-    );
+  // Check if the member exists
+  const member = await prisma.user.findUnique({
+    where: {email: memberEmail}
+  })
+
+  if(!member) {
+    return NextResponse.json({error: 'Member does not exists.'}, {status: 400})
   }
 
-  //Make sure the userId is string
-  const allStrings = userIds.every((item) => typeof item === "string");
-if(!allStrings) {
-    return NextResponse.json(
-        { error: "Every userId must be a string." },
-        { status: 400 }
-      );
-
-}
   // Perform the database operation within a transaction when multiple updates are needed
   try {
-    const result = await prisma.$transaction(
-      userIds.map((userId) => {
-        return prisma.projecOftUsers.create({
-          data: {
-            projectId: parseInt(params.id),
-            userId: userId,
-          },
-        });
-      })
-    );
+    await prisma.projecOftUsers.create({
+      data:{
+        projectId: parseInt(params.id),
+        userId: member.id
+      }
+    })
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 400 });
