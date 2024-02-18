@@ -17,7 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { ErrorMessage } from "@/app/components";
+import { ErrorMessage, Spinner } from "@/app/components";
 import { FetchedProjectType } from "../[id]/page";
 import { useQueryClient } from "@tanstack/react-query";
 import ProjectStatusBadge from "./ProjectStatusBadge";
@@ -167,7 +167,7 @@ const ProjectForm = ({ project }: { project?: FetchedProjectType | null }) => {
                 Cancel
               </Button>
             </Dialog.Close>
-            <button className="theme-button" type="submit">Submit</button>
+            <button className="theme-button" type="submit" disabled={isSubmitting}>Submit {isSubmitting && <Spinner />}</button>
             <Toaster />
           </Flex>
         </Flex>

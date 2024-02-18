@@ -154,7 +154,7 @@ export default async function Home() {
           justify="center"
           align="center"
           gap="5"
-          className="bg-white shadow-lg border-0 p-8 rounded-lg w-[25rem] sm:w-auto"
+          className="bg-white shadow-lg border-0 p-4 sm:p-8 rounded-lg w-[25rem] sm:w-auto"
         >
           <IssueSeveritySummary
             minor={minorIssueCount}
@@ -171,7 +171,7 @@ export default async function Home() {
         </Flex>
         </Box>
 
-        <Box className="col-span-1 lg:col-span-2 2xl:col-span-1 w-[24rem] sm:w-auto ml-[-4.5rem] sm:ml-0  ">
+        <Box className="col-span-1 lg:col-span-2 2xl:col-span-1 w-[22rem] sm:w-auto ml-[-3.5rem] sm:ml-0  ">
         <Flex direction="column" className=" bg-white shadow-lg border-0 p-4 sm:p-8 rounded-lg ">
         <LatestIssues latestIssues={latestIssues} />
         </Flex>

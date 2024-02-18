@@ -1,4 +1,4 @@
-import { ErrorMessage, IssueStatusBadge } from "@/app/components";
+import { ErrorMessage, IssueStatusBadge, Spinner } from "@/app/components";
 import IssueSeverityBadge from "@/app/components/IssueSeverityBadge";
 import AssigneeSelect from "@/app/issues/[id]/AssigneeSelect";
 import { issueSchema, projectSchema } from "@/app/validationSchemas";
@@ -212,7 +212,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
               </Button>
             </Dialog.Close>
 
-            <button className="theme-button" type="submit" disabled={isSubmitting}>Submit</button>
+            <button className="theme-button" type="submit" disabled={isSubmitting}>Submit {isSubmitting && <Spinner />}</button>
             <Toaster />
           </Flex>
         </Flex>
