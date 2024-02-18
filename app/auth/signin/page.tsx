@@ -17,7 +17,7 @@ const SigninPage = () => {
       </Flex>
 
       <Flex direction="column" gap="3" align="center" justify="center" mt="9">
-        <Heading mt="6" size="7">Welcome back </Heading>
+        <Heading mt="6" className="text-md sm:text-xl">Welcome back </Heading>
 
         <Card size="5" mt="5" className="w-[20rem] sm:w-[50rem]">
           <Grid columns={{ initial: "1", md: "3fr 0.2fr 3fr" }}>

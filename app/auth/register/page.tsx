@@ -13,7 +13,7 @@ const RegisterPage = () => {
         <Heading size="9"  className={dynalight.className}>Fix Flow</Heading>
       </Flex>
       <Flex direction="column" gap="3" align="center" justify="center" mt="9">
-        <Heading mt="6" className="text-md sm:text-xl">Create your account </Heading>
+      <text className="text-xl font-bold sm:text-2xl">Create your account </text>
 
         <Card size="5" mt="5">
           <RegisterForm />
