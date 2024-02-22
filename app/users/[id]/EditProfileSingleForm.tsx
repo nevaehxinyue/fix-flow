@@ -1,4 +1,5 @@
 "use client";
+import DeleteUserProfileButton from "@/app/DeleteUserProfileButton";
 import { ErrorMessage } from "@/app/components";
 import { userProfileUpdateSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,10 +16,12 @@ import { FaRegEyeSlash, FaRegEye } from "react-icons/fa6";
 import { z } from "zod";
 
 type EditProfileFormData = z.infer<typeof userProfileUpdateSchema>;
+type ButtonVariants = "soft" | "classic";
 const EditProfileSingleForm = () => {
   const { data: session } = useSession();
 
   const [error, setError] = useState("");
+  const [buttonVariant, setButtonVariant] = useState<ButtonVariants>("soft")
   const router = useRouter();
   const queryClient = useQueryClient();
 
@@ -87,8 +90,8 @@ const EditProfileSingleForm = () => {
   };
 
   return (
-    <Flex direction="column" gap="3" className="bg-white shadow-lg border-0 p-8 rounded-lg w-64 xl:w-96">
-      <form onSubmit={handleSubmit(onSubmit)}>
+    <Flex direction="column" gap="3" className="bg-white shadow-lg border-0 p-8 rounded-lg w-[20rem] xl:w-96">
+      <form onSubmit={handleSubmit(onSubmit)} >
         <Flex direction="column" gap="3">
           <label>
             <Text as="div" size="2" mb="1" weight="bold">
@@ -148,6 +151,24 @@ const EditProfileSingleForm = () => {
             </Flex>
             <ErrorMessage>{errors.password?.message}</ErrorMessage>
           </label>
+        </Flex>
+
+        <Flex direction="column" gap="2" align="start" mt="3">
+          <Text className="text-md font-bold mb-3" size="3">
+            Delete profile
+          </Text>
+          <Flex gap="3">
+            <Button
+              onClick={() => setButtonVariant("classic")}
+              type="button"
+              size="1"
+              color="gray"
+              variant={buttonVariant}
+            >
+              No
+            </Button>
+            <DeleteUserProfileButton />
+          </Flex>
         </Flex>
 
         <Flex gap="3" mt="6" justify="end">
