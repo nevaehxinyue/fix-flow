@@ -58,7 +58,6 @@ const RegisterForm = () => {
       }
     }
   };
-  console.log(errors)
 
   return (
     <>
